@@ -7,13 +7,11 @@ module.exports =
 {
     HandleRequest: function(req, res)
     {
-        res.writeHead(200, {"Content-Type" : "text/plain"});
-
         var path = url.parse(req.url).pathname;
 
         switch(path)
         {
-            case "/":
+            case "/login":
                 auth.LoginFunc(req,res);
                 break;
 

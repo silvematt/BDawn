@@ -1,6 +1,8 @@
 const url = require("url");
 const mysql = require("mysql");
 
+const auth = require("./Auth")
+
 module.exports = 
 {
     HandleRequest: function(req, res)
@@ -12,16 +14,19 @@ module.exports =
         switch(path)
         {
             case "/":
-                res.writeHead(200);
-                res.write("Default");
-                res.end();
+                auth.LoginFunc(req,res);
                 break;
 
             default:
-                res.writeHead(404);
-                res.write("Invalid Route");
-                res.end();
+                InvalidRoute(req, res);
                 break;
         }
     }
 };
+
+function InvalidRoute(req, res)
+{
+    res.writeHead(404);
+    res.write("Invalid Route");
+    res.end();
+}

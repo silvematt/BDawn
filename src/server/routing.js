@@ -1,7 +1,8 @@
 const url = require("url");
 const mysql = require("mysql");
+const fs  = require("fs");
 
-const auth = require("./Auth")
+const auth = require("./Auth");
 
 module.exports = 
 {
@@ -11,6 +12,13 @@ module.exports =
 
         switch(path)
         {
+            // Serve HTML
+            case "/cLogin":
+                res.writeHead(200, { 'content-type': 'text/html' })
+                fs.createReadStream('../client/login.html').pipe(res);
+                break;
+
+            // APIs
             case "/login":
                 auth.LoginFunc(req,res);
                 break;

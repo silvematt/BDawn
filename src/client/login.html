@@ -3,11 +3,26 @@
 
 <head>
     <title>BDawn - Web Client - Login</title>
+    <script>
+      function loadDoc() 
+      {
+          var request = new XMLHttpRequest();
+          request.onreadystatechange = function() {
+              if (this.readyState == 4) 
+              {
+                  alert(this.responseText);
+              }
+          };
+
+          request.open('POST', 'http://localhost:3000/login');
+          request.setRequestHeader('Content-type', 'multipart/form-data');
+          request.send('user=silvematt&password=silvematt');
+        }
+    </script>
 </head>
 
 <body>
 
-<form action="action_page.php" method="post">
   
     <div class = "precont">
         <h1>BDawn - Web Client</h1>
@@ -21,7 +36,7 @@
       <label for="psw"><b>Password:</b></label>
       <input type="password" placeholder="Enter Password" name="psw" required>
       <br/><br/>
-      <button type="submit">Login</button>
+      <button type="submit" onclick="loadDoc()">Login</button>
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me
       </label>
@@ -31,6 +46,5 @@
         <br/>
         <span class="psw">Forgot <a href="#">password?</a></span>
     </div>
-  </form>
 </body>
 </html>

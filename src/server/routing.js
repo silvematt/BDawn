@@ -23,6 +23,9 @@ module.exports =
                 auth.LoginFunc(req,res);
                 break;
 
+            case "/overview":
+                break;
+
             default:
                 InvalidRoute(req, res);
                 break;

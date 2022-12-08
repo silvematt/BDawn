@@ -72,9 +72,35 @@ function CharacterCreatedCheck(connection, username, req, res)
             {
                 // Go ahead with the request
                 console.log("yup");
+                ReturnCharactersOverview(connection, username, req, res);
             }
         }
     });        
+}
+
+function ReturnCharactersOverview(connection, username, req, res)
+{
+    // Select and return all
+    var sqlQuery = `SELECT characterName, characterSex, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith FROM users WHERE username = '${username}'`;
+    connection.query(sqlQuery, function(err,qRes,fields)
+    {
+        if(err)
+            throw err;
+        else
+        {
+            // Character has not been created, terminate the overview and redirect the user to create the characer
+            res.writeHead(200, {"Content-Type" : "application/json"});
+            var response =
+            {
+                rCode:200,
+                rMessage:"OVERVIEW_SUCESS",
+                rContent: qRes 
+            };
+            res.write(JSON.stringify(response));
+            res.end();        
+            connection.end();
+        }
+    });
 }
 
 // "Public" functions

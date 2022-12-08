@@ -6,41 +6,51 @@
     <script>
       function OnOverview() 
       {
-        alert("ON OVERVIEW");
-          var request = new XMLHttpRequest();
-          request.onreadystatechange = function() 
-          {
-              if (this.readyState == 4) 
-              {
-                  var res = JSON.parse(this.responseText);
-                  
-                  //alert(localStorage.getItem("bdawn_sess_tkn"));
-                  
-                  const resLabel = document.getElementById('ResultLabel');
-                  
-                  // Cover all cases
-                  switch(res.rMessage)
-                  {
-                        case "TOKEN_INVALID":
-                            alert("Session expired.");
-                            location.href = "http://localhost:3000/cLogin";
-                            break;
+        document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
 
-                        case "CHARACTER_NOT_CREATED":
-                            location.href = "http://localhost:3000/cCharacterCreation";
-                            break;
-
-                        case "OK":
-                            // Take everything and fill the page
-                            break;
-
-                        default:
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() 
+        {
+            if (this.readyState == 4) 
+            {
+                var res = JSON.parse(this.responseText);
+                
+                const resLabel = document.getElementById('ResultLabel');
+                
+                // Cover all cases
+                switch(res.rMessage)
+                {
+                    case "TOKEN_INVALID":
                         alert("Session expired.");
-                            location.href = "http://localhost:3000/cLogin";
-                            break;
-                  }
-              }
-          };
+                        location.href = "http://localhost:3000/cLogin";
+                        break;
+
+                    case "CHARACTER_NOT_CREATED":
+                        location.href = "http://localhost:3000/cCharacterCreation";
+                        break;
+
+                    case "OVERVIEW_SUCESS":
+                        // Take everything and fill the page
+                        document.getElementById("CHARNAME_VALUE").textContent = res.rContent[0].characterName;
+                        
+                        document.getElementById("STATS_VIT_VALUE").textContent = res.rContent[0].characterVitality;
+                        document.getElementById("STATS_STR_VALUE").textContent = res.rContent[0].characterStrength;
+                        document.getElementById("STATS_DEX_VALUE").textContent = res.rContent[0].characterDexterity;
+                        document.getElementById("STATS_AGI_VALUE").textContent = res.rContent[0].characterAgility;
+                        document.getElementById("STATS_INT_VALUE").textContent = res.rContent[0].characterIntelligence;
+                        document.getElementById("STATS_FAI_VALUE").textContent = res.rContent[0].characterFaith;
+
+                        document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                        document.getElementById('fullbody').style.display = 'block';
+                        break;
+
+                    default:
+                    alert("DEFAULT: Session expired.");
+                        location.href = "http://localhost:3000/cLogin";
+                        break;
+                }
+            }
+        };
 
           var session = localStorage.getItem("bdawn_sess_tkn")
           request.open('POST', 'http://localhost:3000/overview');
@@ -62,5 +72,42 @@
         <h1>BDawn - Web Client</h1>
         <h2>Overview</h2>
     </div>
+
+    <label id="PROCESSING_MESSAGE"><b></b></label>
+
+    <div id = "fullbody" style = "display:none">
+        <fieldset style="width:40%">
+            <label for="charname">Character Name: </label>
+            <b id = "CHARNAME_VALUE">Legate</b>
+              <br>
+              <br>
+
+              <table style="width:100%; border: 1px solid black; border-radius: 10px;" >
+                <tr>
+                  <td>Vitality</td>
+                  <td>Strength</td>
+                  <td>Dexterity</td>
+                  <td>Agility</td>
+                  <td>Intelligence</td>
+                  <td>Faith</td>
+                </tr>
+                <tr>
+                  <td id="STATS_VIT_VALUE">16</td>
+                  <td id="STATS_STR_VALUE">14</td>
+                  <td id="STATS_DEX_VALUE">10</td>
+                  <td id="STATS_AGI_VALUE">10</td>
+                  <td id="STATS_INT_VALUE">10</td>
+                  <td id="STATS_FAI_VALUE">10</td>
+                </tr>
+              </table>
+              <br>
+
+              <br><br><br>
+
+              <span>&nbsp</span>
+              <label id="ResultLabel"><b></b></label>
+        </fieldset>
+    </div>
+
 </body>
 </html>

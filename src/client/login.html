@@ -16,13 +16,14 @@
                   // Add to local storage
                   localStorage.setItem("bdawn_sess_tkn", res.rTkn);
                   
-                  alert(localStorage.getItem("bdawn_sess_tkn"));
+                  //alert(localStorage.getItem("bdawn_sess_tkn"));
                   
                   const resLabel = document.getElementById('ResultLabel');
 
                   if(res.rMessage == "LOGIN_OK")
                   {
                     resLabel.textContent = "Logged in!";
+                    location.href = "http://localhost:3000/cOverview";
                   }
                   else if(res.rMessage == "LOGIN_NOT_OK")
                   {

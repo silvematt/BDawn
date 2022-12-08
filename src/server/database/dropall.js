@@ -20,27 +20,27 @@ connection.connect(function(err)
 
         var sqlQuery = "DROP TABLE `bdawndb`.`users`;";
 
-        console.log("Executing (DROP)...");
+        console.log("Executing (DROP) USERS...");
         connection.query(sqlQuery, function(err,result)
         {
             if(err)
                 throw err;
             else
             {
-                console.log("Table successfully created.");
+                console.log("Table successfully deleted.");
             }
         });
 
         var sqlQuery = "DROP TABLE `bdawndb`.`sessions`;";
 
-        console.log("Executing (DROP)...");
+        console.log("Executing (DROP) SESSIONS...");
         connection.query(sqlQuery, function(err,result)
         {
             if(err)
                 throw err;
             else
             {
-                console.log("Table successfully created.");
+                console.log("Table successfully deleted.");
             }
         });
     }

@@ -44,18 +44,19 @@ function FinishLoginRequest(connection, user, authOK, req, res)
             else
             {
                 console.log(result);
+
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:200,
+                    rMessage:"LOGIN_OK",
+                    rTkn: sessionToken
+                };
+                res.write(JSON.stringify(response));
+                res.end();                  
+                connection.end();
             }
         });
-        
-        res.writeHead(200, {"Content-Type" : "application/json"});
-        var response =
-        {
-            rCode:200,
-            rMessage:"LOGIN_OK",
-            rTkn: sessionToken
-        };
-        res.write(JSON.stringify(response));
-        res.end();                  
     }
     else
     {
@@ -66,10 +67,9 @@ function FinishLoginRequest(connection, user, authOK, req, res)
             rMessage:"LOGIN_NOT_OK"
         };
         res.write(JSON.stringify(response));
-        res.end();                             
+        res.end();        
+        connection.end();
     }
-
-    connection.end();
 }
 
 // "Public" functions
@@ -140,7 +140,6 @@ module.exports =
             };
             res.write(JSON.stringify(response));
             res.end();
-            connection.end();
         }
     }
 }

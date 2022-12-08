@@ -104,7 +104,7 @@ function CompleteCharacterCreation(connection, dataTook, req, res)
     
 
      // Update the database
-     var sqlQuery = `UPDATE users SET characterCreated = ${1}, characterName = '${dataTook.charName}', characterSex = ${charSex}, characterClass = ${charClass}, characterVitality = ${classValues.VIT}, characterStrength = ${classValues.STR}, characterDexterity = ${classValues.DEX}, characterAgility = ${classValues.AGI}, characterIntelligence = ${classValues.INT}, characterFaith = ${classValues.FAI} WHERE username = '${dataTook.username}'`;
+     var sqlQuery = `UPDATE users SET characterCreated = ${1}, characterName = '${dataTook.charName}', characterSex = ${charSex}, characterLevel = ${1}, characterClass = ${charClass}, characterVitality = ${classValues.VIT}, characterStrength = ${classValues.STR}, characterDexterity = ${classValues.DEX}, characterAgility = ${classValues.AGI}, characterIntelligence = ${classValues.INT}, characterFaith = ${classValues.FAI} WHERE username = '${dataTook.username}'`;
      connection.query(sqlQuery, function(err,qRes,fields)
      {
          if(err)

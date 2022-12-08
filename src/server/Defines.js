@@ -1,5 +1,56 @@
 module.exports =
 {
+    Stats:
+    {
+        0:
+        {
+            Name: "Vitality",
+            ShortName: "VIT",
+            Cost: 15, // 15 * value, if VIT is 11 cost is (15 * 11 = 165 golds)
+            InDBName: "characterVitality"
+        },
+
+        1:
+        {
+            Name: "Strength",
+            ShortName: "STR",
+            Cost: 13,
+            InDBName: "characterStrength"
+        },
+
+        2:
+        {
+            Name: "Dexterity",
+            ShortName: "DEX",
+            Cost: 12,
+            InDBName: "characterDexterity"
+        },
+
+        3:
+        {
+            Name: "Agility",
+            ShortName: "AGI",
+            Cost: 14,
+            InDBName: "characterAgility"
+        },
+
+        4:
+        {
+            Name: "Intelligence",
+            ShortName: "INT",
+            Cost: 12,
+            InDBName: "characterIntelligence"
+        },
+
+        5:
+        {
+            Name: "Faith",
+            ShortName: "FAI",
+            Cost: 20,
+            InDBName: "charaterFaith"
+        },
+    },
+
     // Default class stats
     DefaultStats: 
     {

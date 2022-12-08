@@ -4,6 +4,7 @@ var util = require('util');
 const mysql = require("mysql");
 const dbconf = require("./database/dbconf");
 const defines = require("./Defines");
+const Alterator = require("./Alterator");
 
 // "Private" functions
 function FinishOverviewRequest(connection, tkn, tknIsValid, req, res)
@@ -71,7 +72,8 @@ function CharacterCreatedCheck(connection, username, req, res)
             else
             {
                 // Go ahead with the request
-                console.log("yup");
+                console.log("eee");
+                console.log(username);
                 ReturnCharactersOverview(connection, username, req, res);
             }
         }
@@ -81,13 +83,33 @@ function CharacterCreatedCheck(connection, username, req, res)
 function ReturnCharactersOverview(connection, username, req, res)
 {
     // Select and return all
-    var sqlQuery = `SELECT characterName, characterSex, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith FROM users WHERE username = '${username}'`;
+    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith FROM users WHERE username = '${username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)
             throw err;
         else
-        {
+        {            
+            /*
+            Aletrator example, adds 1 to the vitality on each refresh of the overview 
+            
+            Alterator.AlterStat(defines.Stats[0], "Add", 1, username, connection, function()
+            {
+                // Character has not been created, terminate the overview and redirect the user to create the characer
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:200,
+                    rMessage:"OVERVIEW_SUCESS",
+                    rContent: qRes 
+                };
+                res.write(JSON.stringify(response));
+                res.end();        
+                connection.end();
+                console.log("ENDING");
+            });
+            */
+
             // Character has not been created, terminate the overview and redirect the user to create the characer
             res.writeHead(200, {"Content-Type" : "application/json"});
             var response =
@@ -99,6 +121,7 @@ function ReturnCharactersOverview(connection, username, req, res)
             res.write(JSON.stringify(response));
             res.end();        
             connection.end();
+            console.log("ENDING");
         }
     });
 }

@@ -32,7 +32,8 @@
                     case "OVERVIEW_SUCESS":
                         // Take everything and fill the page
                         document.getElementById("CHARNAME_VALUE").textContent = res.rContent[0].characterName;
-                        
+                        document.getElementById("CHARLEVEL_VALUE").textContent = res.rContent[0].characterLevel;
+
                         document.getElementById("STATS_VIT_VALUE").textContent = res.rContent[0].characterVitality;
                         document.getElementById("STATS_STR_VALUE").textContent = res.rContent[0].characterStrength;
                         document.getElementById("STATS_DEX_VALUE").textContent = res.rContent[0].characterDexterity;
@@ -78,7 +79,10 @@
     <div id = "fullbody" style = "display:none">
         <fieldset style="width:40%">
             <label for="charname">Character Name: </label>
-            <b id = "CHARNAME_VALUE">Legate</b>
+            <b id = "CHARNAME_VALUE"></b>
+            <br>
+            <label for="charLevel">Level: </label>
+            <b id = "CHARLEVEL_VALUE"></b>
               <br>
               <br>
 

@@ -53,6 +53,10 @@ module.exports =
                 util.GetDefaultStats(req, res);
                 break;
 
+            case "/getStatsInfo":
+                util.GetStatsInfo(req, res);
+                break;
+
             default:
                 InvalidRoute(req, res);
                 break;

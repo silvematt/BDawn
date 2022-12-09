@@ -4,6 +4,10 @@
 <head>
     <title>BDawn - Web Client - Trainer</title>
     <script>
+
+        // Character's Stats
+        var charStats;
+
       function OnOverview() 
       {
         document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
@@ -31,6 +35,8 @@
 
                     case "OVERVIEW_SUCESS":
                         // Take everything and fill the page
+                        charStats = res.rContent[0];
+
                         document.getElementById("STATS_VIT_VALUE").textContent = res.rContent[0].characterVitality;
                         document.getElementById("STATS_VIT_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('vitality')">+</button> `;
 
@@ -49,9 +55,7 @@
                         document.getElementById("STATS_FAI_VALUE").textContent = res.rContent[0].characterFaith;
                         document.getElementById("STATS_FAI_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('faith')">+</button> `;
 
-
-                        document.getElementById("PROCESSING_MESSAGE").textContent = "";
-                        document.getElementById('fullbody').style.display = 'block';
+                        GetStatsInfoAndDisplayCosts();
                         break;
 
                     default:
@@ -72,6 +76,52 @@
         {
             OnOverview();
         };
+
+        function GetStatsInfoAndDisplayCosts()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "OK":
+
+                            // Take everything and fill the page
+                            console.log(res.rContent[0].Cost);
+                            document.getElementById("STATS_VIT_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterVitality}</a> `;
+                            document.getElementById("STATS_STR_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterStrength}</a> `;
+                            document.getElementById("STATS_DEX_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterDexterity}</a> `;
+                            document.getElementById("STATS_AGI_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterAgility}</a> `;
+                            document.getElementById("STATS_INT_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterIntelligence}</a> `;
+                            document.getElementById("STATS_FAI_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterFaith}</a> `;
+
+                            // READY
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            document.getElementById('fullbody').style.display = 'block';
+                            break;
+
+                        default:
+                        alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+          var session = localStorage.getItem("bdawn_sess_tkn")
+          request.open('GET', 'http://localhost:3000/getStatsInfo');
+          request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          request.send();
+        }
 
         function Alertami(str)
         {

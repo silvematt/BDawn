@@ -6,6 +6,7 @@ const auth = require("./Auth");
 const overview = require("./Overview");
 const util = require("./Utilities");
 const charCreation = require("./CharacterCreation");
+const trainer = require("./Trainer");
 
 module.exports = 
 {
@@ -55,6 +56,10 @@ module.exports =
 
             case "/getStatsInfo":
                 util.GetStatsInfo(req, res);
+                break;
+
+            case "/trainAttribute":
+                trainer.TrainAttribute(req, res);
                 break;
 
             default:

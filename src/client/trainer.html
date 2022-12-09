@@ -8,7 +8,7 @@
         // Character's Stats
         var charStats;
 
-      function OnOverview() 
+      function OnTrainer() 
       {
         document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
 
@@ -38,22 +38,22 @@
                         charStats = res.rContent[0];
 
                         document.getElementById("STATS_VIT_VALUE").textContent = res.rContent[0].characterVitality;
-                        document.getElementById("STATS_VIT_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('vitality')">+</button> `;
+                        document.getElementById("STATS_VIT_VALUE").innerHTML += ` <button type="submit" onclick="TrainAttributeRequest(0)">+</button> `;
 
                         document.getElementById("STATS_STR_VALUE").textContent = res.rContent[0].characterStrength;
-                        document.getElementById("STATS_STR_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('strength')">+</button> `;
+                        document.getElementById("STATS_STR_VALUE").innerHTML += ` <button type="submit" onclick="TrainAttributeRequest(1)">+</button> `;
 
                         document.getElementById("STATS_DEX_VALUE").textContent = res.rContent[0].characterDexterity;
-                        document.getElementById("STATS_DEX_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('dexterity')">+</button> `;
+                        document.getElementById("STATS_DEX_VALUE").innerHTML += ` <button type="submit" onclick="TrainAttributeRequest(2)">+</button> `;
 
                         document.getElementById("STATS_AGI_VALUE").textContent = res.rContent[0].characterAgility;
-                        document.getElementById("STATS_AGI_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('agillity')">+</button> `;
+                        document.getElementById("STATS_AGI_VALUE").innerHTML += ` <button type="submit" onclick="TrainAttributeRequest(3)">+</button> `;
 
                         document.getElementById("STATS_INT_VALUE").textContent = res.rContent[0].characterIntelligence;
-                        document.getElementById("STATS_INT_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('intelligence')">+</button> `;
+                        document.getElementById("STATS_INT_VALUE").innerHTML += ` <button type="submit" onclick="TrainAttributeRequest(4)">+</button> `;
 
                         document.getElementById("STATS_FAI_VALUE").textContent = res.rContent[0].characterFaith;
-                        document.getElementById("STATS_FAI_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('faith')">+</button> `;
+                        document.getElementById("STATS_FAI_VALUE").innerHTML += ` <button type="submit" onclick="TrainAttributeRequest(5)">+</button> `;
 
                         GetStatsInfoAndDisplayCosts();
                         break;
@@ -74,7 +74,7 @@
 
         window.onload = function()
         {
-            OnOverview();
+            OnTrainer();
         };
 
         function GetStatsInfoAndDisplayCosts()
@@ -123,10 +123,46 @@
           request.send();
         }
 
-        function Alertami(str)
+        function TrainAttributeRequest(attrID)
         {
-            alert(str);
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+
+                        case "TRAIN_ATTRIBUTE_SUCCESS":
+                            // Take everything and fill the page
+                            OnTrainer();
+                            break;
+
+                        default:
+                        alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+            var session = localStorage.getItem("bdawn_sess_tkn")
+            request.open('POST', 'http://localhost:3000/trainAttribute');
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send(`tkn=${session}&attributeToTrain=${attrID}`);
         }
+        
     </script>
 </head>
 

@@ -47,7 +47,7 @@ module.exports =
             Name: "Faith",
             ShortName: "FAI",
             Cost: 20,
-            InDBName: "charaterFaith"
+            InDBName: "characterFaith"
         },
     },
 

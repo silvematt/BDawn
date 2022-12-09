@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>BDawn - Web Client - Overview</title>
+    <title>BDawn - Web Client - Trainer</title>
     <script>
       function OnOverview() 
       {
@@ -31,15 +31,24 @@
 
                     case "OVERVIEW_SUCESS":
                         // Take everything and fill the page
-                        document.getElementById("CHARNAME_VALUE").textContent = res.rContent[0].characterName;
-                        document.getElementById("CHARLEVEL_VALUE").textContent = res.rContent[0].characterLevel;
-
                         document.getElementById("STATS_VIT_VALUE").textContent = res.rContent[0].characterVitality;
+                        document.getElementById("STATS_VIT_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('vitality')">+</button> `;
+
                         document.getElementById("STATS_STR_VALUE").textContent = res.rContent[0].characterStrength;
+                        document.getElementById("STATS_STR_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('strength')">+</button> `;
+
                         document.getElementById("STATS_DEX_VALUE").textContent = res.rContent[0].characterDexterity;
+                        document.getElementById("STATS_DEX_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('dexterity')">+</button> `;
+
                         document.getElementById("STATS_AGI_VALUE").textContent = res.rContent[0].characterAgility;
+                        document.getElementById("STATS_AGI_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('agillity')">+</button> `;
+
                         document.getElementById("STATS_INT_VALUE").textContent = res.rContent[0].characterIntelligence;
+                        document.getElementById("STATS_INT_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('intelligence')">+</button> `;
+
                         document.getElementById("STATS_FAI_VALUE").textContent = res.rContent[0].characterFaith;
+                        document.getElementById("STATS_FAI_VALUE").innerHTML += ` <button type="submit" onclick="Alertami('faith')">+</button> `;
+
 
                         document.getElementById("PROCESSING_MESSAGE").textContent = "";
                         document.getElementById('fullbody').style.display = 'block';
@@ -63,6 +72,11 @@
         {
             OnOverview();
         };
+
+        function Alertami(str)
+        {
+            alert(str);
+        }
     </script>
 </head>
 
@@ -71,20 +85,18 @@
   
     <div class = "precont">
         <h1>BDawn - Web Client</h1>
-        <h2>Overview</h2>
+        <h2>Trainer</h2>
     </div>
 
     <label id="PROCESSING_MESSAGE"><b></b></label>
 
     <div id = "fullbody" style = "display:none">
         <fieldset style="width:40%">
-            <label for="charname">Character Name: </label>
-            <b id = "CHARNAME_VALUE"></b>
-            <br>
-            <label for="charLevel">Level: </label>
-            <b id = "CHARLEVEL_VALUE"></b>
               <br>
-              <br>
+
+              <textarea rows="1" cols="30" readonly style="resize:none">Here you can train your skills.</textarea>
+             <br><br>
+             <div w3-include-html="content.html"></div>
 
               <table style="width:100%; border: 1px solid black; border-radius: 10px;" >
                 <tr>

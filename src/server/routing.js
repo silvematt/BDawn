@@ -31,6 +31,11 @@ module.exports =
                 fs.createReadStream('../client/createCharacter.html').pipe(res);
                 break;
 
+            case "/cTrainer":
+                res.writeHead(200, { 'content-type': 'text/html' })
+                fs.createReadStream('../client/trainer.html').pipe(res);
+                break;
+
             // APIs
             case "/login":
                 auth.LoginFunc(req,res);

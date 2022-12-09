@@ -46,22 +46,63 @@ function ContinueTrainAttributeRequest(connection, dataTook, tknIsValid, req, re
 
 function FinalizeTrainAttribute(connection, dataTook, req, res)
 {
-    // Check if the user has enough money
-    Alterator.AlterStat(defines.Stats[dataTook.att], "Add", 1, dataTook.username, connection, function()
+    // Run the CharacterCreatedCheck
+    var sqlQuery = `SELECT ${defines.Stats[dataTook.att].InDBName}, inventoryGolds FROM users WHERE username = '${dataTook.username}'`;
+    connection.query(sqlQuery, function(err,qRes,fields)
     {
-        // Character has not been created, terminate the overview and redirect the user to create the characer
-        res.writeHead(200, {"Content-Type" : "application/json"});
-        var response =
+        if(err)
+            throw err;
+        else
         {
-            rCode:200,
-            rMessage:"TRAIN_ATTRIBUTE_SUCCESS"
-        };
+            // Calculate train cost:
+            console.log("AWAWAWAWAWAAWAWWAWAAWAWAW");
+            console.log(qRes);
+            const trainCost = qRes[0][defines.Stats[dataTook.att].InDBName] * defines.Stats[dataTook.att].Cost;
+            const playersGolds = qRes[0].inventoryGolds;
+            console.log(trainCost);
+            console.log(playersGolds);
 
-        res.write(JSON.stringify(response));
-        res.end();        
-        connection.end();
-        console.log("ENDING");
-    });
+            
+            if(playersGolds >= trainCost)
+            {
+                // Check if the user has enough money
+                Alterator.AlterStat(defines.Stats[dataTook.att], "Add", 1, dataTook.username, connection, function()
+                {
+                    Alterator.AlterGolds("Subtract", dataTook.username, trainCost, connection, function()
+                    {
+                        // Character has not been created, terminate the overview and redirect the user to create the characer
+                        res.writeHead(200, {"Content-Type" : "application/json"});
+                        var response =
+                        {
+                            rCode:200,
+                            rMessage:"TRAIN_ATTRIBUTE_SUCCESS"
+                        };
+
+                        res.write(JSON.stringify(response));
+                        res.end();        
+                        connection.end();
+                        console.log("ENDING");
+                    });
+                });
+            }
+            else
+            {
+                // Character has not been created, terminate the overview and redirect the user to create the characer
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:200,
+                    rMessage:"TRAIN_ATTRIBUTE_FAILD_NOT_ENOUGH_GOLDS"
+                };
+
+                res.write(JSON.stringify(response));
+                res.end();        
+                connection.end();
+                console.log("ENDING");
+            }
+            
+        }
+    });        
 }
 
 

@@ -41,6 +41,9 @@
                         document.getElementById("STATS_INT_VALUE").textContent = res.rContent[0].characterIntelligence;
                         document.getElementById("STATS_FAI_VALUE").textContent = res.rContent[0].characterFaith;
 
+                        document.getElementById("INVENTORY_GOLDS_VALUE").textContent = res.rContent[0].inventoryGolds;
+
+
                         document.getElementById("PROCESSING_MESSAGE").textContent = "";
                         document.getElementById('fullbody').style.display = 'block';
                         break;
@@ -78,6 +81,8 @@
 
     <div id = "fullbody" style = "display:none">
         <fieldset style="width:40%">
+            <h2>Character</h2>
+
             <label for="charname">Character Name: </label>
             <b id = "CHARNAME_VALUE"></b>
             <br>
@@ -105,8 +110,11 @@
                 </tr>
               </table>
               <br>
-
-              <br><br><br>
+              <br>
+              <h2>Inventory</h2>
+              <label for="InventoryGoldsL">Golds: </label>
+              <b id = "INVENTORY_GOLDS_VALUE"></b>
+              <br><br>
 
               <span>&nbsp</span>
               <label id="ResultLabel"><b></b></label>

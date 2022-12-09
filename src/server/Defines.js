@@ -81,5 +81,6 @@ module.exports =
             INT: 6,
             FAI: 6
         }
-    }
+    },
+    StartingGoldsValue:1000
 }

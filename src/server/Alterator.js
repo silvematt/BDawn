@@ -12,10 +12,27 @@ const defines = require("./Defines");
 const { connect } = require("http2");
 
 // "Private" functions
-function FinalizeAlteration(stat, val, username, connection, OnAlter)
+function FinalizeAlterStat(stat, val, username, connection, OnAlter)
 {
     // Run the CharacterCreatedCheck
     var sqlQuery = `UPDATE users SET ${stat.InDBName} = ${val} WHERE username = '${username}'`;
+    connection.query(sqlQuery, function(err,qRes,fields)
+    {
+        if(err)
+            throw err;
+        else
+        {
+            console.log("Done. Set to " + val);
+            OnAlter();
+        }
+    });        
+}
+
+// "Private" functions
+function FinalizeAlterGolds(alterType, username, val, connection, OnAlter)
+{
+    // Run the CharacterCreatedCheck
+    var sqlQuery = `UPDATE users SET inventoryGolds = ${val} WHERE username = '${username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)
@@ -51,11 +68,46 @@ module.exports =
                         tookValue += val;
                         break;
                     default:
-                        console.log("Aleteration " + alterType + " is not defined");
+                        console.log("Alteration " + alterType + " is not defined");
                         break;
                 }
 
-                FinalizeAlteration(stat, tookValue, username, connection, OnAlter);
+                FinalizeAlterStat(stat, tookValue, username, connection, OnAlter);
+            }
+        });
+    },
+
+    AlterGolds: function(alterType, username, val, connection, OnAlter)
+    {
+        // Get the stat value
+        var sqlQuery = `SELECT inventoryGolds FROM users WHERE username = '${username}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+        {
+            if(err)
+                throw err;
+            else
+            {
+                console.log(qRes);
+                
+                var tookValue = qRes[0].inventoryGolds;
+                switch(alterType)
+                {
+                    case "Add":
+                        tookValue += val;
+                        break;
+                    case "Subtract":
+                        tookValue -= val;
+                        
+                        // Prevent negative
+                        if(tookValue < 0)
+                            tookValue = 0;
+                        break;
+                    default:
+                        console.log("Alteration " + alterType + " is not defined");
+                        break;
+                }
+
+                FinalizeAlterGolds(alterType, username, tookValue, connection, OnAlter);
             }
         });
     }

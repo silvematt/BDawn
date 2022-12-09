@@ -55,6 +55,8 @@
                         document.getElementById("STATS_FAI_VALUE").textContent = res.rContent[0].characterFaith;
                         document.getElementById("STATS_FAI_VALUE").innerHTML += ` <button type="submit" onclick="TrainAttributeRequest(5)">+</button> `;
 
+                        document.getElementById("INVENTORY_GOLDS_VALUE").textContent = res.rContent[0].inventoryGolds;
+
                         GetStatsInfoAndDisplayCosts();
                         break;
 
@@ -98,11 +100,11 @@
                             // Take everything and fill the page
                             console.log(res.rContent[0].Cost);
                             document.getElementById("STATS_VIT_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterVitality}</a> `;
-                            document.getElementById("STATS_STR_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterStrength}</a> `;
-                            document.getElementById("STATS_DEX_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterDexterity}</a> `;
-                            document.getElementById("STATS_AGI_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterAgility}</a> `;
-                            document.getElementById("STATS_INT_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterIntelligence}</a> `;
-                            document.getElementById("STATS_FAI_VALUE").innerHTML += ` <a>${res.rContent[0].Cost * charStats.characterFaith}</a> `;
+                            document.getElementById("STATS_STR_VALUE").innerHTML += ` <a>${res.rContent[1].Cost * charStats.characterStrength}</a> `;
+                            document.getElementById("STATS_DEX_VALUE").innerHTML += ` <a>${res.rContent[2].Cost * charStats.characterDexterity}</a> `;
+                            document.getElementById("STATS_AGI_VALUE").innerHTML += ` <a>${res.rContent[3].Cost * charStats.characterAgility}</a> `;
+                            document.getElementById("STATS_INT_VALUE").innerHTML += ` <a>${res.rContent[4].Cost * charStats.characterIntelligence}</a> `;
+                            document.getElementById("STATS_FAI_VALUE").innerHTML += ` <a>${res.rContent[5].Cost * charStats.characterFaith}</a> `;
 
                             // READY
                             document.getElementById("PROCESSING_MESSAGE").textContent = "";
@@ -147,6 +149,13 @@
                         case "TRAIN_ATTRIBUTE_SUCCESS":
                             // Take everything and fill the page
                             OnTrainer();
+
+                            document.getElementById("ResultLabel").textContent = "Sucessfully trained!";
+                            break;
+
+                        case "TRAIN_ATTRIBUTE_FAILD_NOT_ENOUGH_GOLDS":GetStatsInfoAndDisplayCosts
+                            document.getElementById("ResultLabel").textContent = "You don't have enough golds!";
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
                             break;
 
                         default:
@@ -204,7 +213,10 @@
               </table>
               <br>
 
-              <br><br><br>
+              <br>
+              <label for="InventoryGoldsL">Golds: </label>
+              <b id = "INVENTORY_GOLDS_VALUE"></b>
+              <br><br>
 
               <span>&nbsp</span>
               <label id="ResultLabel"><b></b></label>

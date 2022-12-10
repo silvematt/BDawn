@@ -146,5 +146,33 @@ module.exports =
             INTMod: 5.0,
             InDBCheckName: 'hasWeapon3'
         }
+    },
+
+    Spells:
+    {
+        // 0 is null
+        1: 
+        {
+            ID: 1,
+            Name: 'Fireball',
+            Cost: 300,
+            Damage: 100,
+            ManaCost: 40,
+            CriticalChance: 35,
+            CriticalMod: 2.0,
+            InDBCheckName: "hasSpell1"
+        },
+
+        2:
+        {
+            ID: 2,
+            Name: 'Ice Spike',
+            Cost: 150,
+            Damage: 60,
+            ManCost: 25,
+            CriticalChance: 10,
+            CriticalMod: 1.25,
+            InDBCheckName: "hasSpell2"
+        }
     }
 }

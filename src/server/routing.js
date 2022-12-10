@@ -8,6 +8,7 @@ const util = require("./Utilities");
 const charCreation = require("./CharacterCreation");
 const trainer = require("./Trainer");
 const Weaponsmith = require("./Weaponsmith");
+const Sorcerer = require("./Sorcerer");
 
 module.exports = 
 {
@@ -19,28 +20,33 @@ module.exports =
         {
             // Serve HTML
             case "/cLogin":
-                res.writeHead(200, { 'content-type': 'text/html' })
+                res.writeHead(200, { 'content-type': 'text/html' });
                 fs.createReadStream('../client/login.html').pipe(res);
                 break;
 
             case "/cOverview":
-                res.writeHead(200, { 'content-type': 'text/html' })
+                res.writeHead(200, { 'content-type': 'text/html' });
                 fs.createReadStream('../client/overview.html').pipe(res);
                 break;
 
             case "/cCharacterCreation":
-                res.writeHead(200, { 'content-type': 'text/html' })
+                res.writeHead(200, { 'content-type': 'text/html' });
                 fs.createReadStream('../client/createCharacter.html').pipe(res);
                 break;
 
             case "/cTrainer":
-                res.writeHead(200, { 'content-type': 'text/html' })
+                res.writeHead(200, { 'content-type': 'text/html' });
                 fs.createReadStream('../client/trainer.html').pipe(res);
                 break;
 
             case "/cWeaponsmith":
-                res.writeHead(200, { 'content-type': 'text/html' })
+                res.writeHead(200, { 'content-type': 'text/html' });
                 fs.createReadStream('../client/weaponsmith.html').pipe(res);
+                break;
+
+            case "/cSorcerer":
+                res.writeHead(200, { 'content-type': 'text/html' });
+                fs.createReadStream('../client/sorcerer.html').pipe(res);
                 break;
 
             // APIs
@@ -72,6 +78,10 @@ module.exports =
                 Weaponsmith.UnequipWeapon(req, res);
                 break;
 
+            case "/buySpell":
+                Sorcerer.BuySpell(req, res);
+                break;
+
             // Gets
             case "/getDefaultStats":
                 util.GetDefaultStats(req, res);
@@ -87,6 +97,14 @@ module.exports =
 
             case "/getPlayersWeapons":
                 Weaponsmith.GetPlayerWeaponInfo(req, res);
+                break;
+
+            case "/getSpells":
+                util.GetSpells(req, res);
+                break;
+
+            case "/getPlayersSpells":
+                Sorcerer.GetPlayerSpellsInfo(req, res);
                 break;
 
             default:

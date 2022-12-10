@@ -191,5 +191,36 @@ module.exports =
                 }
             });
         }
-    }
+    },
+
+    AlterSpellsOwned: function(alterType, spellID, username, connection, OnAlter)
+    {
+        var finalVal;
+
+        switch(alterType)
+        {
+            case "Add":
+                finalVal = 1;
+                break;
+            case "Remove":
+                finalVal = 0;
+                break;
+                
+            default:
+                console.log("Alteration " + alterType + " is not defined");
+                break;
+        }        
+
+        var sqlQuery = `UPDATE users SET hasSpell${spellID} = ${finalVal} WHERE username = '${username}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+        {
+            if(err)
+                throw err;
+            else
+            {
+                console.log(qRes);
+                OnAlter();
+            }
+        });
+    },
 }

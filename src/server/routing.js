@@ -64,6 +64,14 @@ module.exports =
                 Weaponsmith.BuyWeapon(req, res);
                 break;
 
+            case "/equipWeapon":
+                Weaponsmith.EquipWeapon(req, res);
+                break;
+
+            case "/unequipWeapon":
+                Weaponsmith.UnequipWeapon(req, res);
+                break;
+
             // Gets
             case "/getDefaultStats":
                 util.GetDefaultStats(req, res);
@@ -78,7 +86,7 @@ module.exports =
                 break;
 
             case "/getPlayersWeapons":
-                Weaponsmith.GetWeaponOwned(req, res);
+                Weaponsmith.GetPlayerWeaponInfo(req, res);
                 break;
 
             default:

@@ -262,24 +262,39 @@
                                 var current = document.getElementById(`weaponBox${obj}`);
                                 const hasWeapon = weaponsOwnedByPlayer[`hasWeapon${obj}`]  ? true : false;
                                 console.log(obj);
-                                // Show Equip
-                                if(hasWeapon)
+
+                                // Check if the weapon is already equipped
+                                if(weaponsOwnedByPlayer.equippedWeapon == obj)
                                 {
                                     let btn = document.createElement("button");
-                                    
-                                    btn.innerHTML = `Equip`
-                                    btn.onclick = () => {Equip(objVal);}
+                                        
+                                        btn.innerHTML = `Unequip`
+                                        btn.onclick = () => {Unequip(objVal);}
 
-                                    current.appendChild(btn);
+                                        current.appendChild(btn);
                                 }
-                                else // Show buy
+                                else
                                 {
-                                    let btn = document.createElement("button");
-                                    btn.innerHTML = `Buy`
-                                    btn.onclick = () => {Buy(objVal);}
+                                    // Show Equip
+                                    if(hasWeapon)
+                                    {
+                                        let btn = document.createElement("button");
+                                        
+                                        btn.innerHTML = `Equip`
+                                        btn.onclick = () => {Equip(objVal);}
 
-                                    current.appendChild(btn);
-                                }
+                                        current.appendChild(btn);
+                                    }
+                                    else // Show buy
+                                    {
+                                        let btn = document.createElement("button");
+                                        btn.innerHTML = `Buy`
+                                        btn.onclick = () => {Buy(objVal);}
+
+                                        current.appendChild(btn);
+                                    }
+                                }   
+                               
                             }
 
                             // READY
@@ -304,7 +319,47 @@
 
         function Equip(id)
         {
-            console.log("Equipping " + id);
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    console.log(res);
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                        break;
+
+                        case "EQUIPWEAPON_FAIL_DONT_OWN":
+                            resLabel.textContent = "You don't own that weapon.";
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            break;
+
+                        case "EQUIPWEAPON_SUCCESS":
+                            // Need refresh
+                            location.reload();
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+          var session = localStorage.getItem("bdawn_sess_tkn")
+          request.open('POST', 'http://localhost:3000/equipWeapon');
+          request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          request.send(`tkn=${session}&idToEquip=${id}`);
         }
 
         function Buy(id)
@@ -355,6 +410,46 @@
           request.open('POST', 'http://localhost:3000/buyWeapon');
           request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
           request.send(`tkn=${session}&idToBuy=${id}`);
+        }
+
+        function Unequip(id)
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    console.log(res);
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                        break;
+
+                        case "UNEQUIPWEAPON_SUCCESS":
+                            // Need refresh
+                            location.reload();
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+          var session = localStorage.getItem("bdawn_sess_tkn")
+          request.open('POST', 'http://localhost:3000/unequipWeapon');
+          request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          request.send(`tkn=${session}`);
         }
     </script>
 </head>

@@ -141,5 +141,55 @@ module.exports =
                 OnAlter();
             }
         });
+    },
+
+    AlterWeaponEquipped: function(alterType, weaponID, username, connection, OnAlter)
+    {
+        var finalVal;
+
+        switch(alterType)
+        {
+            case "Set":
+                finalVal = 1;
+                break;
+                
+            case "Remove":
+                finalVal = 0;
+                break;
+                
+            default:
+                console.log("Alteration " + alterType + " is not defined");
+                break;
+        }        
+
+        if(finalVal == 1)
+        {
+            var sqlQuery = `UPDATE users SET equippedWeapon = ${weaponID} WHERE username = '${username}'`;
+            connection.query(sqlQuery, function(err,qRes,fields)
+            {
+                if(err)
+                    throw err;
+                else
+                {
+                    console.log(qRes);
+                    OnAlter();
+                }
+            });
+        }
+        // Unequip
+        else
+        {
+            var sqlQuery = `UPDATE users SET equippedWeapon = 0 WHERE username = '${username}'`;
+            connection.query(sqlQuery, function(err,qRes,fields)
+            {
+                if(err)
+                    throw err;
+                else
+                {
+                    console.log(qRes);
+                    OnAlter();
+                }
+            });
+        }
     }
 }

@@ -34,5 +34,19 @@ module.exports =
          };
          res.write(JSON.stringify(response));
          res.end();        
+    },
+
+    GetWeapons : function(req, res)
+    {
+         // Character has not been created, terminate the overview and redirect the user to create the characer
+         res.writeHead(200, {"Content-Type" : "application/json"});
+         var response =
+         {
+             rCode:200,
+             rMessage:"OK",
+             rContent: defines.Weapons 
+         };
+         res.write(JSON.stringify(response));
+         res.end();        
     }
 }

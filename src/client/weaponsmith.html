@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BDawn - Web Client - Weaponsmith</title>
+    <script>
+
+        var weapons;
+
+        var weaponsOwnedByPlayer;
+
+        function OnWeaponsmith()
+        {
+            GetWeaponsAndDisplay();
+        }
+
+        window.onload = function()
+        {
+            OnWeaponsmith();
+        };
+
+        function GetWeaponsAndDisplay()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "OK":
+                            // Take everything and fill the page
+                            weapons = res.rContent;
+                            
+                            // Construct Weapon Boxes
+                            for(var obj in weapons)
+                            {
+                                // Skip unarmed
+                                if(obj == 0)
+                                    continue;
+
+                                var curWeap = weapons[obj];
+                                let element = document.createElement("fieldset");
+
+                                // Create weapon label
+                                let weaponNameLabel = document.createElement("b");
+                                    weaponNameLabel.id = `weapon${obj}NameLabel`;
+                                    weaponNameLabel.textContent = "Weapon Name: "
+                                
+                                // Append it
+                                element.appendChild(weaponNameLabel);
+
+                                // Create weapon name value
+                                let weaponNameValue = document.createElement("label");
+                                    weaponNameValue.id = `weapon${obj}NameValue`;
+                                    weaponNameValue.textContent = curWeap.Name;
+
+                                // Append it
+                                element.appendChild(weaponNameValue);
+
+                                // Append a line break
+                                element.appendChild(document.createElement("br"));
+                                
+                                // Create cost label
+                                let weaponCostLabel = document.createElement("b");
+                                    weaponCostLabel.id = `weapon${obj}CostLabel`;
+                                    weaponCostLabel.textContent = "Cost: "
+                                
+                                // Append it
+                                element.appendChild(weaponCostLabel);
+
+                                // Create cost value
+                                let weaponCostValue = document.createElement("label");
+                                    weaponCostValue.id = `weapon${obj}CostValue`;
+                                    weaponCostValue.textContent = curWeap.Cost;
+
+                                // Append it
+                                element.appendChild(weaponCostValue);
+
+                                // Append a line break
+                                element.appendChild(document.createElement("br"));
+
+                                // Create weapon damage label
+                                let weaponDamageLabel = document.createElement("b");
+                                    weaponDamageLabel.id = `weapon${obj}DamageLabel`;
+                                    weaponDamageLabel.textContent = "Damage: ";
+
+                                // Append it
+                                element.appendChild(weaponDamageLabel);
+
+                                // Create weapon damage label
+                                let weaponDamageMinValue = document.createElement("label");
+                                    weaponDamageMinValue.id = `weapon${obj}DamageMinValue`;
+                                    weaponDamageMinValue.textContent = curWeap.MinDamage;
+
+                                // Append it
+                                element.appendChild(weaponDamageMinValue);
+
+                                // Append a " - "
+                                element.appendChild(document.createTextNode(" - "));
+
+                                // Create weapon damage label
+                                let weaponDamageMaxValue = document.createElement("label");
+                                    weaponDamageMaxValue.id = `weapon${obj}DamageMaxValue`;
+                                    weaponDamageMaxValue.textContent = curWeap.MaxDamage;
+
+                                // Append it
+                                element.appendChild(weaponDamageMaxValue);
+
+                                // Append a line break
+                                element.appendChild(document.createElement("br"));
+
+                                // Create weapon label
+                                let weaponCriticalChanceLabel = document.createElement("b");
+                                weaponCriticalChanceLabel.id = `weapon${obj}CritChanceLabel`;
+                                weaponCriticalChanceLabel.textContent = "Critical Chance: "
+                                
+                                // Append it
+                                element.appendChild(weaponCriticalChanceLabel);
+
+                                // Create weapon name value
+                                let weaponCriticalChanceValue = document.createElement("label");
+                                weaponCriticalChanceValue.id = `weapon${obj}CirtChanceValue`;
+                                weaponCriticalChanceValue.textContent = curWeap.CriticalChance;
+
+                                // Append it
+                                element.appendChild(weaponCriticalChanceValue);
+
+                                element.appendChild(document.createTextNode("%"));
+
+                                // Append a line break
+                                element.appendChild(document.createElement("br"));
+
+                                // Create weapon label
+                                let weaponCriticalModifierLabel = document.createElement("b");
+                                    weaponCriticalModifierLabel.id = `weapon${obj}CritModifierLabel`;
+                                    weaponCriticalModifierLabel.textContent = "Critical Modifier: "
+                                
+                                // Append it
+                                element.appendChild(weaponCriticalModifierLabel);
+
+                                element.appendChild(document.createTextNode("* "));
+
+                                // Create weapon name value
+                                let weaponCriticalModifierValue = document.createElement("label");
+                                    weaponCriticalModifierValue.id = `weapon${obj}CritModifierValue`;
+                                    weaponCriticalModifierValue.textContent = curWeap.CriticalMod;
+
+                                // Append it
+                                element.appendChild(weaponCriticalModifierValue);
+
+
+                                // Append a line break
+                                element.appendChild(document.createElement("br"));
+
+                                element.id = `weaponBox${obj}`;
+                                element.style = "width:30%"
+                                document.getElementById('contentfs').appendChild(element);
+                            }
+                            
+
+                            GetPlayersWeaponsAndDisplayButtons();
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+          var session = localStorage.getItem("bdawn_sess_tkn")
+          request.open('GET', 'http://localhost:3000/getWeapons');
+          request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          request.send();
+        }
+
+        function GetPlayersWeaponsAndDisplayButtons()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "GETWEAPON_SUCCESS":
+                            // Take everything and fill the page
+                            weaponsOwnedByPlayer = res.rContent[0];
+
+                            // Construct Weapon Boxes
+                            for(var obj in weapons)
+                            {
+                                // Skip unarmed
+                                if(obj == 0)
+                                    continue;
+
+                                const objVal = obj;
+
+                                var current = document.getElementById(`weaponBox${obj}`);
+                                const hasWeapon = weaponsOwnedByPlayer[`hasWeapon${obj}`]  ? true : false;
+                                console.log(obj);
+                                // Show Equip
+                                if(hasWeapon)
+                                {
+                                    let btn = document.createElement("button");
+                                    
+                                    btn.innerHTML = `Equip`
+                                    btn.onclick = () => {Equip(objVal);}
+
+                                    current.appendChild(btn);
+                                }
+                                else // Show buy
+                                {
+                                    let btn = document.createElement("button");
+                                    btn.innerHTML = `Buy`
+                                    btn.onclick = () => {Buy(objVal);}
+
+                                    current.appendChild(btn);
+                                }
+                            }
+
+                            // READY
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            document.getElementById('fullbody').style.display = 'block';
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+          var session = localStorage.getItem("bdawn_sess_tkn")
+          request.open('POST', 'http://localhost:3000/getPlayersWeapons');
+          request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          request.send(`tkn=${session}`);
+        }
+
+
+        function Equip(id)
+        {
+            console.log("Equipping " + id);
+        }
+
+        function Buy(id)
+        {
+            console.log("Buying " + id);
+        }
+    </script>
+</head>
+
+<body>
+
+  
+    <div class = "precont">
+        <h1>BDawn - Web Client</h1>
+        <h2>Weaponsmith</h2>
+    </div>
+
+    <label id="PROCESSING_MESSAGE"><b></b></label>
+
+    <div id = "fullbody" style = "display:none">
+        <fieldset id = "contentfs" style="width:40%">
+
+              <span>&nbsp</span>
+              <label id="ResultLabel"><b></b></label>
+        </fieldset>
+    </div>
+
+</body>
+</html>

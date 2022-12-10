@@ -7,7 +7,7 @@ const defines = require("./Defines");
 const Alterator = require("./Alterator");
 
 // "Private" functions
-function FinishOverviewRequest(connection, tkn, tknIsValid, req, res)
+function ContinueGetWeaponRequest(connection, tkn, tknIsValid, req, res)
 {
     if(tknIsValid)
     {
@@ -25,7 +25,7 @@ function FinishOverviewRequest(connection, tkn, tknIsValid, req, res)
             else
             {
                 username = (qRes[0].username);
-                CharacterCreatedCheck(connection, username, req, res);
+                FinishGetWeaponRequest(connection, username, req, res);
             }
         });        
     }
@@ -43,10 +43,10 @@ function FinishOverviewRequest(connection, tkn, tknIsValid, req, res)
     }
 }
 
-function CharacterCreatedCheck(connection, username, req, res)
+function FinishGetWeaponRequest(connection, username, req, res)
 {
     // Check if the user has created the character in the first place
-    var sqlQuery = `SELECT characterCreated FROM users WHERE username = '${username}'`;
+    var sqlQuery = `SELECT hasWeapon1, hasWeapon2, hasWeapon3 FROM users WHERE username = '${username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)
@@ -54,48 +54,11 @@ function CharacterCreatedCheck(connection, username, req, res)
         else
         {
             console.log(qRes);
-
-            var charCreated = qRes[0].characterCreated;
-            if(charCreated == 0)
-            {
-                // Character has not been created, terminate the overview and redirect the user to create the characer
-                res.writeHead(200, {"Content-Type" : "application/json"});
-                var response =
-                {
-                    rCode:200,
-                    rMessage:"CHARACTER_NOT_CREATED"
-                };
-                res.write(JSON.stringify(response));
-                res.end();        
-                connection.end();
-            }
-            else
-            {
-                // Go ahead with the request
-                console.log("eee");
-                console.log(username);
-                ReturnCharactersOverview(connection, username, req, res);
-            }
-        }
-    });        
-}
-
-function ReturnCharactersOverview(connection, username, req, res)
-{
-    // Select and return all
-    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds FROM users WHERE username = '${username}'`;
-    connection.query(sqlQuery, function(err,qRes,fields)
-    {
-        if(err)
-            throw err;
-        else
-        {            
-            // Character has not been created, terminate the overview and redirect the user to create the characer
             res.writeHead(200, {"Content-Type" : "application/json"});
             var response =
             {
                 rCode:200,
-                rMessage:"OVERVIEW_SUCESS",
+                rMessage:"GETWEAPON_SUCCESS",
                 rContent: qRes 
             };
             res.write(JSON.stringify(response));
@@ -103,13 +66,14 @@ function ReturnCharactersOverview(connection, username, req, res)
             connection.end();
             console.log("ENDING");
         }
-    });
+    });        
 }
+
 
 // "Public" functions
 module.exports = 
 {
-    OverviewFunc : function(req, res)
+    GetWeaponOwned : function(req, res)
     {
         if(req.method == "POST")
         {
@@ -148,7 +112,7 @@ module.exports =
                             else
                             {
                                 console.log(qRes);
-                                FinishOverviewRequest(connection, tkn, qRes && qRes.length > 0, req, res);
+                                ContinueGetWeaponRequest(connection, tkn, qRes && qRes.length > 0, req, res);
                             }
                         });
                     }

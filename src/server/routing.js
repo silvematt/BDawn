@@ -7,6 +7,7 @@ const overview = require("./Overview");
 const util = require("./Utilities");
 const charCreation = require("./CharacterCreation");
 const trainer = require("./Trainer");
+const Weaponsmith = require("./Weaponsmith");
 
 module.exports = 
 {
@@ -37,6 +38,11 @@ module.exports =
                 fs.createReadStream('../client/trainer.html').pipe(res);
                 break;
 
+            case "/cWeaponsmith":
+                res.writeHead(200, { 'content-type': 'text/html' })
+                fs.createReadStream('../client/weaponsmith.html').pipe(res);
+                break;
+
             // APIs
             case "/login":
                 auth.LoginFunc(req,res);
@@ -50,6 +56,11 @@ module.exports =
                 charCreation.CreateCharFunc(req, res);
                 break;
 
+            case "/trainAttribute":
+                trainer.TrainAttribute(req, res);
+                break;
+
+            // Gets
             case "/getDefaultStats":
                 util.GetDefaultStats(req, res);
                 break;
@@ -58,8 +69,12 @@ module.exports =
                 util.GetStatsInfo(req, res);
                 break;
 
-            case "/trainAttribute":
-                trainer.TrainAttribute(req, res);
+            case "/getWeapons":
+                util.GetWeapons(req, res);
+                break;
+
+            case "/getPlayersWeapons":
+                Weaponsmith.GetWeaponOwned(req, res);
                 break;
 
             default:

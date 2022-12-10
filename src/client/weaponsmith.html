@@ -5,19 +5,66 @@
     <title>BDawn - Web Client - Weaponsmith</title>
     <script>
 
+        var playerOverview;
+
         var weapons;
 
         var weaponsOwnedByPlayer;
 
         function OnWeaponsmith()
         {
-            GetWeaponsAndDisplay();
+            GetPlayerOverview();
         }
 
         window.onload = function()
         {
             OnWeaponsmith();
         };
+
+        function GetPlayerOverview()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+
+                        case "CHARACTER_NOT_CREATED":
+                            location.href = "http://localhost:3000/cCharacterCreation";
+                            break;
+
+                        case "OVERVIEW_SUCESS":
+                            document.getElementById("INVENTORY_GOLDS_VALUE").textContent = res.rContent[0].inventoryGolds;
+
+                            GetWeaponsAndDisplay();
+                            break;
+
+                        default:
+                        alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+            var session = localStorage.getItem("bdawn_sess_tkn")
+            request.open('POST', 'http://localhost:3000/overview');
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send(`tkn=${session}`);
+        }
 
         function GetWeaponsAndDisplay()
         {
@@ -262,7 +309,52 @@
 
         function Buy(id)
         {
-            console.log("Buying " + id);
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    console.log(res);
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                        break;
+
+                        case "BUYWEAPON_FAIL_ALREADY_GOT":
+                            resLabel.textContent = "Failed, you already own the weapon.";
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            break;
+
+                        case "BUYWEAPON_FAIL_CANNOT_AFFORD":
+                            resLabel.textContent = "You cannot afford this item!";
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            break;
+
+                        case "BUYWEAPON_SUCCESS":
+                            // Need refresh
+                            location.reload();
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+          var session = localStorage.getItem("bdawn_sess_tkn")
+          request.open('POST', 'http://localhost:3000/buyWeapon');
+          request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          request.send(`tkn=${session}&idToBuy=${id}`);
         }
     </script>
 </head>
@@ -278,11 +370,18 @@
     <label id="PROCESSING_MESSAGE"><b></b></label>
 
     <div id = "fullbody" style = "display:none">
-        <fieldset id = "contentfs" style="width:40%">
+        
 
-              <span>&nbsp</span>
-              <label id="ResultLabel"><b></b></label>
+        <fieldset id = "contentfs" style="width:40%">
+            <label for="InventoryGoldsL">Golds: </label>
+            <b id = "INVENTORY_GOLDS_VALUE"></b>
+            <br><br>
+        
+              
         </fieldset>
+        <br>
+        <span>&nbsp</span>
+              <label id="ResultLabel"><b></b></label>
     </div>
 
 </body>

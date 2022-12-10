@@ -60,6 +60,10 @@ module.exports =
                 trainer.TrainAttribute(req, res);
                 break;
 
+            case "/buyWeapon":
+                Weaponsmith.BuyWeapon(req, res);
+                break;
+
             // Gets
             case "/getDefaultStats":
                 util.GetDefaultStats(req, res);

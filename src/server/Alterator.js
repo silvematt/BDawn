@@ -110,5 +110,36 @@ module.exports =
                 FinalizeAlterGolds(alterType, username, tookValue, connection, OnAlter);
             }
         });
+    },
+
+    AlterWeaponsOwned: function(alterType, weaponID, username, connection, OnAlter)
+    {
+        var finalVal;
+
+        switch(alterType)
+        {
+            case "Add":
+                finalVal = 1;
+                break;
+            case "Remove":
+                finalVal = 0;
+                break;
+                
+            default:
+                console.log("Alteration " + alterType + " is not defined");
+                break;
+        }        
+
+        var sqlQuery = `UPDATE users SET hasWeapon${weaponID} = ${finalVal} WHERE username = '${username}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+        {
+            if(err)
+                throw err;
+            else
+            {
+                console.log(qRes);
+                OnAlter();
+            }
+        });
     }
 }

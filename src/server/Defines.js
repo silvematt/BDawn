@@ -82,7 +82,7 @@ module.exports =
             FAI: 6
         }
     },
-    
+
     StartingGoldsValue:1000,
 
     Weapons:
@@ -99,6 +99,7 @@ module.exports =
             STRMod: 1.5,         // Strength modifier
             DEXMod: 1.0,
             INTMod: 1.0,
+            InDBCheckName: ''
         },
 
         1:
@@ -107,12 +108,13 @@ module.exports =
             Name: 'Iron Dagger',
             Cost: 300,
             MinDamage: 25,
-            MaxDamage: 35,
-            CriticalChance: 30,
+            MaxDamage: 40,
+            CriticalChance: 40,
             CriticalMod: 2,
             STRMod: 1.0,         // Strength modifier
             DEXMod: 2.0,
             INTMod: 1.0,
+            InDBCheckName: 'hasWeapon1'
         },
 
         2:
@@ -127,6 +129,7 @@ module.exports =
             STRMod: 3.0,         // Strength modifier
             DEXMod: 1.0,
             INTMod: 1.0,
+            InDBCheckName: 'hasWeapon2'
         },
 
         3:
@@ -141,6 +144,7 @@ module.exports =
             STRMod: 1.0,         // Strength modifier
             DEXMod: 1.0,
             INTMod: 5.0,
+            InDBCheckName: 'hasWeapon3'
         }
     }
 }

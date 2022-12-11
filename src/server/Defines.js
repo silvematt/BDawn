@@ -174,5 +174,27 @@ module.exports =
             CriticalMod: 1.25,
             InDBCheckName: "hasSpell2"
         }
+    },
+
+    // AI Stats are calculated as that:
+    // Vitality: BaseVitality * Level etc
+    AI:
+    {
+        0:
+        {
+            ID: 0,
+            Name: 'Bandit',
+            MinLevel: 1,
+            MaxLevel: 5,
+            MinDamage: 10,
+            MaxDamage: 30,
+            CriticalChance: 10,
+            CriticalMod: 1.5,
+            BaseVitality: 3,
+            BaseIntelligence: 0,
+            EquippedSpell: 0,
+            MeleeAttackChance: 100,
+            MagicAttackChance: 0,
+        },
     }
 }

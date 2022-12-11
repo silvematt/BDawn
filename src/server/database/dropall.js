@@ -43,5 +43,18 @@ connection.connect(function(err)
                 console.log("Table successfully deleted.");
             }
         });
+
+        var sqlQuery = "DROP TABLE `bdawndb`.`fights`;";
+
+        console.log("Executing (DROP) SESSIONS...");
+        connection.query(sqlQuery, function(err,result)
+        {
+            if(err)
+                throw err;
+            else
+            {
+                console.log("Table successfully deleted.");
+            }
+        });
     }
 });

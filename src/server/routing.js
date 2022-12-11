@@ -9,6 +9,7 @@ const charCreation = require("./CharacterCreation");
 const trainer = require("./Trainer");
 const Weaponsmith = require("./Weaponsmith");
 const Sorcerer = require("./Sorcerer");
+const CombatManager = require("./CombatManager");
 
 module.exports = 
 {
@@ -80,6 +81,10 @@ module.exports =
 
             case "/buySpell":
                 Sorcerer.BuySpell(req, res);
+                break;
+
+            case "/startCombat":
+                CombatManager.StartCombat(req, res);
                 break;
 
             // Gets

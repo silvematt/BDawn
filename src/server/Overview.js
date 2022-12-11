@@ -7,7 +7,7 @@ const defines = require("./Defines");
 const Alterator = require("./Alterator");
 
 // "Private" functions
-function FinishOverviewRequest(connection, tkn, tknIsValid, req, res)
+function ContinueOverviewRequest(connection, tkn, tknIsValid, req, res)
 {
     if(tknIsValid)
     {
@@ -148,7 +148,7 @@ module.exports =
                             else
                             {
                                 console.log(qRes);
-                                FinishOverviewRequest(connection, tkn, qRes && qRes.length > 0, req, res);
+                                ContinueOverviewRequest(connection, tkn, qRes && qRes.length > 0, req, res);
                             }
                         });
                     }

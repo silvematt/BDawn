@@ -56,5 +56,18 @@ connection.connect(function(err)
                 console.log("Table successfully created.");
             }
         });
+
+        sqlQuery = "CREATE TABLE fights (username varchar(255) NOT NULL, playersHP int NOT NULL, playersMP int NOT NULL, enemyID int NOT NULL, enemyLevel int NOT NULL, enemyHP int NOT NULL, enemyMP int NOT NULL)";
+
+        console.log("Executing creation (FIGHTS)...");
+        connection.query(sqlQuery, function(err,result)
+        {
+            if(err)
+                throw err;
+            else
+            {
+                console.log("Table successfully created.");
+            }
+        });
     }
 });

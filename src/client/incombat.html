@@ -9,6 +9,10 @@
 
         var ai;
 
+        var spells;
+
+        var playerSpells;
+
         function OnCombat() 
         {
             LoadPlayerOverview();
@@ -91,7 +95,7 @@
                     {
                         case "OK":
                             ai = res.rContent;
-                            LoadFightInfo();
+                            GetSpells();
                             break;
 
                         default:
@@ -105,6 +109,106 @@
             request.open('GET', 'http://localhost:3000/getAI');
             request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             request.send(``);
+        }
+
+        function GetSpells()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "OK":
+                            // Take everything and fill the page
+                            spells = res.rContent;
+                            GetPlayersSpells();
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+          var session = localStorage.getItem("bdawn_sess_tkn")
+          request.open('GET', 'http://localhost:3000/getSpells');
+          request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          request.send();
+        }
+
+        function GetPlayersSpells()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+
+                        case "GETSPELLS_SUCCESS":
+                            playerSpells = res.rContent[0];
+
+                            console.log(playerSpells);
+
+                            const selector = document.getElementById("spellsDropdown");
+                            // Spawn spells in select spell dropdown
+                            // Construct Weapon Boxes
+                            for(var obj in spells)
+                            {
+                                // Skip unarmed
+                                if(obj == 0)
+                                    continue;
+
+                                // if the player has the spell, add it to the drowpdown
+                                if(playerSpells[`hasSpell${obj}`])
+                                {
+                                    var curSpell = spells[obj];
+                                    let opt = document.createElement("option");
+                                    opt.value = obj;
+                                    opt.innerHTML = curSpell.Name;
+
+                                    selector.appendChild(opt);
+                                }
+                            }
+
+                            LoadFightInfo();
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+            var session = localStorage.getItem("bdawn_sess_tkn")
+            request.open('POST', 'http://localhost:3000/getPlayersSpells');
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send(`tkn=${session}`);
         }
         
 
@@ -183,6 +287,8 @@
                             document.getElementById("ENEMY_STATS_FAI_VALUE").textContent = fightInfo.enemyFaith;
 
 
+                            // Fill the spells owned by the player
+
                             document.getElementById("PROCESSING_MESSAGE").textContent = "";
                             document.getElementById('fullbody').style.display = 'block';
                             break;
@@ -260,15 +366,14 @@
 
         <div class="horizontalgap" style="display:inline-block; width:10px"></div>
 
+        <!-- ACTION BOX-->
         <div id="actionBox" style = "display:inline-block;text-align: center;">
             <h1>Actions:</h1>
         <button>Attack</button>
         <button>Cast Spell</button>
         <select name="spells" id="spellsDropdown">
-        <optgroup label="Select Spell:">
+        <optgroup label="Select Spell:" id = "spellSelector">
             <option disabled selected="selected">None</option>
-            <option value="1">Fireball</option>
-            <option value="2">Ice Spike</option>
         </optgroup>
           </select>
           <br><br>

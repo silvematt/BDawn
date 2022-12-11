@@ -7,7 +7,7 @@
 
         var playerOverview;
 
-        var weapons;
+        var spells;
 
         var weaponsOwnedByPlayer;
         var spellsOwnedByPlayer;
@@ -85,16 +85,16 @@
                     {
                         case "OK":
                             // Take everything and fill the page
-                            weapons = res.rContent;
+                            spells = res.rContent;
                             
                             // Construct Weapon Boxes
-                            for(var obj in weapons)
+                            for(var obj in spells)
                             {
                                 // Skip unarmed
                                 if(obj == 0)
                                     continue;
 
-                                var curSpell = weapons[obj];
+                                var curSpell = spells[obj];
                                 let element = document.createElement("fieldset");
 
                                 // Create weapon label
@@ -241,7 +241,7 @@
                             spellsOwnedByPlayer = res.rContent[0];
 
                             // Construct Weapon Boxes
-                            for(var obj in weapons)
+                            for(var obj in spells)
                             {
                                 // Skip unarmed
                                 if(obj == 0)

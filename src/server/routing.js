@@ -50,6 +50,11 @@ module.exports =
                 fs.createReadStream('../client/sorcerer.html').pipe(res);
                 break;
 
+            case "/cCombat":
+                res.writeHead(200, { 'content-type': 'text/html' });
+                fs.createReadStream('../client/incombat.html').pipe(res);
+                break;
+
             // APIs
             case "/login":
                 auth.LoginFunc(req,res);
@@ -87,6 +92,10 @@ module.exports =
                 CombatManager.StartCombat(req, res);
                 break;
 
+            case "/retrieveCombatInfo":
+                CombatManager.RetrieveCombatInfo(req, res);
+                break;
+
             // Gets
             case "/getDefaultStats":
                 util.GetDefaultStats(req, res);
@@ -110,6 +119,10 @@ module.exports =
 
             case "/getPlayersSpells":
                 Sorcerer.GetPlayerSpellsInfo(req, res);
+                break;
+
+            case "/getAI":
+                util.GetAI(req, res);
                 break;
 
             default:

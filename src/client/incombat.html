@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BDawn - Web Client - Combat</title>
+    <script>
+
+        var fightInfo;
+
+        var ai;
+
+        function OnCombat() 
+        {
+            LoadPlayerOverview();
+        }
+
+        window.onload = function()
+        {
+            OnCombat();
+        };
+
+        function LoadPlayerOverview()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+
+                        case "CHARACTER_NOT_CREATED":
+                            location.href = "http://localhost:3000/cCharacterCreation";
+                            break;
+
+                        case "OVERVIEW_SUCESS":
+                            // Take everything and fill the page
+                            document.getElementById("CHARNAME_VALUE").textContent = res.rContent[0].characterName;
+                            document.getElementById("CHARLEVEL_VALUE").textContent = res.rContent[0].characterLevel;
+
+                            document.getElementById("STATS_VIT_VALUE").textContent = res.rContent[0].characterVitality;
+                            document.getElementById("STATS_STR_VALUE").textContent = res.rContent[0].characterStrength;
+                            document.getElementById("STATS_DEX_VALUE").textContent = res.rContent[0].characterDexterity;
+                            document.getElementById("STATS_AGI_VALUE").textContent = res.rContent[0].characterAgility;
+                            document.getElementById("STATS_INT_VALUE").textContent = res.rContent[0].characterIntelligence;
+                            document.getElementById("STATS_FAI_VALUE").textContent = res.rContent[0].characterFaith;
+
+                            GetAI();
+                            break;
+
+                        default:
+                        alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+            var session = localStorage.getItem("bdawn_sess_tkn")
+            request.open('POST', 'http://localhost:3000/overview');
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send(`tkn=${session}`);
+        }
+
+        function GetAI()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "OK":
+                            ai = res.rContent;
+                            LoadFightInfo();
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+            request.open('GET', 'http://localhost:3000/getAI');
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send(``);
+        }
+        
+
+        function LoadFightInfo()
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    
+                    fightInfo = res.rContent;
+                    console.log(fightInfo);
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+
+                        case "RETRIEVECOMBAT_NOT_IN_COMBAT":
+                            location.href = "http://localhost:3000/cOverview";
+                            break;
+
+                        case "RETRIEVECOMBAT_SUCCESS":
+                            // Take everything and fill the page
+
+                            const enemy = ai[fightInfo.enemyID];
+
+                            // Fill player stats
+                            const playerHPBar = document.getElementById("playerhpbar");
+                            playerHPBar.max = fightInfo.playersMaxHP;
+                            playerHPBar.value = fightInfo.playersHP;
+
+                            const playerHpPercent = Math.floor((fightInfo.playersHP / fightInfo.playersMaxHP) * 100);
+                            const playerHPPercentage = document.getElementById("PLAYERHP_PERCENT").innerHTML = `${playerHpPercent}%`;
+
+                            const playerMPBar = document.getElementById("playermpbar");
+                            playerMPBar.max = fightInfo.playersMaxMP;
+                            playerMPBar.value = fightInfo.playersMP;
+
+                            const playerMpPercent = Math.floor((fightInfo.playersMP / fightInfo.playersMaxMP) * 100);
+                            const playerMPPercentage = document.getElementById("PLAYERMP_PERCENT").innerHTML = `${playerMpPercent}%`;
+
+                            // Fill Enemy Stats
+                            const enemyHPBar = document.getElementById("enemyhpbar");
+                            enemyHPBar.max = fightInfo.enemyMaxHP;
+                            enemyHPBar.value = fightInfo.enemyHP;
+
+                            const enemyhpPercent = Math.floor((fightInfo.enemyHP / fightInfo.enemyMaxHP) * 100);
+                            const enemyHPPercentage = document.getElementById("ENEMYHP_PERCENT").innerHTML = `${enemyhpPercent}%`;
+
+                            // Mana
+                            const enemyMPBar = document.getElementById("enemympbar");
+                            enemyMPBar.max = fightInfo.enemyMaxMP;
+                            enemyMPBar.value = fightInfo.enemyMP;
+
+                            const enemympPercent = fightInfo.enemyMaxMP > 0 ? (Math.floor((fightInfo.enemyMP / fightInfo.enemyMaxMP) * 100)) : 0;
+                            const enemyMPPercentage = document.getElementById("ENEMYMP_PERCENT").innerHTML = `${enemympPercent}%`;
+
+                            // Fill Stats
+                            document.getElementById("ENEMYNAME_VALUE").textContent = enemy.Name;
+
+                            document.getElementById("ENEMYLEVEL_VALUE").textContent = fightInfo.enemyLevel;
+                            document.getElementById("ENEMY_STATS_VIT_VALUE").textContent = fightInfo.enemyVitality;
+                            document.getElementById("ENEMY_STATS_STR_VALUE").textContent = fightInfo.enemyStrength;
+                            document.getElementById("ENEMY_STATS_DEX_VALUE").textContent = fightInfo.enemyDexterity;
+                            document.getElementById("ENEMY_STATS_AGI_VALUE").textContent = fightInfo.enemyAgility;
+                            document.getElementById("ENEMY_STATS_INT_VALUE").textContent = fightInfo.enemyIntelligence;
+                            document.getElementById("ENEMY_STATS_FAI_VALUE").textContent = fightInfo.enemyFaith;
+
+
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            document.getElementById('fullbody').style.display = 'block';
+                            break;
+
+                        default:
+                        alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+            var session = localStorage.getItem("bdawn_sess_tkn")
+            request.open('POST', 'http://localhost:3000/retrieveCombatInfo');
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send(`tkn=${session}`);
+        }
+
+    </script>
+</head>
+
+<body>
+
+  
+    <div class = "precont">
+        <h1>BDawn - Web Client</h1>
+        <h2>Combat</h2>
+    </div>
+
+    <label id="PROCESSING_MESSAGE"><b></b></label>
+
+    <div id = "fullbody" style = "display:none">
+
+        <div id="playerBox" style = "display:inline-block;width: 30%;">
+
+        <fieldset>
+            <h2 id = "CHARNAME_VALUE">Character</h2>
+            <label for="charLevel">Level: </label>
+            <b id = "CHARLEVEL_VALUE"></b>
+              <br>
+              <br>
+
+              <table style="width:100%; border: 1px solid black; border-radius: 10px;" >
+                <tr>
+                  <td>Vitality</td>
+                  <td>Strength</td>
+                  <td>Dexterity</td>
+                  <td>Agility</td>
+                  <td>Intelligence</td>
+                  <td>Faith</td>
+                </tr>
+                <tr>
+                  <td id="STATS_VIT_VALUE">16</td>
+                  <td id="STATS_STR_VALUE">14</td>
+                  <td id="STATS_DEX_VALUE">10</td>
+                  <td id="STATS_AGI_VALUE">10</td>
+                  <td id="STATS_INT_VALUE">10</td>
+                  <td id="STATS_FAI_VALUE">10</td>
+                </tr>
+              </table>
+              <br>
+              <br>
+              <h2>Status:</h2>
+              <label for="playerhplabel">HP:</label>
+              <progress id="playerhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERHP_PERCENT">32%</label>
+              <br><br>
+              <label for="playermplabel">MP:</label>
+              <progress id="playermpbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERMP_PERCENT">32%</label>
+              <br><br>
+
+              <span>&nbsp</span>
+              <label id="ResultLabel"><b></b></label>
+        </fieldset>
+        </div>
+
+        <div class="horizontalgap" style="display:inline-block; width:10px"></div>
+
+        <div id="actionBox" style = "display:inline-block;text-align: center;">
+            <h1>Actions:</h1>
+        <button>Attack</button>
+        <button>Cast Spell</button>
+        <select name="spells" id="spellsDropdown">
+        <optgroup label="Select Spell:">
+            <option disabled selected="selected">None</option>
+            <option value="1">Fireball</option>
+            <option value="2">Ice Spike</option>
+        </optgroup>
+          </select>
+          <br><br>
+          <textarea rows="8" cols="50" readonly style="resize:none">Combat Starts!</textarea>
+          <br>
+          <!--- <button>Exit</button> --->
+        </div>
+
+        <div class="horizontalgap" style="display:inline-block; width:10px"></div>
+
+        <div id="playerBox" style = "display:inline-block;width: 30%;">
+
+            <fieldset>
+                <h2 id = "ENEMYNAME_VALUE">Enemy</h2>
+                <label for="enemyLevel">Level: </label>
+                <b id = "ENEMYLEVEL_VALUE"></b>
+                  <br>
+                  <br>
+    
+                  <table style="width:100%; border: 1px solid black; border-radius: 10px;" >
+                    <tr>
+                      <td>Vitality</td>
+                      <td>Strength</td>
+                      <td>Dexterity</td>
+                      <td>Agility</td>
+                      <td>Intelligence</td>
+                      <td>Faith</td>
+                    </tr>
+                    <tr>
+                      <td id="ENEMY_STATS_VIT_VALUE">0</td>
+                      <td id="ENEMY_STATS_STR_VALUE">0</td>
+                      <td id="ENEMY_STATS_DEX_VALUE">0</td>
+                      <td id="ENEMY_STATS_AGI_VALUE">0</td>
+                      <td id="ENEMY_STATS_INT_VALUE">0</td>
+                      <td id="ENEMY_STATS_FAI_VALUE">0</td>
+                    </tr>
+                  </table>
+                  <br>
+                  <br>
+                  <h2>Status:</h2>
+                  <label for="enemyhplabel">HP:</label>
+                  <progress id="enemyhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYHP_PERCENT">32%</label>
+                  <br><br>
+                  <label for="enemymplabel">MP:</label>
+                  <progress id="enemympbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYMP_PERCENT">32%</label>
+                  <br><br>
+    
+                  <span>&nbsp</span>
+                  <label id="ResultLabel"><b></b></label>
+            </fieldset>
+            </div>
+        </div>
+        <span>&nbsp</span>
+        <label id="ResultLabel"><b></b></label>
+
+</body>
+</html>

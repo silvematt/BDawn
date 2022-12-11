@@ -57,7 +57,7 @@ connection.connect(function(err)
             }
         });
 
-        sqlQuery = "CREATE TABLE fights (username varchar(255) NOT NULL, playersHP int NOT NULL, playersMP int NOT NULL, enemyID int NOT NULL, enemyLevel int NOT NULL, enemyHP int NOT NULL, enemyMP int NOT NULL)";
+        sqlQuery = "CREATE TABLE fights (username varchar(255) NOT NULL, playersHP int NOT NULL, playersMP int NOT NULL, playersMaxHP int NOT NULL, playersMaxMP int NOT NULL, enemyID int NOT NULL, enemyLevel int NOT NULL, enemyHP int NOT NULL, enemyMP int NOT NULL, enemyMaxHP int NOT NULL, enemyMaxMP int NOT NULL, enemyVitality int NOT NULL, enemyStrength int NOT NULL, enemyDexterity int NOT NULL, enemyAgility int NOT NULL, enemyIntelligence int NOT NULL, enemyFaith int NOT NULL)";
 
         console.log("Executing creation (FIGHTS)...");
         connection.query(sqlQuery, function(err,result)

@@ -90,7 +90,6 @@ function ReturnCharactersOverview(connection, username, req, res)
             throw err;
         else
         {            
-            // Character has not been created, terminate the overview and redirect the user to create the characer
             res.writeHead(200, {"Content-Type" : "application/json"});
             var response =
             {

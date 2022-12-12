@@ -54,6 +54,11 @@ module.exports =
                 res.writeHead(200, { 'content-type': 'text/html' });
                 fs.createReadStream('../client/incombat.html').pipe(res);
                 break;
+            
+            case "/cDungeon":
+                res.writeHead(200, { 'content-type': 'text/html' });
+                fs.createReadStream('../client/dungeon.html').pipe(res);
+                break;
 
             // APIs
             case "/login":

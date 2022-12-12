@@ -304,8 +304,12 @@
             request.send(`tkn=${session}`);
         }
 
-        function PlayerDoTurn(attType)
+        function PlayerDoTurn(attType, selectedSpell)
         {
+            const spellSelected = document.getElementById("spellsDropdown").value;
+            if(attType == "ATT_SPELL" && spellSelected == "None")
+                return;
+
             document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
 
             var request = new XMLHttpRequest();
@@ -370,6 +374,16 @@
                             document.getElementById('fullbody').style.display = 'block';
                             break;
 
+                        case "TURN_ATTACK_NOT_ENOUGH_MANA":
+
+                            fightBox.value += "\n\n" + "You don't have enough mana to cast that spell.";
+
+                            fightBox.scrollTop = fightBox.scrollHeight;
+
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            document.getElementById('fullbody').style.display = 'block';
+                            break;
+
                         case "TURN_ATTACK_COMBAT_END_ENEMY_WON":
                             // Update fight box
 
@@ -403,7 +417,7 @@
             var session = localStorage.getItem("bdawn_sess_tkn")
             request.open('POST', 'http://localhost:3000/combatAttack');
             request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            request.send(`tkn=${session}&attackType=${attType}`);
+            request.send(`tkn=${session}&attackType=${attType}&selectedSpell=${spellSelected}`);
         }
 
         function Exit()
@@ -473,9 +487,9 @@
         <div id="actionBox" style = "display:inline-block;text-align: center;">
             <h2>Actions:</h2>
         <button onclick="PlayerDoTurn('ATT_MELEE')">Attack</button>
-        <button>Cast Spell</button>
+        <button onclick="PlayerDoTurn('ATT_SPELL')">Cast Spell</button>
         <select name="spells" id="spellsDropdown">
-        <optgroup label="Select Spell:" id = "spellSelector">
+        <optgroup id = "spellselector" label="Select Spell:">
             <option disabled selected="selected">None</option>
         </optgroup>
           </select>

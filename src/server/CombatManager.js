@@ -522,6 +522,8 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     console.log(playerData);
 
     var playerFinalDamage = 0;
+    var playerManaUsed = 0;
+
     // Simulate a turn, start with the player's
     switch(dataTook.attackType)
     {
@@ -530,7 +532,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
 
             // Calculate player's damage
             const pWeapon = defines.Weapons[playerData.equippedWeapon];
-            var playerFinalDamage = util.GetRandomIntInclusive(pWeapon.MinDamage, pWeapon.MaxDamage);
+            playerFinalDamage = util.GetRandomIntInclusive(pWeapon.MinDamage, pWeapon.MaxDamage);
 
             // Critical chance
             var critChance = util.GetRandomIntInclusive(1, 100);
@@ -550,6 +552,43 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
         // Player asked for a spell
         case "ATT_SPELL":
 
+            // Check if player has enough mana.
+            const spellData = defines.Spells[`${dataTook.selectedSpell}`];
+            console.log(spellData);
+            console.log(dataTook.selectedSpell);
+            // Calculate if player has enough mana
+            if(spellData.ManaCost > combatData.playersMP)
+            {
+                // Player doesn't have enough mana, close the request.
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:400,
+                    rMessage:"TURN_ATTACK_NOT_ENOUGH_MANA"
+                };
+                res.write(JSON.stringify(response));
+                res.end();       
+                connection.end();
+                return; // exit immediately
+            }
+            else
+            {
+                playerManaUsed = spellData.ManaCost;
+                playerFinalDamage = util.GetRandomIntInclusive(spellData.MinDamage, spellData.MaxDamage);
+
+                // Critical chance
+                var critChance = util.GetRandomIntInclusive(1, 100);
+                const isCritical = critChance <= spellData.CriticalChance;
+
+                console.log("Crit: " + critChance);
+
+                if(isCritical)
+                {
+                    console.log("CRITICAL!!");
+                    playerFinalDamage *= spellData.CriticalMod;
+                }
+                console.log(playerFinalDamage);
+            }
             break;
 
         // Player asked for an invalid attack type
@@ -596,6 +635,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
 
     const enemysCurHP = combatData.enemyHP - playerFinalDamage;
     const playersCurHP = combatData.playersHP - enemyFinalDamage;
+    const playersCurMP = combatData.playersMP - playerManaUsed;
 
     // Build messages
     var playersActionStr = "You ";
@@ -605,7 +645,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
             playersActionStr += "attacked " + enemy.Name + " and dealt " + playerFinalDamage + " points of damage.";
             break;
         case "ATT_SPELL":
-            //playersActionStr += "casted SPELL NAME" + enemy.Name + " and dealt " + playerFinalDamage + " damage.";
+            playersActionStr += "casted " + defines.Spells[`${dataTook.selectedSpell}`].Name + " on " + enemy.Name + " and dealt " + playerFinalDamage + " damage.";
             break;
             
         default:
@@ -676,7 +716,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     else
     {
         // Combat needs at least another turn, return what happened and update the database
-        var sqlQuery = `UPDATE fights SET playersHP = ${playersCurHP}, enemyHP = ${enemysCurHP} WHERE username = '${dataTook.username}'`;
+        var sqlQuery = `UPDATE fights SET playersHP = ${playersCurHP}, playersMP = ${playersCurMP}, enemyHP = ${enemysCurHP} WHERE username = '${dataTook.username}'`;
         connection.query(sqlQuery, function(err,qRes,fields)
         {
             if(err)

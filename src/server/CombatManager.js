@@ -139,6 +139,73 @@ module.exports =
             res.write(JSON.stringify(response));
             res.end();
         }
+    },
+
+    CombatTurn_Attack: function(req, res)
+    {
+        if(req.method == "POST")
+        {
+            var body = [];
+
+            req.on('data', function(chunk)
+            {
+                body.push(chunk);
+            });
+
+            req.on('end', function()
+            {
+                const data = Buffer.concat(body);
+                const post = qs.parse(data.toString());
+                
+                console.log(post['tkn']);
+
+                const dataTook = 
+                {
+                    tkn: post['tkn'],
+                    attackType: post['attackType'],
+                    selectedSpell: post['selectedSpell'],
+                    username: '' // filled on the next request
+                };
+
+                // TODO Check data took
+                
+                var connection = dbconf.OpenConnection();
+                
+                // Check if the token is valid
+                connection.connect(function(err)
+                {
+                    if(err)
+                        throw err;
+                    else
+                    {
+                        console.log("Connected!");
+                        
+                        var sqlQuery = `SELECT * FROM sessions WHERE TOKEN = '${dataTook.tkn}'`;
+                        connection.query(sqlQuery, function(err,qRes,fields)
+                        {
+                            if(err)
+                                throw err;
+                            else
+                            {
+                                console.log(qRes);
+                                ContinueCombatTurn_Attack(connection, dataTook, qRes && qRes.length > 0, req, res);
+                            }
+                        });
+                    }
+                });
+            })
+        }
+        else
+        {
+            res.writeHead(200, {"Content-Type" : "application/json"});
+            var response =
+            {
+                rCode:400,
+                rMessage:"INVALID_REQUEST_METHOD"
+            };
+            res.write(JSON.stringify(response));
+            res.end();
+        }
     }
 }
 
@@ -280,7 +347,7 @@ function StartCombatRequest_CreateCombatState(connection, dataTook, playersOverv
             res.writeHead(200, {"Content-Type" : "application/json"});
             var response =
             {
-                rCode:400,
+                rCode:200,
                 rMessage:"CREATE_COMBAT_SUCCESS"
             };
             res.write(JSON.stringify(response));
@@ -357,6 +424,314 @@ function RetrieveCombatInfo_CheckCombatState(connection, dataTook, req, res)
                 {
                     rCode:400,
                     rMessage:"RETRIEVECOMBAT_NOT_IN_COMBAT"
+                };
+                res.write(JSON.stringify(response));
+                res.end();       
+                connection.end();
+            }
+        }
+    });
+}
+
+function ContinueCombatTurn_Attack(connection, dataTook, tknIsValid, req, res)
+{
+    if(tknIsValid)
+    {
+        // Session is valid, see what to do:
+        
+        // Get the username first
+        var username = '';
+
+        // Run the CharacterCreatedCheck
+        var sqlQuery = `SELECT username FROM sessions WHERE TOKEN = '${dataTook.tkn}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+        {
+            if(err)
+                throw err;
+            else
+            {
+                dataTook.username = (qRes[0].username);
+                CombatTurn_Attack_CheckCombatState(connection, dataTook, req, res);
+            }
+        });        
+    }
+    else
+    {
+        res.writeHead(200, {"Content-Type" : "application/json"});
+        var response =
+        {
+            rCode:400,
+            rMessage:"TOKEN_INVALID"
+        };
+        res.write(JSON.stringify(response));
+        res.end();       
+        connection.end();
+    }
+}
+
+function CombatTurn_Attack_CheckCombatState(connection, dataTook, req, res)
+{
+    var sqlQuery = `SELECT * FROM fights WHERE username = '${dataTook.username}'`;
+    connection.query(sqlQuery, function(err,qRes,fields)
+    {
+        if(err)
+            throw err;
+        else
+        {
+            const isInCombat = qRes && qRes.length > 0;
+            if(isInCombat)
+            {
+                console.log(qRes[0]);
+                CombatTurn_Attack_GetPlayerOverview(connection, dataTook, qRes[0], req, res);
+            }
+            else
+            {
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:400,
+                    rMessage:"TURN_ATTACK_NOT_IN_COMBAT"
+                };
+                res.write(JSON.stringify(response));
+                res.end();       
+                connection.end();
+            }
+        }
+    });
+}
+
+function CombatTurn_Attack_GetPlayerOverview(connection, dataTook, combatData, req, res)
+{
+    // Select and return all
+    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, equippedWeapon FROM users WHERE username = '${dataTook.username}'`;
+    connection.query(sqlQuery, function(err,qRes,fields)
+    {
+        if(err)
+            throw err;
+        else
+        {            
+           var playerData = qRes[0];
+           CombatTurn_Attack_FinalizeTurn(connection, dataTook, qRes[0], combatData, req, res);
+        }
+    });
+}
+
+function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combatData, req, res)
+{
+    console.log(combatData);
+    console.log(playerData);
+
+    var playerFinalDamage = 0;
+    // Simulate a turn, start with the player's
+    switch(dataTook.attackType)
+    {
+        // Player asked for a melee attack
+        case "ATT_MELEE":
+
+            // Calculate player's damage
+            const pWeapon = defines.Weapons[playerData.equippedWeapon];
+            var playerFinalDamage = util.GetRandomIntInclusive(pWeapon.MinDamage, pWeapon.MaxDamage);
+
+            // Critical chance
+            var critChance = util.GetRandomIntInclusive(1, 100);
+            const isCritical = critChance <= pWeapon.CriticalChance;
+
+            console.log("Crit: " + critChance);
+
+            if(isCritical)
+            {
+                console.log("CRITICAL!!");
+                playerFinalDamage *= pWeapon.CriticalMod;
+            }
+
+            console.log(playerFinalDamage);
+            break;
+
+        // Player asked for a spell
+        case "ATT_SPELL":
+
+            break;
+
+        // Player asked for an invalid attack type
+        default:
+            res.writeHead(200, {"Content-Type" : "application/json"});
+            var response =
+            {
+                rCode:400,
+                rMessage:"TURN_ATTACK_INVALID_COMBAT_TYPE"
+            };
+            res.write(JSON.stringify(response));
+            res.end();       
+            connection.end();
+            return; // exit immediately
+    }
+    playerFinalDamage = Math.floor(playerFinalDamage);
+
+    // Simulate AI turn
+    const enemy = defines.AI[combatData.enemyID];
+
+    const enemyAttackType = "ATT_MELEE";
+
+    var enemyFinalDamage = 0;
+    switch(enemyAttackType)
+    {
+        case "ATT_MELEE":
+            enemyFinalDamage = util.GetRandomIntInclusive(enemy.MinDamage, enemy.MaxDamage);
+            // Critical chance
+            var critChance = util.GetRandomIntInclusive(1, 100);
+            const isCritical = critChance <= enemy.CriticalChance;
+
+            if(isCritical)
+            {
+                enemyFinalDamage *= enemy.CriticalMod;
+            }
+
+            console.log("Enemy damage: " + enemyFinalDamage);
+            break;
+    }
+    enemyFinalDamage = Math.floor(enemyFinalDamage);
+
+    
+    // End of turn - update the database
+
+    const enemysCurHP = combatData.enemyHP - playerFinalDamage;
+    const playersCurHP = combatData.playersHP - enemyFinalDamage;
+
+    // Build messages
+    var playersActionStr = "You ";
+    switch(dataTook.attackType)
+    {
+        case "ATT_MELEE":
+            playersActionStr += "attacked " + enemy.Name + " and dealt " + playerFinalDamage + " points of damage.";
+            break;
+        case "ATT_SPELL":
+            //playersActionStr += "casted SPELL NAME" + enemy.Name + " and dealt " + playerFinalDamage + " damage.";
+            break;
+            
+        default:
+            break;
+    }
+
+    var enemyActionStr = enemy.Name;
+    switch(enemyAttackType)
+    {
+        case "ATT_MELEE":
+            enemyActionStr += " attacked you and dealt " + enemyFinalDamage + " points of damage.";
+            break;
+        case "ATT_SPELL":
+            //enemyActionStr += " casted SPELL to you and dealt " + enemyFinalDamage + " points of damage.";
+            break;
+            
+        default:
+            break;
+    }
+
+    // Check if the Enemy died
+    if(enemysCurHP <= 0)
+    {
+        // Player killed his enemy, calculate gold reward
+        var goldReward = Math.floor(combatData.enemyLevel * util.GetRandomIntInclusive(10, 50));
+        const playersFinalGolds = playerData.inventoryGolds + goldReward;
+
+        // Update Golds
+        var sqlQuery = `UPDATE users SET inventoryGolds = ${playersFinalGolds} WHERE username = '${dataTook.username}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+        {
+            if(err)
+            throw err;
+            else
+            {            
+                 // Terminate the combat
+                 CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, true, goldReward, playersActionStr, enemyActionStr, req, res);
+             }
+         });
+
+    }
+    // Check if player died
+    else if(playersCurHP <= 0)
+    {
+        var goldMalus = Math.floor(combatData.enemyLevel * util.GetRandomIntInclusive(5, 20));
+
+        // Check if the malus is bigger than what the player has, if so, just take everything the player has
+        if(playerData.inventoryGolds < goldMalus)
+        {
+            goldMalus = playerData.inventoryGolds;
+        }
+
+        const playersFinalGolds = playerData.inventoryGolds - goldMalus;
+
+        // Update Golds
+        var sqlQuery = `UPDATE users SET inventoryGolds = ${playersFinalGolds} WHERE username = '${dataTook.username}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+         {
+             if(err)
+                 throw err;
+             else
+             {            
+                // Terminate the combat
+                CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, false, goldMalus, playersActionStr, enemyActionStr, req, res);
+            }
+         });
+    }
+    else
+    {
+        // Combat needs at least another turn, return what happened and update the database
+        var sqlQuery = `UPDATE fights SET playersHP = ${playersCurHP}, enemyHP = ${enemysCurHP} WHERE username = '${dataTook.username}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+        {
+            if(err)
+                throw err;
+            else
+            {            
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:200,
+                    rMessage:"TURN_ATTACK_SUCCESS_CONTINUE",
+                    rPlayerAction: playersActionStr,
+                    rEnemeyAction: enemyActionStr
+                };
+                res.write(JSON.stringify(response));
+                res.end();       
+                connection.end();
+            }
+        });
+    }
+}
+
+function CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, req, res)
+{
+    var sqlQuery = `DELETE FROM fights WHERE username = '${dataTook.username}'`
+    connection.query(sqlQuery, function(err,qRes,fields)
+    {
+        if(err)
+            throw err;
+        else
+        {            
+            if(playerWon)
+            {
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:200,
+                    rMessage:"TURN_ATTACK_COMBAT_END_PLAYER_WON",
+                    rPlayerAction: playersActionStr,
+                    rEndStr: `You killed ${defines.AI[combatData.enemyID].Name} and earnt ${goldsVariable} golds.`,
+                };
+                res.write(JSON.stringify(response));
+                res.end();       
+                connection.end();
+            }
+            else
+            {
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:200,
+                    rMessage:"TURN_ATTACK_COMBAT_END_ENEMY_WON",
+                    rPlayerAction: playersActionStr,
+                    rEnemeyAction: enemyActionStr,
+                    rEndStr: `${defines.AI[combatData.enemyID].Name} killed you. You lost ${goldsVariable} golds.`,
                 };
                 res.write(JSON.stringify(response));
                 res.end();       

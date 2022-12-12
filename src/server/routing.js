@@ -96,6 +96,10 @@ module.exports =
                 CombatManager.RetrieveCombatInfo(req, res);
                 break;
 
+            case "/combatAttack":
+                CombatManager.CombatTurn_Attack(req, res);
+                break;
+
             // Gets
             case "/getDefaultStats":
                 util.GetDefaultStats(req, res);

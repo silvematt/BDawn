@@ -171,8 +171,6 @@
                         case "GETSPELLS_SUCCESS":
                             playerSpells = res.rContent[0];
 
-                            console.log(playerSpells);
-
                             const selector = document.getElementById("spellsDropdown");
                             // Spawn spells in select spell dropdown
                             // Construct Weapon Boxes
@@ -226,7 +224,6 @@
                     const resLabel = document.getElementById('ResultLabel');
                     
                     fightInfo = res.rContent;
-                    console.log(fightInfo);
                     // Cover all cases
                     switch(res.rMessage)
                     {
@@ -307,6 +304,112 @@
             request.send(`tkn=${session}`);
         }
 
+        function PlayerDoTurn(attType)
+        {
+            document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() 
+            {
+                if (this.readyState == 4) 
+                {
+                    var res = JSON.parse(this.responseText);
+                    
+                    const resLabel = document.getElementById('ResultLabel');
+                    const fightBox = document.getElementById("fightbox");
+                    const exitbutton = document.getElementById("exitbutton");
+
+                    // Cover all cases
+                    switch(res.rMessage)
+                    {
+                        case "TOKEN_INVALID":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+
+                        case "TURN_ATTACK_INVALID_COMBAT_TYPE":
+                            alert("Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+
+                        case "TURN_ATTACK_NOT_IN_COMBAT":
+                            alert("You're not in combat.");
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            document.getElementById('fullbody').style.display = 'block';
+                            break;
+
+                        case "TURN_ATTACK_SUCCESS_CONTINUE":
+                            // Update fight box
+
+                            // Append actions
+                            fightBox.value += "\n\n" + res.rPlayerAction;
+                            fightBox.value += "\n\n" + res.rEnemeyAction;
+
+                            fightBox.scrollTop = fightBox.scrollHeight;
+                            LoadFightInfo();
+                            break;
+
+                        case "TURN_ATTACK_COMBAT_END_PLAYER_WON":
+                            // Update fight box
+
+                            // Append actions
+                            fightBox.value += "\n\n" + res.rPlayerAction;
+                            fightBox.value += "\n\n" + res.rEndStr;
+
+                            fightBox.scrollTop = fightBox.scrollHeight;
+
+                            // Update enemys bar to display 0 health
+                            const enemyHPBar = document.getElementById("enemyhpbar");
+                            enemyHPBar.value = 0;
+                            const enemyHPPercentage = document.getElementById("ENEMYHP_PERCENT").innerHTML = `0%`;
+
+                            // Display Exit button
+                            exitbutton.style.display = "";
+
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            document.getElementById('fullbody').style.display = 'block';
+                            break;
+
+                        case "TURN_ATTACK_COMBAT_END_ENEMY_WON":
+                            // Update fight box
+
+                            // Append actions
+                            fightBox.value += "\n\n" + res.rPlayerAction;
+                            fightBox.value += "\n\n" + res.rEnemeyAction;
+                            fightBox.value += "\n\n" + res.rEndStr;
+
+                            fightBox.scrollTop = fightBox.scrollHeight;
+
+                            // Update enemys bar to display 0 health
+                            const playerHPBar = document.getElementById("playerhpbar");
+                            playerHPBar.value = 0;
+                            const playerHPPercentage = document.getElementById("PLAYERHP_PERCENT").innerHTML = `0%`;
+
+                            // Display Exit button
+                            exitbutton.style.display = "";
+
+                            document.getElementById("PROCESSING_MESSAGE").textContent = "";
+                            document.getElementById('fullbody').style.display = 'block';
+                            break;
+
+                        default:
+                            alert("DEFAULT: Session expired.");
+                            location.href = "http://localhost:3000/cLogin";
+                            break;
+                    }
+                }
+            };
+
+            var session = localStorage.getItem("bdawn_sess_tkn")
+            request.open('POST', 'http://localhost:3000/combatAttack');
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send(`tkn=${session}&attackType=${attType}`);
+        }
+
+        function Exit()
+        {
+            location.href = "http://localhost:3000/cOverview";
+        }
     </script>
 </head>
 
@@ -368,8 +471,8 @@
 
         <!-- ACTION BOX-->
         <div id="actionBox" style = "display:inline-block;text-align: center;">
-            <h1>Actions:</h1>
-        <button>Attack</button>
+            <h2>Actions:</h2>
+        <button onclick="PlayerDoTurn('ATT_MELEE')">Attack</button>
         <button>Cast Spell</button>
         <select name="spells" id="spellsDropdown">
         <optgroup label="Select Spell:" id = "spellSelector">
@@ -377,9 +480,9 @@
         </optgroup>
           </select>
           <br><br>
-          <textarea rows="8" cols="50" readonly style="resize:none">Combat Starts!</textarea>
+          <textarea id="fightbox" rows="10" cols="50" readonly style="resize:none">Combat Starts!</textarea>
           <br>
-          <!--- <button>Exit</button> --->
+          <button id="exitbutton" onclick="Exit()" style ="display:none;text-align: center;">Exit</button>
         </div>
 
         <div class="horizontalgap" style="display:inline-block; width:10px"></div>

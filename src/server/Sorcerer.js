@@ -44,8 +44,22 @@ function ContinueGetPlayerSpellsInfo(connection, tkn, tknIsValid, req, res)
 
 function FinishGetPlayerSpellsInfo(connection, username, req, res)
 {
-    // Check if the user has created the character in the first place
-    var sqlQuery = `SELECT hasSpell1, hasSpell2 FROM users WHERE username = '${username}'`;
+
+     // Get all the weapons and make the "hasWeapon" string
+     var hasSpellString = '';
+     for(const obj in defines.Spells)
+     {
+         // Skip empty
+         if(obj == 0)
+             continue;
+         
+             hasSpellString += defines.Spells[obj].InDBCheckName;
+ 
+             if(obj < Object.keys(defines.Spells).length-1)
+                 hasSpellString += ", ";
+     }
+    
+    var sqlQuery = `SELECT ${hasSpellString} FROM users WHERE username = '${username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)

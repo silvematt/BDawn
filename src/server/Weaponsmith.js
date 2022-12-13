@@ -44,8 +44,21 @@ function ContinueGetPlayerWeaponInfo(connection, tkn, tknIsValid, req, res)
 
 function FinishGetPlayerWeaponInfo(connection, username, req, res)
 {
-    // Check if the user has created the character in the first place
-    var sqlQuery = `SELECT equippedWeapon, hasWeapon1, hasWeapon2, hasWeapon3 FROM users WHERE username = '${username}'`;
+    // Get all the weapons and make the "hasWeapon" string
+    var hasWeaponsQStr = '';
+    for(const obj in defines.Weapons)
+    {
+        // Skip unarmed
+        if(obj == 0)
+            continue;
+        
+            hasWeaponsQStr += defines.Weapons[obj].InDBCheckName;
+
+            if(obj < Object.keys(defines.Weapons).length-1)
+                hasWeaponsQStr += ", ";
+    }
+
+    var sqlQuery = `SELECT equippedWeapon, ${hasWeaponsQStr} FROM users WHERE username = '${username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)

@@ -524,6 +524,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     var playerFinalDamage = 0;
     var playerManaUsed = 0;
 
+    var isCritical = false;
     // Simulate a turn, start with the player's
     switch(dataTook.attackType)
     {
@@ -536,7 +537,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
 
             // Critical chance
             var critChance = util.GetRandomIntInclusive(1, 100);
-            const isCritical = critChance <= pWeapon.CriticalChance;
+            isCritical = critChance <= pWeapon.CriticalChance;
 
             console.log("Crit: " + critChance);
 
@@ -578,7 +579,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
 
                 // Critical chance
                 var critChance = util.GetRandomIntInclusive(1, 100);
-                const isCritical = critChance <= spellData.CriticalChance;
+                isCritical = critChance <= spellData.CriticalChance;
 
                 console.log("Crit: " + critChance);
 
@@ -612,15 +613,16 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     const enemyAttackType = "ATT_MELEE";
 
     var enemyFinalDamage = 0;
+    var enemyIsCritical = false;
     switch(enemyAttackType)
     {
         case "ATT_MELEE":
             enemyFinalDamage = util.GetRandomIntInclusive(enemy.MinDamage, enemy.MaxDamage);
             // Critical chance
             var critChance = util.GetRandomIntInclusive(1, 100);
-            const isCritical = critChance <= enemy.CriticalChance;
+            enemyIsCritical = critChance <= enemy.CriticalChance;
 
-            if(isCritical)
+            if(enemyIsCritical)
             {
                 enemyFinalDamage *= enemy.CriticalMod;
             }
@@ -642,10 +644,10 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     switch(dataTook.attackType)
     {
         case "ATT_MELEE":
-            playersActionStr += "attacked " + enemy.Name + " and dealt " + playerFinalDamage + " points of damage.";
+            playersActionStr += "attacked " + enemy.Name + " and dealt " + playerFinalDamage + " points of " + (isCritical ? "CRITICAL " : "") + "damage.";
             break;
         case "ATT_SPELL":
-            playersActionStr += "casted " + defines.Spells[`${dataTook.selectedSpell}`].Name + " on " + enemy.Name + " and dealt " + playerFinalDamage + " damage.";
+            playersActionStr += "casted " + defines.Spells[`${dataTook.selectedSpell}`].Name + " on " + enemy.Name + " and dealt " + playerFinalDamage + " points of " + (isCritical ? "CRITICAL " : "") + "damage.";
             break;
             
         default:
@@ -656,7 +658,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     switch(enemyAttackType)
     {
         case "ATT_MELEE":
-            enemyActionStr += " attacked you and dealt " + enemyFinalDamage + " points of damage.";
+            enemyActionStr += " attacked you and dealt " + enemyFinalDamage + " points of " + (enemyIsCritical ? "CRITICAL " : "") + "damage.";
             break;
         case "ATT_SPELL":
             //enemyActionStr += " casted SPELL to you and dealt " + enemyFinalDamage + " points of damage.";

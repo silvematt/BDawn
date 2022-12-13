@@ -107,8 +107,8 @@ module.exports =
             ID: 1,
             Name: 'Iron Dagger',
             Cost: 300,
-            MinDamage: 25,
-            MaxDamage: 40,
+            MinDamage: 15,
+            MaxDamage: 30,
             CriticalChance: 40,
             CriticalMod: 2,
             STRMod: 1.0,         // Strength modifier
@@ -122,8 +122,8 @@ module.exports =
             ID: 2,
             Name: 'Iron Axe',
             Cost: 400,
-            MinDamage: 40,
-            MaxDamage: 60,
+            MinDamage: 20,
+            MaxDamage: 40,
             CriticalChance: 10,
             CriticalMod: 1.25,
             STRMod: 3.0,         // Strength modifier
@@ -151,13 +151,17 @@ module.exports =
     Spells:
     {
         // 0 is null
+        0:
+        {
+
+        },
         1: 
         {
             ID: 1,
             Name: 'Fireball',
             Cost: 300,
-            MinDamage: 70,
-            MaxDamage: 100,
+            MinDamage: 20,
+            MaxDamage: 50,
             ManaCost: 40,
             CriticalChance: 35,
             CriticalMod: 2.0,
@@ -169,13 +173,13 @@ module.exports =
             ID: 2,
             Name: 'Ice Spike',
             Cost: 150,
-            MinDamage: 45,
-            MaxDamage: 60,
+            MinDamage: 15,
+            MaxDamage: 30,
             ManaCost: 25,
             CriticalChance: 10,
             CriticalMod: 1.25,
             InDBCheckName: "hasSpell2"
-        }
+        },
     },
 
     // AI Stats are calculated as that:

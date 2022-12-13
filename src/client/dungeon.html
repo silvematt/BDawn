@@ -83,9 +83,9 @@
                             ai = res.rContent;
                             
                             // Construct Weapon Boxes
-                            for(var obj in ai)
+                            for(const obj in ai)
                             {
-                                var curAI = ai[obj];
+                                const curAI = ai[obj];
                                 let element = document.createElement("fieldset");
 
                                 // Create weapon label
@@ -202,7 +202,7 @@
         function StartCombat(enemyID)
         {
             document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
-
+            console.log(enemyID);
             var request = new XMLHttpRequest();
             request.onreadystatechange = function() 
             {

@@ -87,13 +87,13 @@
                             weapons = res.rContent;
                             
                             // Construct Weapon Boxes
-                            for(var obj in weapons)
+                            for(const obj in weapons)
                             {
                                 // Skip unarmed
                                 if(obj == 0)
                                     continue;
 
-                                var curWeap = weapons[obj];
+                                const curWeap = weapons[obj];
                                 let element = document.createElement("fieldset");
 
                                 // Create weapon label
@@ -251,7 +251,7 @@
                             weaponsOwnedByPlayer = res.rContent[0];
 
                             // Construct Weapon Boxes
-                            for(var obj in weapons)
+                            for(const obj in weapons)
                             {
                                 // Skip unarmed
                                 if(obj == 0)

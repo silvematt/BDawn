@@ -88,13 +88,13 @@
                             spells = res.rContent;
                             
                             // Construct Weapon Boxes
-                            for(var obj in spells)
+                            for(const obj in spells)
                             {
                                 // Skip unarmed
                                 if(obj == 0)
                                     continue;
 
-                                var curSpell = spells[obj];
+                                const curSpell = spells[obj];
                                 let element = document.createElement("fieldset");
 
                                 // Create weapon label
@@ -252,7 +252,7 @@
                             spellsOwnedByPlayer = res.rContent[0];
 
                             // Construct Weapon Boxes
-                            for(var obj in spells)
+                            for(const obj in spells)
                             {
                                 // Skip unarmed
                                 if(obj == 0)
@@ -271,7 +271,6 @@
                                     let btn = document.createElement("b");
                                     current.appendChild(document.createElement("br"));
                                     btn.innerHTML = `(Leant)`
-                                    //btn.onclick = () => {Equip(objVal);}
 
                                     current.appendChild(btn);
                                 }

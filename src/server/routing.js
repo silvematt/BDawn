@@ -134,6 +134,12 @@ module.exports =
                 util.GetAI(req, res);
                 break;
 
+            // Serve FS
+            case "/js/generatenavbar.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('./generatenavbar.js').pipe(res);
+                break;
+
             default:
                 InvalidRoute(req, res);
                 break;

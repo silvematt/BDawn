@@ -257,20 +257,28 @@
 
     <label id="PROCESSING_MESSAGE"><b></b></label>
 
-    <div id = "fullbody" style = "display:none">
-        
+    <section class="fullbody">
 
-        <fieldset id = "contentfs" style="width:40%">
-            <label for="InventoryGoldsL">Golds: </label>
-            <b id = "INVENTORY_GOLDS_VALUE"></b>
-            <br><br>
-        
-              
+        <div style="float: left;padding: 20px;">
+        <fieldset>
+            <h1>Navigation</h1>
+            <span id="navbarcontent"></span>
+            <script src = "http://localhost:3000/js/generatenavbar.js"></script>
         </fieldset>
-        <br>
-        <span>&nbsp</span>
-              <label id="ResultLabel"><b></b></label>
-    </div>
+        </div>
 
+        <div>
+            <fieldset id = "contentfs" style="width:40%">
+                <label for="InventoryGoldsL">Golds: </label>
+                <b id = "INVENTORY_GOLDS_VALUE"></b>
+                <br><br>
+            
+                  
+            </fieldset>
+            <br>
+            <span>&nbsp</span>
+                  <label id="ResultLabel"><b></b></label>
+        </div>
+    </section>
 </body>
 </html>

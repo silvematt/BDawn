@@ -45,7 +45,7 @@
 
 
                         document.getElementById("PROCESSING_MESSAGE").textContent = "";
-                        document.getElementById('fullbody').style.display = 'block';
+                        document.getElementById('fullbody').style.display = 'inline';
                         break;
 
                     default:
@@ -67,6 +67,9 @@
             OnOverview();
         };
     </script>
+
+<style>
+</style>
 </head>
 
 <body>
@@ -79,47 +82,58 @@
 
     <label id="PROCESSING_MESSAGE"><b></b></label>
 
-    <div id = "fullbody" style = "display:none">
-        <fieldset style="width:40%">
-            <h2>Character</h2>
+    <section class="fullbody">
 
-            <label for="charname">Character Name: </label>
-            <b id = "CHARNAME_VALUE"></b>
-            <br>
-            <label for="charLevel">Level: </label>
-            <b id = "CHARLEVEL_VALUE"></b>
-              <br>
-              <br>
-
-              <table style="width:100%; border: 1px solid black; border-radius: 10px;" >
-                <tr>
-                  <td>Vitality</td>
-                  <td>Strength</td>
-                  <td>Dexterity</td>
-                  <td>Agility</td>
-                  <td>Intelligence</td>
-                  <td>Faith</td>
-                </tr>
-                <tr>
-                  <td id="STATS_VIT_VALUE">16</td>
-                  <td id="STATS_STR_VALUE">14</td>
-                  <td id="STATS_DEX_VALUE">10</td>
-                  <td id="STATS_AGI_VALUE">10</td>
-                  <td id="STATS_INT_VALUE">10</td>
-                  <td id="STATS_FAI_VALUE">10</td>
-                </tr>
-              </table>
-              <br>
-              <br>
-              <h2>Inventory</h2>
-              <label for="InventoryGoldsL">Golds: </label>
-              <b id = "INVENTORY_GOLDS_VALUE"></b>
-              <br><br>
-
-              <span>&nbsp</span>
-              <label id="ResultLabel"><b></b></label>
+        <div style="float: left;padding: 20px;">
+        <fieldset>
+            <h1>Navigation</h1>
+            <span id="navbarcontent"></span>
+            <script src = "http://localhost:3000/js/generatenavbar.js"></script>
         </fieldset>
-    </div>
+        </div>
+
+        <div>
+            <fieldset style="width:40%">
+                <h2>Character</h2>
+    
+                <label for="charname">Character Name: </label>
+                <b id = "CHARNAME_VALUE"></b>
+                <br>
+                <label for="charLevel">Level: </label>
+                <b id = "CHARLEVEL_VALUE"></b>
+                  <br>
+                  <br>
+    
+                  <table style="width:100%; border: 1px solid black; border-radius: 10px;" >
+                    <tr>
+                      <td>Vitality</td>
+                      <td>Strength</td>
+                      <td>Dexterity</td>
+                      <td>Agility</td>
+                      <td>Intelligence</td>
+                      <td>Faith</td>
+                    </tr>
+                    <tr>
+                      <td id="STATS_VIT_VALUE">16</td>
+                      <td id="STATS_STR_VALUE">14</td>
+                      <td id="STATS_DEX_VALUE">10</td>
+                      <td id="STATS_AGI_VALUE">10</td>
+                      <td id="STATS_INT_VALUE">10</td>
+                      <td id="STATS_FAI_VALUE">10</td>
+                    </tr>
+                  </table>
+                  <br>
+                  <br>
+                  <h2>Inventory</h2>
+                  <label for="InventoryGoldsL">Golds: </label>
+                  <b id = "INVENTORY_GOLDS_VALUE"></b>
+                  <br><br>
+                  <span>&nbsp</span>
+                  <label id="ResultLabel"><b></b></label>
+            </fieldset>
+        </div>
+      </section>
+
 
 </body>
 </html>

@@ -185,6 +185,26 @@ module.exports =
                 fs.createReadStream('../client/css/style.css').pipe(res);
                 break;
 
+            case "/imgs/main_button_img.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/main_button_img.png').pipe(res);
+                break;
+
+            case "/imgs/pagebg.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/pagebg.png').pipe(res);
+                break;
+
+            case "/imgs/navbuttonscontainer.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/navbuttonscontainer.png').pipe(res);
+                break;
+
+            case "/imgs/fullbg.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/fullbg.png').pipe(res);
+                break;
+
             default:
                 InvalidRoute(req, res);
                 break;

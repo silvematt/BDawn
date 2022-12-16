@@ -2,22 +2,23 @@
 
 .sidenav 
 {
-    background-color: #f1f1f1;
-    height: 100%;
+    display: block;
+    background-image: url(http://localhost:3000/imgs/navbuttonscontainer.png);
+    background-size: 100% 100%;
     padding: 25px;
 }
 
 .precont
 {
-    background-color: #e4e4e4;
-    height: 100%;
-    padding: 25px;
-    text-align: left;
+    background-color: #0f0f0f;
+    padding: 5px;
+    text-align: center;
+    color:white
 }
 
 .pagecontent
 {
-    background-color: #ffffff;
+    background-color: transparent;
 }
 
 fieldset {
@@ -71,3 +72,115 @@ legend
     color: white;
     padding: 5px 10px;
   }
+
+body
+{
+    background-color: black;
+    background-image: url(http://localhost:3000/imgs/fullbg.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.mainButton {
+    display: block;
+    background-image: url(http://localhost:3000/imgs/main_button_img.png);
+    background-size:250px 41px;
+    height: 41px;
+    width: 250px;
+    line-height: 41px;
+    border: none;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 18px;
+    cursor: pointer;
+}
+
+.pagecontent-field
+{
+    background-image: url(http://localhost:3000/imgs/pagebg.png);
+    background-size: 100% 100%;
+    background-repeat:   no-repeat;
+    border: none;
+    padding-left: 25px;
+    color:rgb(39, 35, 33);
+}
+
+.fullbodydiv
+{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    width: 80%;
+    height: 600px;
+    
+    position: absolute;
+    top:10%;
+    bottom: 0;
+    left: 20%;
+    right: 0;
+    
+    margin: auto;
+
+    display:none; /* all full divs starts to none and are enabled when data is fetched */
+}
+
+.fullbodycombatdiv
+{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    width: 89%;
+    height: 600px;
+    
+    position: absolute;
+    top:20%;
+    bottom: 0;
+    left: 11%;
+    right: 0;
+    
+    margin: auto;
+
+    display:none; /* all full divs starts to none and are enabled when data is fetched */
+}
+
+.combatPagecontent-field
+{
+    background-image: url(http://localhost:3000/imgs/pagebg.png);
+    background-size: 100% 100%;
+    background-repeat:   no-repeat;
+    border: none;
+    color:rgb(39, 35, 33);
+}
+
+.fullbodycharcreationdiv
+{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    width: 70%;
+    height: 600px;
+    
+    position: absolute;
+    top:10%;
+    bottom: 0;
+    left: 30%;
+    right: 0;
+    
+    margin: auto;
+
+    display:none; /* all full divs starts to none and are enabled when data is fetched */
+}
+
+.fullbodylogindiv
+{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    width: 60%;
+    height: 600px;
+    
+    position: absolute;
+    top:40%;
+    bottom: 0;
+    left: 40%;
+    right: 0;
+    
+    margin: auto;
+
+    display:none; /* all full divs starts to none and are enabled when data is fetched */
+}

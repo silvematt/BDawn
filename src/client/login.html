@@ -3,6 +3,7 @@
 
 <head>
     <title>BDawn - Web Client - Login</title>
+    <link href="http://localhost:3000/css/style.css" rel="stylesheet" type="text/css"  />
     <script src = "http://localhost:3000/js/login.js"></script>
 </head>
 
@@ -14,24 +15,24 @@
         <h2>Login</h2>
     </div>
 
-    <div class="container">
+    <div id = "fullbody" class = "fullbodylogindiv" style="display:block;">
+      <fieldset style="width:30%" class = "pagecontent-field">
+        <h2 style="text-align: center;">Login</h2>
       <label for="uname"><b>Username: </b></label>
       <input ID = "FORM_USERNAME" type="text" placeholder="Enter Username" name="uname" required>
-      <br/>
+      <br/><br>
       <label for="psw"><b>Password:</b></label>
       <input id ="FORM_PASSWORD" type="password" placeholder="Enter Password" name="psw" required>
       <br/><br/>
-      <button type="submit" onclick="OnLogin()">Login</button>
+
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me
       </label>
+      <br><br>
+      <a class ="mainButton" style="margin-left: auto;margin-right: auto;" type="submit" onclick="OnLogin()">Login</a>
+    <label id="ResultLabel"><b></b></label> 
+<br>
+      </fieldset>
     </div>
-  
-    <div class="container">
-        <br/>
-        <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
-
-    <label id="ResultLabel"><b></b></label>
 </body>
 </html>

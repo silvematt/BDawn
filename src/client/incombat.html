@@ -16,11 +16,11 @@
     </div>
     <br>
 
-    <div id = "fullbody" style = "display:none">
+    <div id = "fullbody" style = "display:none" class ="fullbodycombatdiv">
 
-        <div id="playerBox" style = "display:inline-block;width: 30%;">
+        <div id="playerBox" style = "display:inline-block;width: 30%;" class = "combatPagecontent-field">
 
-        <fieldset>
+          <fieldset style ="border: none;">
             <h2 id = "CHARNAME_VALUE">Character</h2>
             <label for="charLevel">Level: </label>
             <b id = "CHARLEVEL_VALUE"></b>
@@ -63,7 +63,7 @@
         <div class="horizontalgap" style="display:inline-block; width:10px"></div>
 
         <!-- ACTION BOX-->
-        <div id="actionBox" style = "display:inline-block;text-align: center;">
+        <div id="actionBox" style = "display:inline-block;text-align: center;" class = "combatPagecontent-field">
             <h2>Actions:</h2>
         <button onclick="PlayerDoTurn('ATT_MELEE')">Attack</button>
         <button onclick="PlayerDoTurn('ATT_SPELL')">Cast Spell</button>
@@ -73,16 +73,18 @@
         </optgroup>
           </select>
           <br><br>
-          <textarea id="fightbox" rows="10" cols="50" readonly style="resize:none">Combat Starts!</textarea>
+          <textarea id="fightbox" rows="10" cols="55" readonly style="resize:none; width:95%" >Combat Starts!</textarea>
           <br>
           <button id="exitbutton" onclick="Exit()" style ="display:none;text-align: center;">Exit</button>
+          <br>
+          <br>
         </div>
 
         <div class="horizontalgap" style="display:inline-block; width:10px"></div>
 
-        <div id="playerBox" style = "display:inline-block;width: 30%;">
+        <div id="playerBox" style = "display:inline-block;width: 30%;" class = "combatPagecontent-field">
 
-            <fieldset>
+            <fieldset style ="border: none;">
                 <h2 id = "ENEMYNAME_VALUE">Enemy</h2>
                 <label for="enemyLevel">Level: </label>
                 <b id = "ENEMYLEVEL_VALUE"></b>

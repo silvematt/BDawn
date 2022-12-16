@@ -15,9 +15,11 @@
 
     <br>
 
-    <div id = "fullbody" style = "display:none">
-        <fieldset style="width:40%">
-            <label for="charname"><b>Character Name: </b></label>
+    <div id = "fullbody" class = "fullbodycharcreationdiv">
+        <fieldset style="width:40%" class = "pagecontent-field">
+          <br>
+          <h2>Character Creation</h2>
+            <label for="charname"><b>Name: </b></label>
             <input ID = "FORM_CHARNAME" type="text" placeholder="Enter Character Name" name="uname" required>
             <br>
             <br>
@@ -44,7 +46,7 @@
 
               <br>
               <br>
-
+              <h3>Starting Stats:</h3>
               <table style="width:100%; border: 1px solid black; border-radius: 10px;" >
                 <tr>
                   <td>Vitality</td>
@@ -65,13 +67,13 @@
               </table>
               <br>
               <b>Description:</b>
-              <br>
+              <br><br>
 
-              <textarea rows="4" cols="50" readonly style="resize:none">Warrior</textarea>
+              <textarea rows="5" cols="100" readonly style="resize:none">Warrior</textarea>
 
               <br><br><br>
 
-              <button type="submit" onclick="ConfirmCharacterCreation()">Confirm</button>
+              <a class ="mainButton" style="margin-left: auto;margin-right: auto;" type="submit" onclick="ConfirmCharacterCreation()">Confirm</a>
               <span>&nbsp</span>
               <label id="ResultLabel"><b></b></label>
 

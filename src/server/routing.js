@@ -137,7 +137,47 @@ module.exports =
             // Serve FS
             case "/js/generatenavbar.js":
                 res.writeHead(200, { 'content-type': 'text/javascript' });
-                fs.createReadStream('./generatenavbar.js').pipe(res);
+                fs.createReadStream('../client/js/generatenavbar.js').pipe(res);
+                break;
+
+            case "/js/overview.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/overview.js').pipe(res);
+                break;
+
+            case "/js/login.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/login.js').pipe(res);
+                break;
+
+            case "/js/sorcerer.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/sorcerer.js').pipe(res);
+                break;
+
+            case "/js/trainer.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/trainer.js').pipe(res);
+                break;
+
+            case "/js/weaponsmith.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/weaponsmith.js').pipe(res);
+                break;
+
+            case "/js/incombat.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/incombat.js').pipe(res);
+                break;
+
+            case "/js/dungeon.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/dungeon.js').pipe(res);
+                break;
+
+            case "/js/createCharacter.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/createCharacter.js').pipe(res);
                 break;
 
             default:

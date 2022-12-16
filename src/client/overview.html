@@ -3,9 +3,8 @@
 
 <head>
     <title>BDawn - Web Client - Overview</title>
+    <link href="http://localhost:3000/css/style.css" rel="stylesheet" type="text/css"  />
     <script src ="http://localhost:3000/js/overview.js"></script>
-<style>
-</style>
 </head>
 
 <body>
@@ -16,23 +15,19 @@
         <h2>Overview</h2>
     </div>
 
-    <label id="PROCESSING_MESSAGE"><b></b></label>
+    <section id="fullbody">
 
-    <section class="fullbody">
-
-        <div style="float: left;padding: 20px;">
-        <fieldset>
-            <h1>Navigation</h1>
+        <div class ="navbarwrap" style="float: left;padding: 20px;">
             <span id="navbarcontent"></span>
             <script src = "http://localhost:3000/js/generatenavbar.js"></script>
-        </fieldset>
         </div>
 
-        <div>
+        <div class = "pagecontent">
+            <br>
             <fieldset style="width:40%">
                 <h2>Character</h2>
     
-                <label for="charname">Character Name: </label>
+                <label for="charname">Name: </label>
                 <b id = "CHARNAME_VALUE"></b>
                 <br>
                 <label for="charLevel">Level: </label>
@@ -67,9 +62,10 @@
                   <span>&nbsp</span>
                   <label id="ResultLabel"><b></b></label>
             </fieldset>
+            <br><br>
+            <br><br>
         </div>
       </section>
-
-
+      <label id="PROCESSING_MESSAGE"><b></b></label>
 </body>
 </html>

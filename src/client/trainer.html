@@ -4,6 +4,7 @@
 <head>
     <title>BDawn - Web Client - Trainer</title>
     <script src = "http://localhost:3000/js/trainer.js"></script>
+    <link href="http://localhost:3000/css/style.css" rel="stylesheet" type="text/css"  />
 </head>
 
 <body>
@@ -14,20 +15,15 @@
         <h2>Trainer</h2>
     </div>
 
-    <label id="PROCESSING_MESSAGE"><b></b></label>
+    <section id="fullbody">
 
-
-    <section class="fullbody">
-
-        <div style="float: left;padding: 20px;">
-        <fieldset>
-            <h1>Navigation</h1>
+        <div class="navbarwrap" style="float: left;padding: 20px;">
             <span id="navbarcontent"></span>
             <script src = "http://localhost:3000/js/generatenavbar.js"></script>
-        </fieldset>
         </div>
 
-        <div>
+        <div class ="pagecontent">
+            <br>
             <fieldset style="width:40%">
                   <br>
     
@@ -65,7 +61,6 @@
             </fieldset>
         </div>
     </section>
-    
-
+    <label id="PROCESSING_MESSAGE"><b></b></label>
 </body>
 </html>

@@ -84,13 +84,13 @@ function GetAIAndDisplay()
                         // Create weapon label
                         let weaponNameLabel = document.createElement("b");
                             weaponNameLabel.id = `ai${obj}NameLabel`;
-                            weaponNameLabel.textContent = "Name: "
+                            weaponNameLabel.textContent = "Stats: "
                         
                         // Append it
                         element.appendChild(weaponNameLabel);
 
                         // Create weapon name value
-                        let weaponNameValue = document.createElement("label");
+                        let weaponNameValue = document.createElement("legend");
                             weaponNameValue.id = `ai${obj}NameValue`;
                             weaponNameValue.textContent = curAI.Name;
 

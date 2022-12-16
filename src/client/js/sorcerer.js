@@ -93,13 +93,13 @@ function GetSpellsAndDisplay()
                         // Create weapon label
                         let weaponNameLabel = document.createElement("b");
                             weaponNameLabel.id = `spell${obj}NameLabel`;
-                            weaponNameLabel.textContent = "Spell Name: "
+                            weaponNameLabel.textContent = "Spell: "
                         
                         // Append it
                         element.appendChild(weaponNameLabel);
 
                         // Create weapon name value
-                        let weaponNameValue = document.createElement("label");
+                        let weaponNameValue = document.createElement("legend");
                             weaponNameValue.id = `spell${obj}NameValue`;
                             weaponNameValue.textContent = curSpell.Name;
 
@@ -196,6 +196,25 @@ function GetSpellsAndDisplay()
 
                         // Append it
                         element.appendChild(weaponCriticalModifierValue);
+
+                        // Append a line break
+                        element.appendChild(document.createElement("br"));
+
+                        // Create cost label
+                        let manaCostLabel = document.createElement("b");
+                        manaCostLabel.id = `spell${obj}ManaCostLabel`;
+                        manaCostLabel.textContent = "Mana Cost: "
+                        
+                        // Append it
+                        element.appendChild(manaCostLabel);
+
+                        // Create cost value
+                        let manaCostValue = document.createElement("label");
+                            manaCostValue.id = `spell${obj}ManaCostValue`;
+                            manaCostValue.textContent = curSpell.ManaCost;
+
+                        // Append it
+                        element.appendChild(manaCostValue);
 
 
                         // Append a line break

@@ -180,6 +180,11 @@ module.exports =
                 fs.createReadStream('../client/js/createCharacter.js').pipe(res);
                 break;
 
+            case "/css/style.css":
+                res.writeHead(200, { 'content-type': 'text/css' });
+                fs.createReadStream('../client/css/style.css').pipe(res);
+                break;
+
             default:
                 InvalidRoute(req, res);
                 break;

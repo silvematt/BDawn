@@ -1,0 +1,73 @@
+.row.content {height: 1500px}
+
+.sidenav 
+{
+    background-color: #f1f1f1;
+    height: 100%;
+    padding: 25px;
+}
+
+.precont
+{
+    background-color: #e4e4e4;
+    height: 100%;
+    padding: 25px;
+    text-align: left;
+}
+
+.pagecontent
+{
+    background-color: #ffffff;
+}
+
+fieldset {
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px groove (internal value);
+  }
+
+.fieldset-cust {
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px groove (internal value);
+  }
+  
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+    .sidenav {
+    height: auto;
+    padding: 25px;
+    }
+    .row.content {height: auto;} 
+}
+
+.navigation_a {
+    color: #337ab7;
+    text-decoration: none;
+    text-decoration-line: none;
+    text-decoration-thickness: initial;
+    text-decoration-style: initial;
+    text-decoration-color: initial;
+}
+
+.navbarwrap
+{
+    font-size: 20px;
+}
+
+legend 
+{
+    background-color: gray;
+    color: white;
+    padding: 5px 10px;
+  }

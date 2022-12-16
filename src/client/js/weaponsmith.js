@@ -92,13 +92,13 @@ function GetWeaponsAndDisplay()
                         // Create weapon label
                         let weaponNameLabel = document.createElement("b");
                             weaponNameLabel.id = `weapon${obj}NameLabel`;
-                            weaponNameLabel.textContent = "Weapon Name: "
+                            weaponNameLabel.textContent = "Stats: "
                         
                         // Append it
                         element.appendChild(weaponNameLabel);
 
                         // Create weapon name value
-                        let weaponNameValue = document.createElement("label");
+                        let weaponNameValue = document.createElement("legend");
                             weaponNameValue.id = `weapon${obj}NameValue`;
                             weaponNameValue.textContent = curWeap.Name;
 

@@ -24,6 +24,7 @@ function OnOverview()
                     break;
 
                 case "OVERVIEW_SUCESS":
+                    console.log(res.rContent[0]);
                     // Take everything and fill the page
                     document.getElementById("CHARNAME_VALUE").textContent = res.rContent[0].characterName;
                     document.getElementById("CHARLEVEL_VALUE").textContent = res.rContent[0].characterLevel;
@@ -37,6 +38,8 @@ function OnOverview()
 
                     document.getElementById("INVENTORY_GOLDS_VALUE").textContent = res.rContent[0].inventoryGolds;
 
+
+                    UpdatePotrait(res.rContent[0].characterSex, res.rContent[0].characterClass);
 
                     document.getElementById("PROCESSING_MESSAGE").textContent = "";
                     document.getElementById('fullbody').style.display = 'inline';
@@ -60,3 +63,26 @@ window.onload = function()
 {
     OnOverview();
 };
+
+function UpdatePotrait(gender, charClass)
+{
+    str = (gender == 0) ? "male_" : "female";
+
+    switch(charClass)
+    {
+        case 0:
+            str+="warrior_potrait.png";
+            break;
+        case 1:
+            str+="mage_potrait.png";
+            break;
+        case 2:
+            str+="thief_potrait.png";
+            break;
+    }
+
+    str = str.toLowerCase();
+
+    const potrait = document.getElementById("potrait");
+    potrait.src = `http://localhost:3000/imgs/${str}`;
+}

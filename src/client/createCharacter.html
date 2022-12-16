@@ -16,21 +16,24 @@
     <br>
 
     <div id = "fullbody" class = "fullbodycharcreationdiv">
-        <fieldset style="width:40%" class = "pagecontent-field">
+        <fieldset class = "pagecontent-field" style="width:20%">
+          <img id ="potrait" style="float: right;margin-right: 20%;margin-top: 5%;" src ="http://localhost:3000/imgs/female_thief_potrait.png"/>
           <br>
           <h2>Character Creation</h2>
+
             <label for="charname"><b>Name: </b></label>
             <input ID = "FORM_CHARNAME" type="text" placeholder="Enter Character Name" name="uname" required>
             <br>
             <br>
 
             <div>
-              <input type="radio" id="MALE" name="radioSex" value="Male" checked>
+              <input type="radio" id="MALE" name="radioSex" value="Male" onclick="OnGenderChanges()" checked>
               <label for="Male">Male</label>
 
-              <input type="radio" id="FEMALE" name="radioSex" value="Female">
+              <input type="radio" id="FEMALE" name="radioSex" value="Female" onclick="OnGenderChanges()">
               <label for="Female">Female</label>
             </div>
+            <br>
             <br>
 
             <div>
@@ -43,6 +46,9 @@
                 <input type="radio" id="THI" name="radioClass" value="Thief" onclick="OnClassChanges(this);">
                 <label for="Thief">Thief</label>
               </div>
+
+              <br>
+              <br>
 
               <br>
               <br>
@@ -69,7 +75,7 @@
               <b>Description:</b>
               <br><br>
 
-              <textarea rows="5" cols="100" readonly style="resize:none">Warrior</textarea>
+              <textarea rows="5" cols="85" readonly style="resize:none">Warrior</textarea>
 
               <br><br><br>
 

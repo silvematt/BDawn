@@ -205,6 +205,36 @@ module.exports =
                 fs.createReadStream('../client/content/fullbg.png').pipe(res);
                 break;
 
+            case "/imgs/male_warrior_potrait.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/male_warrior_potrait.png').pipe(res);
+                break;
+
+            case "/imgs/male_thief_potrait.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/male_thief_potrait.png').pipe(res);
+                break;
+
+            case "/imgs/male_mage_potrait.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/male_mage_potrait.png').pipe(res);
+                break;
+
+            case "/imgs/female_mage_potrait.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/female_mage_potrait.png').pipe(res);
+                break;
+
+            case "/imgs/female_warrior_potrait.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/female_warrior_potrait.png').pipe(res);
+                break;
+
+            case "/imgs/female_thief_potrait.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/female_thief_potrait.png').pipe(res);
+                break;
+
             default:
                 InvalidRoute(req, res);
                 break;

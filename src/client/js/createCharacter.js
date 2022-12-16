@@ -83,6 +83,8 @@ function OnClassChanges(curRadio)
             document.getElementById("STATS_FAI_VALUE").textContent = defaultStats.Warrior.FAI;
             break;
     }
+
+    UpdatePotrait();
 }
 
 function ConfirmCharacterCreation()
@@ -136,4 +138,44 @@ function ConfirmCharacterCreation()
     request.open('POST', 'http://localhost:3000/createCharacter');
     request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     request.send(`tkn=${tkn}&charName=${charName}&charSex=${charSex}&charClass=${charClass}`);
+}
+
+function OnGenderChanges()
+{
+    UpdatePotrait();
+}
+
+function UpdatePotrait()
+{
+    var charClass;
+
+    var classess = document.getElementsByName('radioClass');
+    for(var i = 0; i < classess.length; i++)
+    {
+        if(classess[i].checked)
+        {
+            charClass = classess[i].value;
+            break;
+        }
+    }
+
+    var charSex;
+
+    var sexes = document.getElementsByName('radioSex');
+    for(var i = 0; i < sexes.length; i++)
+    {
+        if(sexes[i].checked)
+        {
+            charSex = sexes[i].value;
+            break;
+        }
+    }
+    console.log(charSex);
+    var str = (charSex == "Male") ? "male_" : "female_";
+
+    str += charClass+"_potrait.png";
+    str = str.toLowerCase();
+
+    const potrait = document.getElementById("potrait");
+    potrait.src = `http://localhost:3000/imgs/${str}`;
 }

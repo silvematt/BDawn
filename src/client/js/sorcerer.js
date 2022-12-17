@@ -228,7 +228,7 @@ function GetSpellsAndDisplay()
                         element.appendChild(document.createElement("br"));
 
                         element.id = `spellBox${obj}`;
-                        element.style = "width:42%"
+                        element.style = "width:42%;float:left"
                         document.getElementById('contentfs').appendChild(element);
                     }
                     
@@ -288,7 +288,6 @@ function GetPlayersWeaponsAndDisplayButtons()
                         if(hasWeapon)
                         {
                             let btn = document.createElement("b");
-                            current.appendChild(document.createElement("br"));
                             btn.innerHTML = `(Leant)`
 
                             current.appendChild(btn);

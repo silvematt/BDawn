@@ -211,6 +211,29 @@ module.exports =
             EquippedSpell: 0,
             MeleeAttackChance: 100,
             MagicAttackChance: 0,
+            imgFileName: "ai_bandit_potrait.png"
+        },
+
+        1:
+        {
+            ID: 1,
+            Name: 'Skeleton',
+            MinLevel: 5,
+            MaxLevel: 10,
+            MinDamage: 20,
+            MaxDamage: 60,
+            CriticalChance: 20,
+            CriticalMod: 1.5,
+            BaseVitality: 2,
+            BaseStrength: 6,
+            BaseDexterity: 1,
+            BaseAgility: 2,
+            BaseIntelligence: 0,
+            BaseFaith: 0,
+            EquippedSpell: 0,
+            MeleeAttackChance: 100,
+            MagicAttackChance: 0,
+            imgFileName: "ai_skeleton_potrait.png"
         },
     }
 }

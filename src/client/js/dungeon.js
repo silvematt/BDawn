@@ -81,6 +81,15 @@ function GetAIAndDisplay()
                         const curAI = ai[obj];
                         let element = document.createElement("fieldset");
 
+                        // Add IMG
+                        let weaponIMG = document.createElement("img");
+                            weaponIMG.src = `http://localhost:3000/imgs/${curAI.imgFileName}`;
+                            weaponIMG.style.display = "inline-block";
+                            weaponIMG.style.marginLeft = "20%";
+
+                        element.appendChild(weaponIMG);
+                        element.appendChild(document.createElement("br"));
+
                         // Create weapon label
                         let weaponNameLabel = document.createElement("b");
                             weaponNameLabel.id = `ai${obj}NameLabel`;
@@ -160,7 +169,7 @@ function GetAIAndDisplay()
                         element.appendChild(document.createElement("br"));
 
                         element.id = `aiBox${obj}`;
-                        element.style = "width:30%"
+                        element.style = "width:42%;float:left"
                         document.getElementById('contentfs').appendChild(element);
 
                         element.appendChild(document.createElement("br"));

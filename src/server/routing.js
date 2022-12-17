@@ -259,7 +259,17 @@ module.exports =
                 res.writeHead(200, { 'content-type': 'image/bmp' });
                 fs.createReadStream('../client/content/spell_icedart_icon.bmp').pipe(res);
                 break;
+            
+            case "/imgs/ai_bandit_potrait.png":
+                res.writeHead(200, { 'content-type': 'image/bmp' });
+                fs.createReadStream('../client/content/ai_bandit_potrait.png').pipe(res);
+                break;
 
+            case "/imgs/ai_skeleton_potrait.png":
+                res.writeHead(200, { 'content-type': 'image/bmp' });
+                fs.createReadStream('../client/content/ai_skeleton_potrait.png').pipe(res);
+                break;
+                
             default:
                 InvalidRoute(req, res);
                 break;

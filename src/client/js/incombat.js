@@ -53,6 +53,8 @@ function LoadPlayerOverview()
                     document.getElementById("STATS_INT_VALUE").textContent = res.rContent[0].characterIntelligence;
                     document.getElementById("STATS_FAI_VALUE").textContent = res.rContent[0].characterFaith;
 
+                    PlayerUpdatePotrait(res.rContent[0].characterSex, res.rContent[0].characterClass);
+
                     GetAI();
                     break;
 
@@ -234,6 +236,8 @@ function LoadFightInfo()
 
                     const enemy = ai[fightInfo.enemyID];
 
+                    EnemyUpdatePotrait(enemy.imgFileName);
+
                     // Fill player stats
                     const playerHPBar = document.getElementById("playerhpbar");
                     playerHPBar.max = fightInfo.playersMaxHP;
@@ -275,9 +279,6 @@ function LoadFightInfo()
                     document.getElementById("ENEMY_STATS_AGI_VALUE").textContent = fightInfo.enemyAgility;
                     document.getElementById("ENEMY_STATS_INT_VALUE").textContent = fightInfo.enemyIntelligence;
                     document.getElementById("ENEMY_STATS_FAI_VALUE").textContent = fightInfo.enemyFaith;
-
-
-                    // Fill the spells owned by the player
 
                     document.getElementById("PROCESSING_MESSAGE").textContent = "";
                     document.getElementById('fullbody').style.display = 'block';
@@ -416,4 +417,33 @@ function PlayerDoTurn(attType, selectedSpell)
 function Exit()
 {
     location.href = "http://localhost:3000/cDungeon";
+}
+
+function PlayerUpdatePotrait(gender, charClass)
+{
+    var str = (gender == 0) ? "male_" : "female";
+
+    switch(charClass)
+    {
+        case 0:
+            str+="warrior_potrait.png";
+            break;
+        case 1:
+            str+="mage_potrait.png";
+            break;
+        case 2:
+            str+="thief_potrait.png";
+            break;
+    }
+
+    str = str.toLowerCase();
+
+    const potrait = document.getElementById("player_potrait");
+    potrait.src = `http://localhost:3000/imgs/${str}`;
+}
+
+function EnemyUpdatePotrait(enemyFileName)
+{
+    const potrait = document.getElementById("enemy_potrait");
+    potrait.src = `http://localhost:3000/imgs/${enemyFileName}`;
 }

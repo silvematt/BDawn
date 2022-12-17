@@ -18,12 +18,28 @@
 
     <div id = "fullbody" style = "display:none" class ="fullbodycombatdiv">
 
-        <div id="playerBox" style = "display:inline-block;width: 30%;" class = "combatPagecontent-field">
+      <div id="playerBox" style = "display:inline-block;width: 30%;" class = "combatPagecontent-field">
 
-          <fieldset style ="border: none;">
-            <h2 id = "CHARNAME_VALUE">Character</h2>
-            <label for="charLevel">Level: </label>
+        <fieldset style ="border: none;">
+            <h2 id = "CHARNAME_VALUE">Player</h2>
+            <img id = "player_potrait" style="float:left" src ="http://localhost:3000/imgs/male_warrior_potrait.png"/>
+            
+          <div style="padding-left:38%">
+            <h3>Status:</h3>
+            <label for="playerlabel">HP:</label>
+            <progress id="playerhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERHP_PERCENT">32%</label>
+            <br><br>
+            <label for="playermplabel">MP:</label>
+            <progress id="playermpbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERMP_PERCENT">32%</label>
+            <br><br>
+
+            <label for="playerLevel">Level: </label>
             <b id = "CHARLEVEL_VALUE"></b>
+          </div>
+              <br>
+              <br>
+              <br>
+              <br><br>
               <br>
               <br>
 
@@ -37,28 +53,23 @@
                   <td>Faith</td>
                 </tr>
                 <tr>
-                  <td id="STATS_VIT_VALUE">16</td>
-                  <td id="STATS_STR_VALUE">14</td>
-                  <td id="STATS_DEX_VALUE">10</td>
-                  <td id="STATS_AGI_VALUE">10</td>
-                  <td id="STATS_INT_VALUE">10</td>
-                  <td id="STATS_FAI_VALUE">10</td>
+                  <td id="STATS_VIT_VALUE">0</td>
+                  <td id="STATS_STR_VALUE">0</td>
+                  <td id="STATS_DEX_VALUE">0</td>
+                  <td id="STATS_AGI_VALUE">0</td>
+                  <td id="STATS_INT_VALUE">0</td>
+                  <td id="STATS_FAI_VALUE">0</td>
                 </tr>
               </table>
               <br>
               <br>
-              <h2>Status:</h2>
-              <label for="playerhplabel">HP:</label>
-              <progress id="playerhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERHP_PERCENT">32%</label>
-              <br><br>
-              <label for="playermplabel">MP:</label>
-              <progress id="playermpbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERMP_PERCENT">32%</label>
-              <br><br>
+              
 
               <span>&nbsp</span>
               <label id="ResultLabel"><b></b></label>
         </fieldset>
         </div>
+        
 
         <div class="horizontalgap" style="display:inline-block; width:10px"></div>
 
@@ -82,15 +93,31 @@
 
         <div class="horizontalgap" style="display:inline-block; width:10px"></div>
 
-        <div id="playerBox" style = "display:inline-block;width: 30%;" class = "combatPagecontent-field">
+        <div id="aiBox" style = "display:inline-block;width: 30%;" class = "combatPagecontent-field">
 
             <fieldset style ="border: none;">
                 <h2 id = "ENEMYNAME_VALUE">Enemy</h2>
+                <img id = "enemy_potrait" style="float:left" src ="http://localhost:3000/imgs/ai_skeleton_potrait.png"/>
+                
+              <div style="padding-left:38%">
+                <h3>Status:</h3>
+                <label for="enemyhplabel">HP:</label>
+                <progress id="enemyhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYHP_PERCENT">32%</label>
+                <br><br>
+                <label for="enemymplabel">MP:</label>
+                <progress id="enemympbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYMP_PERCENT">32%</label>
+                <br><br>
+
                 <label for="enemyLevel">Level: </label>
                 <b id = "ENEMYLEVEL_VALUE"></b>
+              </div>
                   <br>
                   <br>
-    
+                  <br>
+                  <br><br>
+                  <br>
+                  <br>
+
                   <table style="width:100%; border: 1px solid black; border-radius: 10px;" >
                     <tr>
                       <td>Vitality</td>
@@ -111,13 +138,7 @@
                   </table>
                   <br>
                   <br>
-                  <h2>Status:</h2>
-                  <label for="enemyhplabel">HP:</label>
-                  <progress id="enemyhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYHP_PERCENT">32%</label>
-                  <br><br>
-                  <label for="enemymplabel">MP:</label>
-                  <progress id="enemympbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYMP_PERCENT">32%</label>
-                  <br><br>
+                  
     
                   <span>&nbsp</span>
                   <label id="ResultLabel"><b></b></label>

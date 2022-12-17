@@ -39,7 +39,7 @@ function OnOverview()
                     document.getElementById("INVENTORY_GOLDS_VALUE").textContent = res.rContent[0].inventoryGolds;
 
 
-                    UpdatePotrait(res.rContent[0].characterSex, res.rContent[0].characterClass);
+                    PlayerUpdatePotrait(res.rContent[0].characterSex, res.rContent[0].characterClass);
 
                     document.getElementById("PROCESSING_MESSAGE").textContent = "";
                     document.getElementById('fullbody').style.display = 'inline';
@@ -64,7 +64,7 @@ window.onload = function()
     OnOverview();
 };
 
-function UpdatePotrait(gender, charClass)
+function PlayerUpdatePotrait(gender, charClass)
 {
     str = (gender == 0) ? "male_" : "female";
 

@@ -208,7 +208,7 @@ function GetWeaponsAndDisplay()
                         element.appendChild(document.createElement("br"));
 
                         element.id = `weaponBox${obj}`;
-                        element.style = "width:42%"
+                        element.style = "width:42%;float:left"
                         document.getElementById('contentfs').appendChild(element);
                     }
                     

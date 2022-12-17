@@ -235,6 +235,31 @@ module.exports =
                 fs.createReadStream('../client/content/female_thief_potrait.png').pipe(res);
                 break;
 
+            case "/imgs/weapon_dagger_icon.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/weapon_dagger_icon.png').pipe(res);
+                break;
+
+            case "/imgs/weapon_ironaxe_icon.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/weapon_ironaxe_icon.png').pipe(res);
+                break;
+
+            case "/imgs/weapon_mageredstaff_icon.png":
+                res.writeHead(200, { 'content-type': 'image/png' });
+                fs.createReadStream('../client/content/weapon_mageredstaff_icon.png').pipe(res);
+                break;
+
+            case "/imgs/spell_fireball_icon.bmp":
+                res.writeHead(200, { 'content-type': 'image/bmp' });
+                fs.createReadStream('../client/content/spell_fireball_icon.bmp').pipe(res);
+                break;
+
+            case "/imgs/spell_icedart_icon.bmp":
+                res.writeHead(200, { 'content-type': 'image/bmp' });
+                fs.createReadStream('../client/content/spell_icedart_icon.bmp').pipe(res);
+                break;
+
             default:
                 InvalidRoute(req, res);
                 break;

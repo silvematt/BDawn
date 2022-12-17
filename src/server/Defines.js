@@ -99,7 +99,8 @@ module.exports =
             STRMod: 1.5,         // Strength modifier
             DEXMod: 1.0,
             INTMod: 1.0,
-            InDBCheckName: ''
+            InDBCheckName: '',
+            imgFileName: "",
         },
 
         1:
@@ -114,7 +115,8 @@ module.exports =
             STRMod: 1.0,         // Strength modifier
             DEXMod: 2.0,
             INTMod: 1.0,
-            InDBCheckName: 'hasWeapon1'
+            InDBCheckName: 'hasWeapon1',
+            imgFileName: "weapon_dagger_icon.png",
         },
 
         2:
@@ -129,7 +131,8 @@ module.exports =
             STRMod: 3.0,         // Strength modifier
             DEXMod: 1.0,
             INTMod: 1.0,
-            InDBCheckName: 'hasWeapon2'
+            InDBCheckName: 'hasWeapon2',
+            imgFileName: "weapon_ironaxe_icon.png",
         },
 
         3:
@@ -144,7 +147,8 @@ module.exports =
             STRMod: 1.0,         // Strength modifier
             DEXMod: 1.0,
             INTMod: 5.0,
-            InDBCheckName: 'hasWeapon3'
+            InDBCheckName: 'hasWeapon3',
+            imgFileName: "weapon_mageredstaff_icon.png",
         }
     },
 
@@ -165,20 +169,22 @@ module.exports =
             ManaCost: 40,
             CriticalChance: 35,
             CriticalMod: 2.0,
-            InDBCheckName: "hasSpell1"
+            InDBCheckName: "hasSpell1",
+            imgFileName: "spell_fireball_icon.bmp",
         },
 
         2:
         {
             ID: 2,
-            Name: 'Ice Spike',
+            Name: 'Ice Dart',
             Cost: 150,
             MinDamage: 15,
             MaxDamage: 30,
             ManaCost: 25,
             CriticalChance: 10,
             CriticalMod: 1.25,
-            InDBCheckName: "hasSpell2"
+            InDBCheckName: "hasSpell2",
+            imgFileName: "spell_icedart_icon.bmp",
         },
     },
 

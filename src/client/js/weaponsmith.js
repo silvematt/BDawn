@@ -89,6 +89,13 @@ function GetWeaponsAndDisplay()
                         const curWeap = weapons[obj];
                         let element = document.createElement("fieldset");
 
+                        // Add IMG
+                        let weaponIMG = document.createElement("img");
+                            weaponIMG.src = `http://localhost:3000/imgs/${curWeap.imgFileName}`;
+                            weaponIMG.style.float = "right";
+
+                        element.appendChild(weaponIMG);
+
                         // Create weapon label
                         let weaponNameLabel = document.createElement("b");
                             weaponNameLabel.id = `weapon${obj}NameLabel`;
@@ -201,7 +208,7 @@ function GetWeaponsAndDisplay()
                         element.appendChild(document.createElement("br"));
 
                         element.id = `weaponBox${obj}`;
-                        element.style = "width:30%"
+                        element.style = "width:42%"
                         document.getElementById('contentfs').appendChild(element);
                     }
                     

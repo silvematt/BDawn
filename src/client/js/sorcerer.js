@@ -90,6 +90,13 @@ function GetSpellsAndDisplay()
                         const curSpell = spells[obj];
                         let element = document.createElement("fieldset");
 
+                         // Add IMG
+                         let weaponIMG = document.createElement("img");
+                         weaponIMG.src = `http://localhost:3000/imgs/${curSpell.imgFileName}`;
+                         weaponIMG.style.float = "right";
+
+                        element.appendChild(weaponIMG);
+
                         // Create weapon label
                         let weaponNameLabel = document.createElement("b");
                             weaponNameLabel.id = `spell${obj}NameLabel`;
@@ -221,7 +228,7 @@ function GetSpellsAndDisplay()
                         element.appendChild(document.createElement("br"));
 
                         element.id = `spellBox${obj}`;
-                        element.style = "width:30%"
+                        element.style = "width:42%"
                         document.getElementById('contentfs').appendChild(element);
                     }
                     

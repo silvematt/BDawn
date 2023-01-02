@@ -111,6 +111,7 @@ function ConfirmCharacterCreation()
 
     var tkn = localStorage.getItem("bdawn_sess_tkn");
     var charName = document.getElementById("FORM_CHARNAME").value;
+
     var charSex;
 
     var sexes = document.getElementsByName('radioSex');
@@ -122,6 +123,7 @@ function ConfirmCharacterCreation()
             break;
         }
     }
+    console.log(charSex);
 
     var charClass;
 

@@ -66,7 +66,8 @@ window.onload = function()
 
 function PlayerUpdatePotrait(gender, charClass)
 {
-    str = (gender == 0) ? "male_" : "female";
+    console.log(gender);
+    str = (gender == 0) ? "male_" : "female_";
 
     switch(charClass)
     {

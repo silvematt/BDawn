@@ -82,7 +82,7 @@ function CheckIfCharacterAlreadyExists(connection, dataTook, req, res)
 function CompleteCharacterCreation(connection, dataTook, req, res)
 {
     // Get the class values
-    var charSex = ("Male") ? 0 : 1;
+    var charSex = (dataTook.charSex == "Male") ? 0 : 1;
     var charClass;
     var classValues;
 

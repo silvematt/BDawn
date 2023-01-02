@@ -421,7 +421,7 @@ function Exit()
 
 function PlayerUpdatePotrait(gender, charClass)
 {
-    var str = (gender == 0) ? "male_" : "female";
+    var str = (gender == 0) ? "male_" : "female_";
 
     switch(charClass)
     {

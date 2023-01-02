@@ -402,7 +402,7 @@ function PlayerDoTurn(attType, selectedSpell)
                     // Update enemys bar to display 0 health
                     const playerHPBar = document.getElementById("playerhpbar");
                     playerHPBar.value = 0;
-                    document.getElementById("PLAYERMPBARTOOLTIPTEXT").innerHTML = `${0} / ${fightInfo.playersMaxHP}`
+                    document.getElementById("PLAYERHPBARTOOLTIPTEXT").innerHTML = `${0} / ${fightInfo.playersMaxHP}`
 
                     const playerHPPercentage = document.getElementById("PLAYERHP_PERCENT").innerHTML = `0%`;
 

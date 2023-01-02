@@ -281,7 +281,7 @@ function StartCombatRequest_CheckAlreadyInCombat(connection, dataTook, req, res)
 function StartCombatRequest_GetPlayersStats(connection, dataTook, req, res)
 {
     // Select and return all
-    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds FROM users WHERE username = '${dataTook.username}'`;
+    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, playersHP, playersMaxHP, playersMP, playersMaxMP, playersCurXP, playersNextLevelXP FROM users WHERE username = '${dataTook.username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)
@@ -299,8 +299,11 @@ function StartCombatRequest_CreateCombatState(connection, dataTook, playersOverv
     console.log(playersOverview.characterVitality);
 
     // Calculate Player related stuff
-    const pHP = playersOverview.characterVitality * 10;
-    const pMP = playersOverview.characterIntelligence * 10;
+    const pHP = playersOverview.playersHP;
+    const pMP = playersOverview.playersMP;
+
+    const pMAXHP = playersOverview.playersMaxHP;
+    const pMAXMP = playersOverview.playersMaxMP;
 
     // Caluclate Enemy related stuff
     const enemy = defines.AI[dataTook.enemyID];
@@ -335,7 +338,7 @@ function StartCombatRequest_CreateCombatState(connection, dataTook, playersOverv
     console.log(eInt);
     console.log(eFai);
 
-    var sqlQuery = `INSERT INTO fights(username, playersHP, playersMP, playersMaxHP, playersMaxMP, enemyID, enemyLevel, enemyHP, enemyMP, enemyMaxHP, enemyMaxMP, enemyVitality, enemyStrength, enemyDexterity, enemyAgility, enemyIntelligence, enemyFaith) VALUES ('${dataTook.username}',${pHP},${pMP},${pHP},${pMP},${eID},${eLvl},${eHP},${eMP},${eHP},${eMP},${eVit},${eStr},${eDex},${eAgi},${eInt},${eFai})`;
+    var sqlQuery = `INSERT INTO fights(username, playersHP, playersMP, playersMaxHP, playersMaxMP, enemyID, enemyLevel, enemyHP, enemyMP, enemyMaxHP, enemyMaxMP, enemyVitality, enemyStrength, enemyDexterity, enemyAgility, enemyIntelligence, enemyFaith) VALUES ('${dataTook.username}',${pHP},${pMP},${pMAXHP},${pMAXMP},${eID},${eLvl},${eHP},${eMP},${eHP},${eMP},${eVit},${eStr},${eDex},${eAgi},${eInt},${eFai})`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)
@@ -503,7 +506,7 @@ function CombatTurn_Attack_CheckCombatState(connection, dataTook, req, res)
 function CombatTurn_Attack_GetPlayerOverview(connection, dataTook, combatData, req, res)
 {
     // Select and return all
-    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, equippedWeapon FROM users WHERE username = '${dataTook.username}'`;
+    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, equippedWeapon, playersCurXP, playersNextLevelXP FROM users WHERE username = '${dataTook.username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)
@@ -636,8 +639,13 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     // End of turn - update the database
 
     const enemysCurHP = combatData.enemyHP - playerFinalDamage;
-    const playersCurHP = combatData.playersHP - enemyFinalDamage;
-    const playersCurMP = combatData.playersMP - playerManaUsed;
+
+    // If enemy died, cancel the damage
+    if(enemysCurHP <= 0)
+        enemyFinalDamage = 0;
+        
+    const playersCurHP = util.Clamp(combatData.playersHP - enemyFinalDamage, 0, combatData.playersMaxHP);
+    const playersCurMP = util.Clamp(combatData.playersMP - playerManaUsed, 0, combatData.playersMaxMP);
 
     // Build messages
     var playersActionStr = "You ";
@@ -684,7 +692,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
             else
             {            
                  // Terminate the combat
-                 CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, true, goldReward, playersActionStr, enemyActionStr, req, res);
+                 CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, true, goldReward, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res);
              }
          });
 
@@ -711,7 +719,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
              else
              {            
                 // Terminate the combat
-                CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, false, goldMalus, playersActionStr, enemyActionStr, req, res);
+                CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, false, goldMalus, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res);
             }
          });
     }
@@ -741,7 +749,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     }
 }
 
-function CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, req, res)
+function CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res)
 {
     var sqlQuery = `DELETE FROM fights WHERE username = '${dataTook.username}'`
     connection.query(sqlQuery, function(err,qRes,fields)
@@ -750,35 +758,50 @@ function CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, com
             throw err;
         else
         {            
-            if(playerWon)
-            {
-                res.writeHead(200, {"Content-Type" : "application/json"});
-                var response =
-                {
-                    rCode:200,
-                    rMessage:"TURN_ATTACK_COMBAT_END_PLAYER_WON",
-                    rPlayerAction: playersActionStr,
-                    rEndStr: `You killed ${defines.AI[combatData.enemyID].Name} and earnt ${goldsVariable} golds.`,
-                };
-                res.write(JSON.stringify(response));
-                res.end();       
-                connection.end();
-            }
-            else
-            {
-                res.writeHead(200, {"Content-Type" : "application/json"});
-                var response =
-                {
-                    rCode:200,
-                    rMessage:"TURN_ATTACK_COMBAT_END_ENEMY_WON",
-                    rPlayerAction: playersActionStr,
-                    rEnemeyAction: enemyActionStr,
-                    rEndStr: `${defines.AI[combatData.enemyID].Name} killed you. You lost ${goldsVariable} golds.`,
-                };
-                res.write(JSON.stringify(response));
-                res.end();       
-                connection.end();
-            }
+            CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res)
         }
     });
+}
+
+function CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res)
+{
+    // Check for lvl up
+    var sqlQuery = `UPDATE users SET playersHP = ${playersCurHP}, playersMP = ${playersCurMP} WHERE username = '${dataTook.username}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+        {
+            if(err)
+                throw err;
+            else
+            {            
+                if(playerWon)
+                {
+                    res.writeHead(200, {"Content-Type" : "application/json"});
+                    var response =
+                    {
+                        rCode:200,
+                        rMessage:"TURN_ATTACK_COMBAT_END_PLAYER_WON",
+                        rPlayerAction: playersActionStr,
+                        rEndStr: `You killed ${defines.AI[combatData.enemyID].Name} and earnt ${goldsVariable} golds.`,
+                    };
+                    res.write(JSON.stringify(response));
+                    res.end();       
+                    connection.end();
+                }
+                else
+                {
+                    res.writeHead(200, {"Content-Type" : "application/json"});
+                    var response =
+                    {
+                        rCode:200,
+                        rMessage:"TURN_ATTACK_COMBAT_END_ENEMY_WON",
+                        rPlayerAction: playersActionStr,
+                        rEnemeyAction: enemyActionStr,
+                        rEndStr: `${defines.AI[combatData.enemyID].Name} killed you. You lost ${goldsVariable} golds.`,
+                    };
+                    res.write(JSON.stringify(response));
+                    res.end();       
+                    connection.end();
+                }
+            }
+        });
 }

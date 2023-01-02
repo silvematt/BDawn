@@ -79,5 +79,10 @@ module.exports =
          };
          res.write(JSON.stringify(response));
          res.end();        
+    },
+
+    Clamp: function(number, min, max) 
+    {
+        return Math.max(min, Math.min(number, max));
     }
 }

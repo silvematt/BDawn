@@ -26,11 +26,17 @@
             
           <div style="padding-left:38%">
             <h3>Status:</h3>
-            <label for="playerlabel">HP:</label>
-            <progress id="playerhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERHP_PERCENT">32%</label>
+            <div class="tooltip">
+              <label for="playerlabel">HP:</label>
+              <progress id="playerhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERHP_PERCENT">32%</label>
+              <span id = "PLAYERHPBARTOOLTIPTEXT" class="tooltiptext"></span>
+            </div>
             <br><br>
-            <label for="playermplabel">MP:</label>
-            <progress id="playermpbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERMP_PERCENT">32%</label>
+            <div class="tooltip">
+              <label for="playermplabel">MP:</label>
+              <progress id="playermpbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERMP_PERCENT">32%</label>
+              <span id = "PLAYERMPBARTOOLTIPTEXT" class="tooltiptext"></span>
+            </div>
             <br><br>
 
             <label for="playerLevel">Level: </label>
@@ -101,11 +107,17 @@
                 
               <div style="padding-left:38%">
                 <h3>Status:</h3>
-                <label for="enemyhplabel">HP:</label>
-                <progress id="enemyhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYHP_PERCENT">32%</label>
+                <div class="tooltip">
+                  <label for="enemyhplabel">HP:</label>
+                  <progress id="enemyhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYHP_PERCENT">32%</label>
+                  <span id = "ENEMYHPBARTOOLTIPTEXT" class="tooltiptext"></span>
+                </div>
                 <br><br>
-                <label for="enemymplabel">MP:</label>
-                <progress id="enemympbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYMP_PERCENT">32%</label>
+                <div class="tooltip">
+                  <label for="enemymplabel">MP:</label>
+                  <progress id="enemympbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="ENEMYMP_PERCENT">32%</label>
+                  <span id = "ENEMYMPBARTOOLTIPTEXT" class="tooltiptext"></span>
+                </div>
                 <br><br>
 
                 <label for="enemyLevel">Level: </label>

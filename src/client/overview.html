@@ -35,14 +35,23 @@
                 <label for="charname">Name: </label>
                 <b id = "CHARNAME_VALUE"></b>
                 <br><br>
-                <label for="playerhplabel">HP:</label>
-                <progress id="playerhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERHP_PERCENT">32%</label>
+                <div class="tooltip">
+                  <label for="playerhplabel">HP:</label>
+                  <progress id="playerhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERHP_PERCENT">32%</label>
+                    <span id = "HPBARTOOLTIPTEXT" class="tooltiptext"></span>
+                </div>
                 <br><br>
-                <label for="playermplabel">MP:</label>
-                <progress id="playermpbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERMP_PERCENT">32%</label>
+                <div class="tooltip">
+                  <label for="playermplabel">MP:</label>
+                  <progress id="playermpbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERMP_PERCENT">32%</label>
+                  <span id = "MPBARTOOLTIPTEXT" class="tooltiptext"></span>
+                </div>
                 <br><br>
-                <label for="playerxplabel">XP:</label>
-                <progress id="playerxpbar" value="32" max="100" style="accent-color: gold;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERXP_PERCENT">32%</label>
+                <div class="tooltip">
+                  <label for="playerxplabel">XP:</label>
+                  <progress id="playerxpbar" value="32" max="100" style="accent-color: gold;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERXP_PERCENT">32%</label>
+                  <span id = "XPBARTOOLTIPTEXT" class="tooltiptext"></span>
+                </div>
                 <br><br>
                 <label for="charLevel">Level: </label>
                 <b id = "CHARLEVEL_VALUE"></b>

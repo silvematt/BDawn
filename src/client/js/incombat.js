@@ -246,12 +246,17 @@ function LoadFightInfo()
                     const playerHpPercent = Math.floor((fightInfo.playersHP / fightInfo.playersMaxHP) * 100);
                     const playerHPPercentage = document.getElementById("PLAYERHP_PERCENT").innerHTML = `${playerHpPercent}%`;
 
+                    document.getElementById("PLAYERHPBARTOOLTIPTEXT").innerHTML = `${fightInfo.playersHP} / ${fightInfo.playersMaxHP}`
+
                     const playerMPBar = document.getElementById("playermpbar");
                     playerMPBar.max = fightInfo.playersMaxMP;
                     playerMPBar.value = fightInfo.playersMP;
 
                     const playerMpPercent = Math.floor((fightInfo.playersMP / fightInfo.playersMaxMP) * 100);
                     const playerMPPercentage = document.getElementById("PLAYERMP_PERCENT").innerHTML = `${playerMpPercent}%`;
+
+                    document.getElementById("PLAYERMPBARTOOLTIPTEXT").innerHTML = `${fightInfo.playersMP} / ${fightInfo.playersMaxMP}`
+
 
                     // Fill Enemy Stats
                     const enemyHPBar = document.getElementById("enemyhpbar");
@@ -261,6 +266,8 @@ function LoadFightInfo()
                     const enemyhpPercent = Math.floor((fightInfo.enemyHP / fightInfo.enemyMaxHP) * 100);
                     const enemyHPPercentage = document.getElementById("ENEMYHP_PERCENT").innerHTML = `${enemyhpPercent}%`;
 
+                    document.getElementById("ENEMYHPBARTOOLTIPTEXT").innerHTML = `${fightInfo.enemyHP} / ${fightInfo.enemyMaxHP}`
+
                     // Mana
                     const enemyMPBar = document.getElementById("enemympbar");
                     enemyMPBar.max = fightInfo.enemyMaxMP;
@@ -268,6 +275,8 @@ function LoadFightInfo()
 
                     const enemympPercent = fightInfo.enemyMaxMP > 0 ? (Math.floor((fightInfo.enemyMP / fightInfo.enemyMaxMP) * 100)) : 0;
                     const enemyMPPercentage = document.getElementById("ENEMYMP_PERCENT").innerHTML = `${enemympPercent}%`;
+
+                    document.getElementById("ENEMYMPBARTOOLTIPTEXT").innerHTML = `${fightInfo.enemyMP} / ${fightInfo.enemyMaxMP}`
 
                     // Fill Stats
                     document.getElementById("ENEMYNAME_VALUE").textContent = enemy.Name;
@@ -359,6 +368,8 @@ function PlayerDoTurn(attType, selectedSpell)
                     // Update enemys bar to display 0 health
                     const enemyHPBar = document.getElementById("enemyhpbar");
                     enemyHPBar.value = 0;
+                    document.getElementById("ENEMYHPBARTOOLTIPTEXT").innerHTML = `${0} / ${fightInfo.enemyMaxHP}`
+
                     const enemyHPPercentage = document.getElementById("ENEMYHP_PERCENT").innerHTML = `0%`;
 
                     // Display Exit button
@@ -391,6 +402,8 @@ function PlayerDoTurn(attType, selectedSpell)
                     // Update enemys bar to display 0 health
                     const playerHPBar = document.getElementById("playerhpbar");
                     playerHPBar.value = 0;
+                    document.getElementById("PLAYERMPBARTOOLTIPTEXT").innerHTML = `${0} / ${fightInfo.playersMaxHP}`
+
                     const playerHPPercentage = document.getElementById("PLAYERHP_PERCENT").innerHTML = `0%`;
 
                     // Display Exit button

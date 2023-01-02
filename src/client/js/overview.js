@@ -46,6 +46,9 @@ function OnOverview()
                     const playerHpPercent = Math.floor((res.rContent[0].playersHP / res.rContent[0].playersMaxHP) * 100);
                     const playerHPPercentage = document.getElementById("PLAYERHP_PERCENT").innerHTML = `${playerHpPercent}%`;
 
+                    // tooltip text
+                    document.getElementById("HPBARTOOLTIPTEXT").innerHTML = `${res.rContent[0].playersHP} / ${res.rContent[0].playersMaxHP}`
+                    
                     const playerMPBar = document.getElementById("playermpbar");
                     playerMPBar.max = res.rContent[0].playersMaxMP;
                     playerMPBar.value = res.rContent[0].playersMP;
@@ -53,12 +56,20 @@ function OnOverview()
                     const playerMpPercent = Math.floor((res.rContent[0].playersMP / res.rContent[0].playersMaxMP) * 100);
                     const playerMPPercentage = document.getElementById("PLAYERMP_PERCENT").innerHTML = `${playerMpPercent}%`;
 
+                    // tooltip text
+                    document.getElementById("MPBARTOOLTIPTEXT").innerHTML = `${res.rContent[0].playersMP} / ${res.rContent[0].playersMaxMP}`
+
+
                     const playerXPBar = document.getElementById("playerxpbar");
                     playerXPBar.max = res.rContent[0].playersNextLevelXP;
                     playerXPBar.value = res.rContent[0].playersCurXP;
 
                     const playerXpPercent = Math.floor((res.rContent[0].playersCurXP / res.rContent[0].playersNextLevelXP) * 100);
                     const playerXPPercentage = document.getElementById("PLAYERXP_PERCENT").innerHTML = `${playerXpPercent}%`;
+
+                    // tooltip text
+                    document.getElementById("XPBARTOOLTIPTEXT").innerHTML = `${res.rContent[0].playersCurXP} / ${res.rContent[0].playersNextLevelXP}`
+
 
                     PlayerUpdatePotrait(res.rContent[0].characterSex, res.rContent[0].characterClass);
 

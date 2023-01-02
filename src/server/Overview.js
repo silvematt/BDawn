@@ -83,7 +83,7 @@ function CharacterCreatedCheck(connection, username, req, res)
 function ReturnCharactersOverview(connection, username, req, res)
 {
     // Select and return all
-    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds FROM users WHERE username = '${username}'`;
+    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, playersHP, playersMaxHP, playersMP, playersMaxMP, playersCurXP, playersNextLevelXP FROM users WHERE username = '${username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)

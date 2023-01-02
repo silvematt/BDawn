@@ -38,6 +38,27 @@ function OnOverview()
 
                     document.getElementById("INVENTORY_GOLDS_VALUE").textContent = res.rContent[0].inventoryGolds;
 
+                    // Set bars
+                    const playerHPBar = document.getElementById("playerhpbar");
+                    playerHPBar.max = res.rContent[0].playersMaxHP;
+                    playerHPBar.value = res.rContent[0].playersHP;
+
+                    const playerHpPercent = Math.floor((res.rContent[0].playersHP / res.rContent[0].playersMaxHP) * 100);
+                    const playerHPPercentage = document.getElementById("PLAYERHP_PERCENT").innerHTML = `${playerHpPercent}%`;
+
+                    const playerMPBar = document.getElementById("playermpbar");
+                    playerMPBar.max = res.rContent[0].playersMaxMP;
+                    playerMPBar.value = res.rContent[0].playersMP;
+
+                    const playerMpPercent = Math.floor((res.rContent[0].playersMP / res.rContent[0].playersMaxMP) * 100);
+                    const playerMPPercentage = document.getElementById("PLAYERMP_PERCENT").innerHTML = `${playerMpPercent}%`;
+
+                    const playerXPBar = document.getElementById("playerxpbar");
+                    playerXPBar.max = res.rContent[0].playersNextLevelXP;
+                    playerXPBar.value = res.rContent[0].playersCurXP;
+
+                    const playerXpPercent = Math.floor((res.rContent[0].playersCurXP / res.rContent[0].playersNextLevelXP) * 100);
+                    const playerXPPercentage = document.getElementById("PLAYERXP_PERCENT").innerHTML = `${playerXpPercent}%`;
 
                     PlayerUpdatePotrait(res.rContent[0].characterSex, res.rContent[0].characterClass);
 

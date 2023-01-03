@@ -61,6 +61,19 @@ module.exports =
          res.end();        
     },
 
+    GetGeneralGoods : function(req, res)
+    {
+         res.writeHead(200, {"Content-Type" : "application/json"});
+         var response =
+         {
+             rCode:200,
+             rMessage:"OK",
+             rContent: defines.GeneralGoods 
+         };
+         res.write(JSON.stringify(response));
+         res.end();        
+    },
+
     GetRandomIntInclusive : function(min, max) 
     {
         min = Math.ceil(min);

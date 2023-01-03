@@ -211,3 +211,8 @@ body
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
+
+  .ResultLabel
+  {
+    color:red;
+  }

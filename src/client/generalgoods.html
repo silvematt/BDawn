@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BDawn - Web Client - General Goods</title>
+    <link href="http://localhost:3000/css/style.css" rel="stylesheet" type="text/css"  />
+    <script src = "http://localhost:3000/js/generalgoods.js"></script>
+</head>
+
+<body>
+
+  
+    <div class = "precont">
+        <h1>BDawn - Web Client</h1>
+        <h2>General Goods</h2>
+    </div>
+
+    <div id="fullbody" class ="fullbodydiv">
+
+        <div class="navbarwrap" style="float: left;padding: 20px;">
+            <span id="navbarcontent"></span>
+            <script src = "http://localhost:3000/js/generatenavbar.js"></script>
+        </div>
+
+        <div class ="pagecontent">
+            <br>
+            <fieldset id = "contentfs" style="width:40%" class = "pagecontent-field">
+                <br>
+                <label for="InventoryGoldsL">Golds: </label>
+                <b id = "INVENTORY_GOLDS_VALUE"></b>
+                <br><br>
+                <div>
+                <div class="tooltip">
+                    <label for="playerhplabel">HP:</label>
+                    <progress id="playerhpbar" value="32" max="100" style="accent-color: red;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERHP_PERCENT">32%</label>
+                      <span id = "HPBARTOOLTIPTEXT" class="tooltiptext"></span>
+                  </div>
+                  <br><br>
+                  <div class="tooltip">
+                    <label for="playermplabel">MP:</label>
+                    <progress id="playermpbar" value="32" max="100" style="accent-color: blue;"> 32% </progress><label>&nbsp;&nbsp;</label><label id="PLAYERMP_PERCENT">32%</label>
+                    <span id = "MPBARTOOLTIPTEXT" class="tooltiptext"></span>
+                  </div>
+                </div>
+                <br>
+                  
+            </fieldset>
+            <br>
+            <span>&nbsp</span>
+            <label id="ResultLabel" class ="ResultLabel"><b></b></label>
+        </div>
+    </div> 
+    <label id="PROCESSING_MESSAGE"><b></b></label>
+</body>
+</html>

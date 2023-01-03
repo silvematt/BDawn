@@ -11,6 +11,8 @@ const dbconf = require("./database/dbconf");
 const defines = require("./Defines");
 const { connect } = require("http2");
 
+
+
 // "Private" functions
 function FinalizeAlterStat(stat, val, username, connection, OnAlter)
 {
@@ -49,6 +51,16 @@ function FinalizeAlterGolds(alterType, username, val, connection, OnAlter)
 // "Public" functions
 module.exports = 
 {
+    PlayerStats :
+    {
+        PlayerHP: 0,
+        PlayerMaxHP: 1,
+        PlayerMP: 2,
+        PlayerMaxMP: 3,
+        PlayerCurXP: 4,
+        PlayerNextLevelXP: 5
+    },
+
     AlterStat : function(stat, alterType, val, username, connection, OnAlter)
     {
         // Get the stat value
@@ -212,6 +224,52 @@ module.exports =
         }        
 
         var sqlQuery = `UPDATE users SET hasSpell${spellID} = ${finalVal} WHERE username = '${username}'`;
+        connection.query(sqlQuery, function(err,qRes,fields)
+        {
+            if(err)
+                throw err;
+            else
+            {
+                console.log(qRes);
+                OnAlter();
+            }
+        });
+    },
+
+    AlterPlayerStats: function(alteredValue, statToAlter, username, connection, OnAlter)
+    {
+        var finalVal = alteredValue;
+        var statToAlterInDB = "";
+
+        switch(statToAlter)
+        {
+            case this.PlayerStats.PlayerHP:
+                statToAlterInDB = "playersHP";
+                break;
+
+            case this.PlayerStats.PlayerMaxHP:
+                statToAlterInDB = "playersMaxHP";
+                break;
+
+            case this.PlayerStats.PlayerMP:
+                statToAlterInDB = "playersMP";
+                break;
+
+            case this.PlayerStats.PlayerMaxMP:
+                statToAlterInDB = "playersMaxMP";
+                break;
+
+            case this.PlayerStats.PlayerCurXP:
+                statToAlterInDB = "playersCurXP";
+                break;
+
+            case this.PlayerStats.PlayerNextLevelXP:
+                statToAlterInDB = "playersNextLevelXP";
+                break;
+    
+        }
+
+        var sqlQuery = `UPDATE users SET ${statToAlterInDB} = ${finalVal} WHERE username = '${username}'`;
         connection.query(sqlQuery, function(err,qRes,fields)
         {
             if(err)

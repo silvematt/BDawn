@@ -1,3 +1,5 @@
+const Alterator = require("./Alterator");
+
 module.exports =
 {
     Stats:
@@ -150,6 +152,31 @@ module.exports =
             InDBCheckName: 'hasWeapon3',
             imgFileName: "weapon_mageredstaff_icon.png",
         }
+    },
+
+    GeneralGoods:
+    {
+        0:
+        {
+            ID: 0,
+            Name: 'Lesser Health Potion',
+            StatToAlter: Alterator.PlayerStats.PlayerHP,
+            Cost: 25,
+            Magnitude: 100,
+            ActionStr: "Recover 100HP",
+            imgFileName: "generalgood_lesserhealthpotion_icon.bmp",
+        },
+        
+        1:
+        {
+            ID: 0,
+            Name: 'Lesser Mana Potion',
+            StatToAlter: Alterator.PlayerStats.PlayerMP,
+            Cost: 25,
+            Magnitude: 100,
+            ActionStr: "Recover 100MP",
+            imgFileName: "generalgood_lessermanapotion_icon.bmp",
+        },
     },
 
     Spells:

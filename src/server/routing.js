@@ -10,6 +10,7 @@ const trainer = require("./Trainer");
 const Weaponsmith = require("./Weaponsmith");
 const Sorcerer = require("./Sorcerer");
 const CombatManager = require("./CombatManager");
+const GeneralGoods = require("./GeneralGoods")
 
 module.exports = 
 {
@@ -60,6 +61,11 @@ module.exports =
                 fs.createReadStream('../client/dungeon.html').pipe(res);
                 break;
 
+            case "/cGeneralGoods":
+                res.writeHead(200, { 'content-type': 'text/html' });
+                fs.createReadStream('../client/generalgoods.html').pipe(res);
+                break;
+
             // APIs
             case "/login":
                 auth.LoginFunc(req,res);
@@ -79,6 +85,10 @@ module.exports =
 
             case "/buyWeapon":
                 Weaponsmith.BuyWeapon(req, res);
+                break;
+
+            case "/buyAndUseGood":
+                GeneralGoods.BuyAndUseGood(req, res);
                 break;
 
             case "/equipWeapon":
@@ -116,6 +126,10 @@ module.exports =
 
             case "/getWeapons":
                 util.GetWeapons(req, res);
+                break;
+
+            case "/getGeneralGoods":
+                util.GetGeneralGoods(req, res);
                 break;
 
             case "/getPlayersWeapons":
@@ -173,6 +187,11 @@ module.exports =
             case "/js/dungeon.js":
                 res.writeHead(200, { 'content-type': 'text/javascript' });
                 fs.createReadStream('../client/js/dungeon.js').pipe(res);
+                break;
+
+            case "/js/generalgoods.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/generalgoods.js').pipe(res);
                 break;
 
             case "/js/createCharacter.js":
@@ -270,6 +289,16 @@ module.exports =
                 fs.createReadStream('../client/content/ai_skeleton_potrait.png').pipe(res);
                 break;
                 
+            case "/imgs/generalgood_lesserhealthpotion_icon.bmp":
+                res.writeHead(200, { 'content-type': 'image/bmp' });
+                fs.createReadStream('../client/content/generalgood_lesserhealthpotion_icon.bmp').pipe(res);
+                break;
+
+            case "/imgs/generalgood_lessermanapotion_icon.bmp":
+            res.writeHead(200, { 'content-type': 'image/bmp' });
+            fs.createReadStream('../client/content/generalgood_lessermanapotion_icon.bmp').pipe(res);
+                break;
+
             default:
                 InvalidRoute(req, res);
                 break;

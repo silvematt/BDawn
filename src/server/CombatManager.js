@@ -683,8 +683,31 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
         var goldReward = Math.floor(combatData.enemyLevel * util.GetRandomIntInclusive(10, 50));
         const playersFinalGolds = playerData.inventoryGolds + goldReward;
 
+        // Calculate XP reward
+        var xpReward = Math.floor(combatData.enemyLevel * util.GetRandomIntInclusive(5, 15));
+        
+        var lvlupstr = ``;
+        var lvlUp = false;
+
+        // Check for levelup
+        if(playerData.playersCurXP + xpReward >= playerData.playersNextLevelXP)
+        {
+            // Level up!
+            const playerCurLvl = playerData.characterLevel+=1;
+            const playersXP = 0;
+            const playersNextLevelXP = playerData.playersNextLevelXP * Math.log10(playerData.playersNextLevelXP);
+
+            lvlupstr = `, characterLevel = ${playerCurLvl}, playersCurXP = ${playersXP}, playersNextLevelXP = ${playersNextLevelXP}`;
+            lvlUp = true;
+        }
+        else
+        {
+            // Just update the XP
+            lvlupstr = `, playersCurXP = ${playerData.playersCurXP + xpReward}`;
+        }
+
         // Update Golds
-        var sqlQuery = `UPDATE users SET inventoryGolds = ${playersFinalGolds} WHERE username = '${dataTook.username}'`;
+        var sqlQuery = `UPDATE users SET inventoryGolds = ${playersFinalGolds} ${lvlupstr} WHERE username = '${dataTook.username}'`;
         connection.query(sqlQuery, function(err,qRes,fields)
         {
             if(err)
@@ -692,7 +715,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
             else
             {            
                  // Terminate the combat
-                 CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, true, goldReward, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res);
+                 CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, true, goldReward, playersActionStr, enemyActionStr, xpReward, lvlUp, playersCurHP, playersCurMP, req, res);
              }
          });
 
@@ -719,7 +742,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
              else
              {            
                 // Terminate the combat
-                CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, false, goldMalus, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res);
+                CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, false, goldMalus, playersActionStr, enemyActionStr, xpReward, lvlUp, playersCurHP, playersCurMP, req, res);
             }
          });
     }
@@ -749,7 +772,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
     }
 }
 
-function CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res)
+function CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, xpReward, lvlUp, playersCurHP, playersCurMP, req, res)
 {
     var sqlQuery = `DELETE FROM fights WHERE username = '${dataTook.username}'`
     connection.query(sqlQuery, function(err,qRes,fields)
@@ -758,14 +781,16 @@ function CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, com
             throw err;
         else
         {            
-            CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res)
+            CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, xpReward, lvlUp, playersCurHP, playersCurMP, req, res)
         }
     });
 }
 
-function CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, playersCurHP, playersCurMP, req, res)
+function CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, xpReward, lvlUp, playersCurHP, playersCurMP, req, res)
 {
-    // Check for lvl up
+    console.log("aDWSNIADSinisdAN");
+    console.log(playersCurHP)    ;
+    console.log(playersCurMP);
     var sqlQuery = `UPDATE users SET playersHP = ${playersCurHP}, playersMP = ${playersCurMP} WHERE username = '${dataTook.username}'`;
         connection.query(sqlQuery, function(err,qRes,fields)
         {
@@ -775,13 +800,18 @@ function CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTo
             {            
                 if(playerWon)
                 {
+                    var lvlUpMessage = "";
+
+                    if(lvlUp)
+                        lvlUpMessage = `\nYou leveled up to level: ${playerData.characterLevel+1}`;
+
                     res.writeHead(200, {"Content-Type" : "application/json"});
                     var response =
                     {
                         rCode:200,
                         rMessage:"TURN_ATTACK_COMBAT_END_PLAYER_WON",
                         rPlayerAction: playersActionStr,
-                        rEndStr: `You killed ${defines.AI[combatData.enemyID].Name} and earnt ${goldsVariable} golds.`,
+                        rEndStr: `You killed ${defines.AI[combatData.enemyID].Name} and earnt ${goldsVariable} golds.\n\nYou earnt ${xpReward}XP.\n${lvlUpMessage}`,
                     };
                     res.write(JSON.stringify(response));
                     res.end();       

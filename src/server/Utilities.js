@@ -81,6 +81,12 @@ module.exports =
         return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
     },
 
+    GetRandomFloatInclusive : function(min, max)
+    {
+        return (Math.random() * (max - min) + min).toFixed(1);
+    },
+    
+
     GetAI: function(req, res)
     {
         res.writeHead(200, {"Content-Type" : "application/json"});

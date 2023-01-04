@@ -538,6 +538,19 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
             const pWeapon = defines.Weapons[playerData.equippedWeapon];
             playerFinalDamage = util.GetRandomIntInclusive(pWeapon.MinDamage, pWeapon.MaxDamage);
 
+            // Make damage also a function of STR 
+            var strMod = Math.floor((pWeapon.STRMod * playerData.characterStrength * util.GetRandomFloatInclusive(0.1, 0.5)));
+            playerFinalDamage += strMod;
+            console.log("STR MOD: " + strMod); 
+
+            // Make damage also a function of DEX
+            var dexMod = Math.floor((pWeapon.DEXMod * playerData.characterDexterity * util.GetRandomFloatInclusive(0.1, 0.5)));
+            playerFinalDamage += dexMod; 
+
+            // Make damage also a function of DEX
+            var intMod = Math.floor((pWeapon.INTMod * playerData.characterIntelligence * util.GetRandomFloatInclusive(0.1, 0.5)));
+            playerFinalDamage += intMod;
+
             // Critical chance
             var critChance = util.GetRandomIntInclusive(1, 100);
             isCritical = critChance <= pWeapon.CriticalChance;
@@ -579,6 +592,14 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
             {
                 playerManaUsed = spellData.ManaCost;
                 playerFinalDamage = util.GetRandomIntInclusive(spellData.MinDamage, spellData.MaxDamage);
+
+                // Make damage also a function of INT
+                var intMod = Math.floor((pWeapon.INTMod * playerData.characterIntelligence * util.GetRandomFloatInclusive(0.1, 0.5)));
+                playerFinalDamage += intMod;
+
+                // Make damage also a function of FAI
+                var faiMod = Math.floor((pWeapon.FAImod * playerData.characterFaith * util.GetRandomFloatInclusive(0.1, 0.5)));
+                playerFinalDamage += faiMod;
 
                 // Critical chance
                 var critChance = util.GetRandomIntInclusive(1, 100);
@@ -695,7 +716,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
             // Level up!
             const playerCurLvl = playerData.characterLevel+=1;
             const playersXP = 0;
-            const playersNextLevelXP = playerData.playersNextLevelXP * Math.log10(playerData.playersNextLevelXP);
+            const playersNextLevelXP = playerData.playersNextLevelXP * Math.log10(playerCurLvl * 10);
 
             lvlupstr = `, characterLevel = ${playerCurLvl}, playersCurXP = ${playersXP}, playersNextLevelXP = ${playersNextLevelXP}`;
             lvlUp = true;
@@ -788,9 +809,6 @@ function CombatTurn_Attack_TerminateCombat(connection, dataTook, playerData, com
 
 function CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTook, playerData, combatData, playerWon, goldsVariable, playersActionStr, enemyActionStr, xpReward, lvlUp, playersCurHP, playersCurMP, req, res)
 {
-    console.log("aDWSNIADSinisdAN");
-    console.log(playersCurHP)    ;
-    console.log(playersCurMP);
     var sqlQuery = `UPDATE users SET playersHP = ${playersCurHP}, playersMP = ${playersCurMP} WHERE username = '${dataTook.username}'`;
         connection.query(sqlQuery, function(err,qRes,fields)
         {
@@ -803,7 +821,7 @@ function CombatTurn_Attack_TerminateCombat_UpdatePlayersStats(connection, dataTo
                     var lvlUpMessage = "";
 
                     if(lvlUp)
-                        lvlUpMessage = `\nYou leveled up to level: ${playerData.characterLevel+1}`;
+                        lvlUpMessage = `\nYou leveled up to level: ${playerData.characterLevel}`;
 
                     res.writeHead(200, {"Content-Type" : "application/json"});
                     var response =

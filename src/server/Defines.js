@@ -6,6 +6,7 @@ module.exports =
     {
         0:
         {
+            ID: 0,
             Name: "Vitality",
             ShortName: "VIT",
             Cost: 15, // 15 * value, if VIT is 11 cost is (15 * 11 = 165 golds)
@@ -14,6 +15,7 @@ module.exports =
 
         1:
         {
+            ID: 1,
             Name: "Strength",
             ShortName: "STR",
             Cost: 13,
@@ -22,6 +24,7 @@ module.exports =
 
         2:
         {
+            ID: 2,
             Name: "Dexterity",
             ShortName: "DEX",
             Cost: 12,
@@ -30,6 +33,7 @@ module.exports =
 
         3:
         {
+            ID: 3,
             Name: "Agility",
             ShortName: "AGI",
             Cost: 14,
@@ -38,6 +42,7 @@ module.exports =
 
         4:
         {
+            ID: 4,
             Name: "Intelligence",
             ShortName: "INT",
             Cost: 12,
@@ -46,6 +51,7 @@ module.exports =
 
         5:
         {
+            ID: 5,
             Name: "Faith",
             ShortName: "FAI",
             Cost: 20,

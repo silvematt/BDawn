@@ -55,7 +55,6 @@ function FinalizeTrainAttribute(connection, dataTook, req, res)
         else
         {
             // Calculate train cost:
-            console.log("AWAWAWAWAWAAWAWWAWAAWAWAW");
             console.log(qRes);
             const trainCost = qRes[0][defines.Stats[dataTook.att].InDBName] * defines.Stats[dataTook.att].Cost;
             const playersGolds = qRes[0].inventoryGolds;

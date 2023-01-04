@@ -16,8 +16,18 @@ const { connect } = require("http2");
 // "Private" functions
 function FinalizeAlterStat(stat, val, username, connection, OnAlter)
 {
+    var adjustMaxes = "";
+    if(stat.ID == 0)
+    {
+        adjustMaxes = `, playersMaxHP = ${val * 10}`;
+    }
+    else if(stat.ID == 4)
+    {
+        adjustMaxes = `, playersMaxMP = ${val * 10}`;
+    }
+
     // Run the CharacterCreatedCheck
-    var sqlQuery = `UPDATE users SET ${stat.InDBName} = ${val} WHERE username = '${username}'`;
+    var sqlQuery = `UPDATE users SET ${stat.InDBName} = ${val} ${adjustMaxes} WHERE username = '${username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)

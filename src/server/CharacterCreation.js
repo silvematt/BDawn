@@ -101,10 +101,12 @@ function CompleteCharacterCreation(connection, dataTook, req, res)
         charClass = 2;
         classValues = defines.DefaultStats.Thief;
     }
-    
+
+    const startingHP = classValues.VIT * 10;
+    const startingMP = classValues.INT * 10;
 
      // Update the database
-     var sqlQuery = `UPDATE users SET characterCreated = ${1}, characterName = '${dataTook.charName}', characterSex = ${charSex}, characterLevel = ${1}, characterClass = ${charClass}, characterVitality = ${classValues.VIT}, characterStrength = ${classValues.STR}, characterDexterity = ${classValues.DEX}, characterAgility = ${classValues.AGI}, characterIntelligence = ${classValues.INT}, characterFaith = ${classValues.FAI} WHERE username = '${dataTook.username}'`;
+     var sqlQuery = `UPDATE users SET characterCreated = ${1}, characterName = '${dataTook.charName}', characterSex = ${charSex}, characterLevel = ${1}, characterClass = ${charClass}, characterVitality = ${classValues.VIT}, characterStrength = ${classValues.STR}, characterDexterity = ${classValues.DEX}, characterAgility = ${classValues.AGI}, characterIntelligence = ${classValues.INT}, characterFaith = ${classValues.FAI}, playersHP = ${startingHP}, playersMaxHP = ${startingHP}, playersMP = ${startingMP}, playersMaxMP = ${startingMP}  WHERE username = '${dataTook.username}'`;
      connection.query(sqlQuery, function(err,qRes,fields)
      {
          if(err)

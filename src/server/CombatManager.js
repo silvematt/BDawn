@@ -594,11 +594,13 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
                 playerFinalDamage = util.GetRandomIntInclusive(spellData.MinDamage, spellData.MaxDamage);
 
                 // Make damage also a function of INT
-                var intMod = Math.floor((pWeapon.INTMod * playerData.characterIntelligence * util.GetRandomFloatInclusive(0.1, 0.5)));
+                var intMod = Math.floor((spellData.INTMod * playerData.characterIntelligence * util.GetRandomFloatInclusive(0.1, 0.5)));
+                console.log("INT MOD : " + intMod);
                 playerFinalDamage += intMod;
 
                 // Make damage also a function of FAI
-                var faiMod = Math.floor((pWeapon.FAImod * playerData.characterFaith * util.GetRandomFloatInclusive(0.1, 0.5)));
+                var faiMod = Math.floor((spellData.FAIMod * playerData.characterFaith * util.GetRandomFloatInclusive(0.1, 0.5)));
+                console.log("FAI MOD : " + faiMod);
                 playerFinalDamage += faiMod;
 
                 // Critical chance

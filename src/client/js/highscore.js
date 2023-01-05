@@ -90,7 +90,7 @@ function GetHighScore()
                         curPlayer = playersList[obj];
 
                         var table = document.getElementById("highscoretable");
-                        var row = table.insertRow(1);
+                        var row = table.insertRow(parseInt(obj) + 1);
 
                         var pos = row.insertCell(0);
                         var name = row.insertCell(1);

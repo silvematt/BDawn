@@ -281,7 +281,7 @@ function StartCombatRequest_CheckAlreadyInCombat(connection, dataTook, req, res)
 function StartCombatRequest_GetPlayersStats(connection, dataTook, req, res)
 {
     // Select and return all
-    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, playersHP, playersMaxHP, playersMP, playersMaxMP, playersCurXP, playersNextLevelXP FROM users WHERE username = '${dataTook.username}'`;
+    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, playersHP, playersMaxHP, playersMP, playersMaxMP, playersCurXP, playersNextLevelXP, allTimeXP FROM users WHERE username = '${dataTook.username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)
@@ -506,7 +506,7 @@ function CombatTurn_Attack_CheckCombatState(connection, dataTook, req, res)
 function CombatTurn_Attack_GetPlayerOverview(connection, dataTook, combatData, req, res)
 {
     // Select and return all
-    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, equippedWeapon, playersCurXP, playersNextLevelXP FROM users WHERE username = '${dataTook.username}'`;
+    var sqlQuery = `SELECT characterName, characterSex, characterLevel, characterClass, characterVitality, characterStrength, characterDexterity, characterAgility, characterIntelligence, characterFaith, inventoryGolds, equippedWeapon, playersCurXP, playersNextLevelXP, allTimeXP FROM users WHERE username = '${dataTook.username}'`;
     connection.query(sqlQuery, function(err,qRes,fields)
     {
         if(err)
@@ -710,6 +710,7 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
         var lvlupstr = ``;
         var lvlUp = false;
 
+        const allTimeXP = playerData.allTimeXP + xpReward;
         // Check for levelup
         if(playerData.playersCurXP + xpReward >= playerData.playersNextLevelXP)
         {
@@ -718,13 +719,13 @@ function CombatTurn_Attack_FinalizeTurn(connection, dataTook, playerData, combat
             const playersXP = 0;
             const playersNextLevelXP = playerData.playersNextLevelXP * Math.log10(playerCurLvl * 10);
 
-            lvlupstr = `, characterLevel = ${playerCurLvl}, playersCurXP = ${playersXP}, playersNextLevelXP = ${playersNextLevelXP}`;
+            lvlupstr = `, characterLevel = ${playerCurLvl}, playersCurXP = ${playersXP}, playersNextLevelXP = ${playersNextLevelXP}, allTimeXP = ${allTimeXP}`;
             lvlUp = true;
         }
         else
         {
             // Just update the XP
-            lvlupstr = `, playersCurXP = ${playerData.playersCurXP + xpReward}`;
+            lvlupstr = `, playersCurXP = ${playerData.playersCurXP + xpReward}, allTimeXP = ${allTimeXP}`;
         }
 
         // Update Golds

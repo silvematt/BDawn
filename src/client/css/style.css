@@ -216,3 +216,42 @@ body
   {
     color:red;
   }
+
+  
+.th {
+  
+}
+
+.td-content {
+  letter-spacing: 1px;
+  border: 1px solid;
+  text-align: center;
+}
+
+tbody td {
+}
+
+tfoot th {
+}
+
+
+.th-content 
+{
+    letter-spacing: 2px;
+  border: 1px solid;
+    font-weight:bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 30px;
+    padding-right: 40px;
+}
+
+
+
+.th-content-rank
+{
+    letter-spacing: 2px;
+  border: 1px solid;
+    font-weight:bold;
+}
+

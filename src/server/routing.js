@@ -10,7 +10,8 @@ const trainer = require("./Trainer");
 const Weaponsmith = require("./Weaponsmith");
 const Sorcerer = require("./Sorcerer");
 const CombatManager = require("./CombatManager");
-const GeneralGoods = require("./GeneralGoods")
+const GeneralGoods = require("./GeneralGoods");
+const Highscore = require("./Highscore");
 
 module.exports = 
 {
@@ -64,6 +65,11 @@ module.exports =
             case "/cGeneralGoods":
                 res.writeHead(200, { 'content-type': 'text/html' });
                 fs.createReadStream('../client/generalgoods.html').pipe(res);
+                break;
+
+            case "/cHighscore":
+                res.writeHead(200, { 'content-type': 'text/html' });
+                fs.createReadStream('../client/highscore.html').pipe(res);
                 break;
 
             // APIs
@@ -148,6 +154,10 @@ module.exports =
                 util.GetAI(req, res);
                 break;
 
+            case "/getHighscore":
+                Highscore.GetHighscore(req, res);
+                break;
+
             // Serve FS
             case "/js/generatenavbar.js":
                 res.writeHead(200, { 'content-type': 'text/javascript' });
@@ -187,6 +197,11 @@ module.exports =
             case "/js/dungeon.js":
                 res.writeHead(200, { 'content-type': 'text/javascript' });
                 fs.createReadStream('../client/js/dungeon.js').pipe(res);
+                break;
+
+            case "/js/highscore.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/highscore.js').pipe(res);
                 break;
 
             case "/js/generalgoods.js":

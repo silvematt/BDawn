@@ -115,7 +115,7 @@ function FinishGetHighscore(connection, dataTook, req, res)
     const itemToBuy = defines.GeneralGoods[dataTook.idToBuy];
 
     // Get user's golds and if he already has it
-    var sqlQuery = `SELECT * FROM users ORDER BY allTimeXP DESC LIMIT 100;`;
+    var sqlQuery = `SELECT * FROM users WHERE characterCreated = 1 ORDER BY allTimeXP DESC LIMIT 100;`;
 
     connection.query(sqlQuery, function(err,qRes,fields)
     {

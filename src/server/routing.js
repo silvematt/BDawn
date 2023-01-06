@@ -27,6 +27,11 @@ module.exports =
                 fs.createReadStream('../client/login.html').pipe(res);
                 break;
 
+            case "/cRegister":
+                res.writeHead(200, { 'content-type': 'text/html' });
+                fs.createReadStream('../client/register.html').pipe(res);
+                break;
+
             case "/cOverview":
                 res.writeHead(200, { 'content-type': 'text/html' });
                 fs.createReadStream('../client/overview.html').pipe(res);
@@ -75,6 +80,10 @@ module.exports =
             // APIs
             case "/login":
                 auth.LoginFunc(req,res);
+                break;
+
+            case "/register":
+                auth.RegisterFunc(req,res);
                 break;
 
             case "/overview":
@@ -172,6 +181,11 @@ module.exports =
             case "/js/login.js":
                 res.writeHead(200, { 'content-type': 'text/javascript' });
                 fs.createReadStream('../client/js/login.js').pipe(res);
+                break;
+
+            case "/js/register.js":
+                res.writeHead(200, { 'content-type': 'text/javascript' });
+                fs.createReadStream('../client/js/register.js').pipe(res);
                 break;
 
             case "/js/sorcerer.js":

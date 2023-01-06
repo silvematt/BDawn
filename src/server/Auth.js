@@ -141,5 +141,117 @@ module.exports =
             res.write(JSON.stringify(response));
             res.end();
         }
+    },
+
+    RegisterFunc : function(req, res)
+    {
+        if(req.method == "POST")
+        {
+            var body = [];
+
+            req.on('data', function(chunk)
+            {
+                body.push(chunk);
+            });
+
+            req.on('end', function()
+            {
+                const data = Buffer.concat(body);
+                const post = qs.parse(data.toString());
+                
+                console.log(post['user']);
+                console.log(post['password']);
+                console.log(post['password']);
+
+                var pUser = post['user'];
+                var pPass = post['password'];
+                var pEmail = post['email'];
+
+                const user =
+                {
+                    username: pUser,
+                    password: pPass,
+                    email: pEmail
+                };
+
+                var connection = dbconf.OpenConnection();
+                
+                var authOK = false;
+
+                // Check if 
+                connection.connect(function(err)
+                {
+                    if(err)
+                        throw err;
+                    else
+                    {
+                        console.log("Connected!");
+                        
+                        var sqlQuery = `SELECT * FROM users WHERE username = '${pUser}' OR email = '${pEmail}'`;
+                        connection.query(sqlQuery, function(err,qRes,fields)
+                        {
+                            if(err)
+                                throw err;
+                            else
+                            {
+                                console.log(qRes);
+                                FinishRegisterRequest(connection, user, qRes && qRes.length > 0, req, res);
+                            }
+                        });
+                    }
+                });
+            })
+        }
+        else
+        {
+            res.writeHead(200, {"Content-Type" : "application/json"});
+            var response =
+            {
+                rCode:400,
+                rMessage:"INVALID_REQUEST_METHOD"
+            };
+            res.write(JSON.stringify(response));
+            res.end();
+        }
+    },
+}
+
+function FinishRegisterRequest(connection, user, alreadyExist, req, res)
+{
+    if(!alreadyExist)
+    {
+        // Add the session in the database
+        sqlQuery = `INSERT INTO users (username, email, password) VALUES ('${user.username}', '${user.email}', '${user.password}')`;
+        connection.query(sqlQuery, function(err,result,fields)
+        {
+            if(err)
+                throw err;
+            else
+            {
+                console.log(result);
+
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:200,
+                    rMessage:"REGISTER_OK"
+                };
+                res.write(JSON.stringify(response));
+                res.end();                  
+                connection.end();
+            }
+        });
+    }
+    else
+    {
+        res.writeHead(200, {"Content-Type" : "application/json"});
+        var response =
+        {
+            rCode:200,
+            rMessage:"REGISTER_NOT_OK"
+        };
+        res.write(JSON.stringify(response));
+        res.end();        
+        connection.end();
     }
 }

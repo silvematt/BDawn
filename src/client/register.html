@@ -2,9 +2,9 @@
 <html>
 
 <head>
-    <title>BDawn - Web Client - Login</title>
+    <title>BDawn - Web Client - Register</title>
     <link href="http://localhost:3000/css/style.css" rel="stylesheet" type="text/css"  />
-    <script src = "http://localhost:3000/js/login.js"></script>
+    <script src = "http://localhost:3000/js/register.js"></script>
 </head>
 
 <body>
@@ -12,27 +12,24 @@
   
     <div class = "precont">
         <h1>BDawn - Web Client</h1>
-        <h2>Login</h2>
+        <h2>Register</h2>
     </div>
 
     <div id = "fullbody" class = "fullbodylogindiv" style="display:block;">
       <fieldset style="width:30%" class = "pagecontent-field">
-        <h2 style="text-align: center;">Login</h2>
+        <h2 style="text-align: center;">Register</h2>
       <label for="uname"><b>Username: </b></label>
       <input ID = "FORM_USERNAME" type="text" placeholder="Enter Username" name="uname" required>
+      <br/><br>
+      <label for="uemail"><b>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></label>
+      <input ID = "FORM_EMAIL" type="text" placeholder="Enter Email" name="uemail" required>
       <br/><br>
       <label for="psw"><b>Password:&nbsp;</b></label>
       <input id ="FORM_PASSWORD" type="password" placeholder="Enter Password" name="psw" required>
       <br/><br/>
-
-      <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-      </label>
-      <br><br>
-      <a class ="mainButton" style="margin-left: auto;margin-right: auto;" type="submit" onclick="OnLogin()">Login</a>
-
-      <a>Don't have an account? </a> <a href="http://localhost:3000/cRegister">Register</a>
-      <br>
+      <a class ="mainButton" style="margin-left: auto;margin-right: auto;" type="submit" onclick="OnRegister()">Register</a>
+       <a>Already have an account? </a> <a href="http://localhost:3000/cLogin">Login</a>
+       <br>
       <label id="ResultLabel" class ="ResultLabel"><b></b></label>
       <br>
       </fieldset>

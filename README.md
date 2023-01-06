@@ -15,3 +15,4 @@ This is a learning project, not meant for actual use if not modified and secured
 <b>- General Goods:</b> Consumables that can be purchased and used for recovering HP and MP. <BR>
 <b>- Dungeon</b>: Section for viewing the enemies and starting combat with them.<BR>
 <b>- Turn Based Combat System:</b> the combat system accounts for the stats, equipment, spells, critical chance, randomness and allows the player to gain currency and XP to progress.<BR>
+<b>- Highscore:</b> allows to view and rank players in base of all time earnt XP.<BR>

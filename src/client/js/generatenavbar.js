@@ -7,6 +7,7 @@ var html =`
   <a class="mainButton" href="http://localhost:3000/cSorcerer">Sorcerer</a>
   <a class="mainButton" href="http://localhost:3000/cDungeon">Dungeon</a>
   <a class="mainButton" href="http://localhost:3000/cHighscore">Highscore</a>
+  <a class="mainButton" href="http://localhost:3000/cLogin">Logout</a>
   </div>
 `;
 

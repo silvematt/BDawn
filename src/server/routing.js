@@ -89,7 +89,11 @@ module.exports =
             case "/overview":
                 overview.OverviewFunc(req, res);
                 break;
-
+                
+            case "/resurrect":
+                overview.ResurrectFunc(req, res);
+                break;
+                    
             case "/createCharacter":
                 charCreation.CreateCharFunc(req, res);
                 break;

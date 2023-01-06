@@ -1,3 +1,5 @@
+var playerData;
+
 function OnOverview() 
 {
     document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
@@ -25,6 +27,7 @@ function OnOverview()
 
                 case "OVERVIEW_SUCESS":
                     console.log(res.rContent[0]);
+                    playerData = res.rContent[0];
                     // Take everything and fill the page
                     document.getElementById("CHARNAME_VALUE").textContent = res.rContent[0].characterName;
                     document.getElementById("CHARLEVEL_VALUE").textContent = res.rContent[0].characterLevel;
@@ -42,6 +45,11 @@ function OnOverview()
                     const playerHPBar = document.getElementById("playerhpbar");
                     playerHPBar.max = res.rContent[0].playersMaxHP;
                     playerHPBar.value = res.rContent[0].playersHP;
+
+                    // Show the resurrect button if hp are 0
+                    if(res.rContent[0].playersHP > 0)
+                        document.getElementById("resurrectbutton").style.display = "none";
+
 
                     const playerHpPercent = Math.floor((res.rContent[0].playersHP / res.rContent[0].playersMaxHP) * 100);
                     const playerHPPercentage = document.getElementById("PLAYERHP_PERCENT").innerHTML = `${playerHpPercent}%`;
@@ -118,4 +126,56 @@ function PlayerUpdatePotrait(gender, charClass)
 
     const potrait = document.getElementById("potrait");
     potrait.src = `http://localhost:3000/imgs/${str}`;
+}
+
+function RequestResurrect()
+{
+    var xpMalus = Math.floor((playerData.playersCurXP * 10) / 100);
+    
+    if (confirm(`Are you sure you want to resurrect your character? Resurrecting will bring your HP and MP to the maximum, but you will lose 10% of your current XP (${xpMalus}) that is also going to be taken from the All Time XP. You should use this only if you are dead and cannot afford potions.`)) 
+    {
+        document.getElementById("PROCESSING_MESSAGE").textContent = "Loading...";
+
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() 
+        {
+            if (this.readyState == 4) 
+            {
+                var res = JSON.parse(this.responseText);
+                
+                const resLabel = document.getElementById('ResultLabel');
+                
+                // Cover all cases
+                switch(res.rMessage)
+                {
+                    case "TOKEN_INVALID":
+                        alert("Session expired.");
+                        location.href = "http://localhost:3000/cLogin";
+                        break;
+
+                    case "CANNOT_RESURRECT_STILL_ALIVE":
+                        location.href = "http://localhost:3000/cOverview";
+                        break;
+
+                    case "RESURRECT_SUCCESS":
+                        location.href = "http://localhost:3000/cOverview";
+                        break;
+
+                    default:
+                    alert("DEFAULT: Session expired.");
+                        location.href = "http://localhost:3000/cLogin";
+                        break;
+                }
+            }
+        };
+
+        var session = localStorage.getItem("bdawn_sess_tkn")
+        request.open('POST', 'http://localhost:3000/resurrect');
+        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        request.send(`tkn=${session}`);
+    } 
+    else 
+    {
+
+    }
 }

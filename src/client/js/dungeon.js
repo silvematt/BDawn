@@ -227,6 +227,10 @@ function StartCombat(enemyID)
                     location.href = "http://localhost:3000/cCombat";
                     break;
 
+                case "NOT_ENOUGH_HP":
+                    document.getElementById('ResultLabel').textContent = "You are dead and cannot start a fight.";
+                    break;
+
                 case "CREATE_COMBAT_SUCCESS":
                     // Need refresh
                     location.href = "http://localhost:3000/cCombat";

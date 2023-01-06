@@ -289,7 +289,21 @@ function StartCombatRequest_GetPlayersStats(connection, dataTook, req, res)
         else
         {            
             console.log(qRes);
-            StartCombatRequest_CreateCombatState(connection, dataTook, qRes[0], req, res);
+
+            if(qRes[0].playersHP > 0)
+                StartCombatRequest_CreateCombatState(connection, dataTook, qRes[0], req, res);
+            else
+            {
+                res.writeHead(200, {"Content-Type" : "application/json"});
+                var response =
+                {
+                    rCode:400,
+                    rMessage:"NOT_ENOUGH_HP"
+                };
+                res.write(JSON.stringify(response));
+                res.end();       
+                connection.end();
+            }
         }
     });
 }

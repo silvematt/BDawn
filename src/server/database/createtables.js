@@ -32,18 +32,6 @@ connection.connect(function(err)
             }
         });
         
-        console.log("Inserting some values...");
-        sqlQuery = "INSERT INTO users (username, email, password) VALUES ('silvematt', 'silvematt@libero.it', 'silvematt')";
-        connection.query(sqlQuery, function(err,result)
-        {
-            if(err)
-                throw err;
-            else
-            {
-                console.log("Values successfully inserted.");
-            }
-        });
-
         sqlQuery = "CREATE TABLE sessions (TOKEN varchar(255) NOT NULL, username varchar(255) NOT NULL, creationDate DATETIME DEFAULT CURRENT_TIMESTAMP, expires DATETIME DEFAULT NULL, PRIMARY KEY (TOKEN))";
 
         console.log("Executing creation (SESSIONS)...");

@@ -16,3 +16,19 @@ This is a learning project, not meant for actual use if not modified and secured
 <b>- Dungeon</b>: Section for viewing the enemies and starting combat with them.<BR>
 <b>- Turn Based Combat System:</b> the combat system accounts for the stats, equipment, spells, critical chance, randomness and allows the player to gain currency and XP to progress.<BR>
 <b>- Highscore:</b> allows to view and rank players in base of all time earnt XP.<BR>
+<b>- Resurrect:</b> is a mechanic to resurrect the player's character if both his HP and golds are 0, at the cost of 10% of the current player's XP.<BR>
+<h1>Installing</h1>
+
+To install BDawn you need:<br>
+- Node.JS
+- MySQL Database (I used MySQL Workbench)
+
+Head in <i>src/server/database</i>, you will find a file named <i>"dbconf.js"</i>, open it and set your hostname, user and password for the DB.
+
+Run through node the following commands in the database folder:
+
+1) <code>node createdb.js</code> - to create the database
+2) <code>node createtables.js</code> - to create the tables
+
+After that, just run the Server.js through node (located in "src/server") and you'll have the server and game running.
+

@@ -4,7 +4,7 @@
 
 BDawn is an RPG Browser-Game Engine written in Node, JS, HTML, CSS and MySQL, inspired by the browser games of the era like Gladiatus and OGame.
 
-This is a learning project, not meant for actual use if not modified and secured, it has been written with a scalable and prone to changes architecture for what regards the core of functionalities and the content-side of it. Adding content such as weapons, AI, spells and rebalancing the game does not require any significant change in the server-side codebase but an edit of the configuration file of the elements.
+This is a learning project, not meant for actual use if not modified and secured, it has been written with a scalable and prone to changes architecture in mind for what regards the core of functionalities and the content-side of it. Adding content such as weapons, AI, spells and rebalancing the game does not require any significant change in the server-side codebase but an edit of the configuration file of the elements.
 
 <h1>Main Features</h1>
 <b>- Basic Login/Registration.</b> <BR>
@@ -31,4 +31,6 @@ Run through node the following commands in the database folder:
 2) <code>node createtables.js</code> - to create the tables
 
 After that, just run the Server.js through node (located in "src/server") and you'll have the server and game running.
+
+You can start by going to the <b>cRegister</b> route to register an account and start playing: <code>http://localhost:3000/cRegister</code>
 

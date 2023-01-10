@@ -21,7 +21,7 @@ This is a learning project, not meant for actual use if not modified and secured
 
 To install BDawn you need:<br>
 - Node.JS
-- MySQL Database (I used MySQL Workbench)
+- MySQL Database
 
 Head in <i>src/server/database</i>, you will find a file named <i>"dbconf.js"</i>, open it and set your hostname, user and password for the DB.
 
